@@ -1,0 +1,195 @@
+/***********************************************************************************
+ * \file InformationObjectTypeID.h
+ * \author BlueRabbitY (BlueRabbitY\@protonmail.com)
+ * \brief information object type ID (TypeID)
+ * \date 2025-12-13 01:12:05
+ * 
+ * \copyright Copyright (C) 2025 BlueRabbitY. All rights reserved.
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed
+ * under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License. 
+ *
+ ***********************************************************************************/
+#pragma once
+
+#include <format>
+#include <string_view>
+
+namespace elink::iec60870 {
+
+enum class InformationObjectTypeID : uint8_t {
+    // IEC60870 standard typeid
+    M_SP_NA_1 = 1,
+    M_SP_TA_1 = 2,
+    M_DP_NA_1 = 3,
+    M_DP_TA_1 = 4,
+    M_ST_NA_1 = 5,
+    M_ST_TA_1 = 6,
+    M_BO_NA_1 = 7,
+    M_BO_TA_1 = 8,
+    M_ME_NA_1 = 9,
+    M_ME_TA_1 = 10,
+    M_ME_NB_1 = 11,
+    M_ME_TB_1 = 12,
+    M_ME_NC_1 = 13,
+    M_ME_TC_1 = 14,
+    M_IT_NA_1 = 15,
+    M_IT_TA_1 = 16,
+    M_EP_TA_1 = 17,
+    M_EP_TB_1 = 18,
+    M_EP_TC_1 = 19,
+    M_PS_NA_1 = 20,
+    M_ME_ND_1 = 21,
+    M_SP_TB_1 = 30,
+    M_DP_TB_1 = 31,
+    M_ST_TB_1 = 32,
+    M_BO_TB_1 = 33,
+    M_ME_TD_1 = 34,
+    M_ME_TE_1 = 35,
+    M_ME_TF_1 = 36,
+    M_IT_TB_1 = 37,
+    M_EP_TD_1 = 38,
+    M_EP_TE_1 = 39,
+    M_EP_TF_1 = 40,
+    S_IT_TC_1 = 41,
+    C_SC_NA_1 = 45,
+    C_DC_NA_1 = 46,
+    C_RC_NA_1 = 47,
+    C_SE_NA_1 = 48,
+    C_SE_NB_1 = 49,
+    C_SE_NC_1 = 50,
+    C_BO_NA_1 = 51,
+    C_SC_TA_1 = 58,
+    C_DC_TA_1 = 59,
+    C_RC_TA_1 = 60,
+    C_SE_TA_1 = 61,
+    C_SE_TB_1 = 62,
+    C_SE_TC_1 = 63,
+    C_BO_TA_1 = 64,
+    M_EI_NA_1 = 70,
+    S_CH_NA_1 = 81,
+    S_RP_NA_1 = 82,
+    S_AR_NA_1 = 83,
+    S_KR_NA_1 = 84,
+    S_KS_NA_1 = 85,
+    S_KC_NA_1 = 86,
+    S_ER_NA_1 = 87,
+    S_US_NA_1 = 90,
+    S_UQ_NA_1 = 91,
+    S_UR_NA_1 = 92,
+    S_UK_NA_1 = 93,
+    S_UA_NA_1 = 94,
+    S_UC_NA_1 = 95,
+    C_IC_NA_1 = 100,
+    C_CI_NA_1 = 101,
+    C_RD_NA_1 = 102,
+    C_CS_NA_1 = 103,
+    C_TS_NA_1 = 104,
+    C_RP_NA_1 = 105,
+    C_CD_NA_1 = 106,
+    C_TS_TA_1 = 107,
+    P_ME_NA_1 = 110,
+    P_ME_NB_1 = 111,
+    P_ME_NC_1 = 112,
+    P_AC_NA_1 = 113,
+    F_FR_NA_1 = 120,
+    F_SR_NA_1 = 121,
+    F_SC_NA_1 = 122,
+    F_LS_NA_1 = 123,
+    F_AF_NA_1 = 124,
+    F_SG_NA_1 = 125,
+    F_DR_TA_1 = 126,
+    F_SC_NB_1 = 127,
+};
+
+using TypeID = InformationObjectTypeID;
+
+}
+
+template <>
+struct std::formatter<elink::iec60870::TypeID> : std::formatter<std::string_view> {
+    using std::formatter<std::string_view>::parse;
+
+    template <class FormatContext>
+    auto format(const elink::iec60870::TypeID& typeID, FormatContext& ctx) const
+    {
+        using elink::iec60870::TypeID;
+        std::string_view typeIDStringView;
+        // clang-format off
+        switch (typeID)
+        {
+            case TypeID::M_SP_NA_1: typeIDStringView = "M_SP_NA_1";break;
+            case TypeID::M_SP_TA_1: typeIDStringView = "M_SP_TA_1";break;
+            case TypeID::M_DP_NA_1: typeIDStringView = "M_DP_NA_1";break;
+            case TypeID::M_DP_TA_1: typeIDStringView = "M_DP_TA_1";break;
+            case TypeID::M_ST_NA_1: typeIDStringView = "M_ST_NA_1";break;
+            case TypeID::M_ST_TA_1: typeIDStringView = "M_ST_TA_1";break;
+            case TypeID::M_BO_NA_1: typeIDStringView = "M_BO_NA_1";break;
+            case TypeID::M_BO_TA_1: typeIDStringView = "M_BO_TA_1";break;
+            case TypeID::M_ME_NA_1: typeIDStringView = "M_ME_NA_1";break;
+            case TypeID::M_ME_TA_1: typeIDStringView = "M_ME_TA_1";break;
+            case TypeID::M_ME_NB_1: typeIDStringView = "M_ME_NB_1";break;
+            case TypeID::M_ME_TB_1: typeIDStringView = "M_ME_TB_1";break;
+            case TypeID::M_ME_NC_1: typeIDStringView = "M_ME_NC_1";break;
+            case TypeID::M_ME_TC_1: typeIDStringView = "M_ME_TC_1";break;
+            case TypeID::M_IT_NA_1: typeIDStringView = "M_IT_NA_1";break;
+            case TypeID::M_IT_TA_1: typeIDStringView = "M_IT_TA_1";break;
+            case TypeID::M_EP_TA_1: typeIDStringView = "M_EP_TA_1";break;
+            case TypeID::M_EP_TB_1: typeIDStringView = "M_EP_TB_1";break;
+            case TypeID::M_EP_TC_1: typeIDStringView = "M_EP_TC_1";break;
+            case TypeID::M_PS_NA_1: typeIDStringView = "M_PS_NA_1";break;
+            case TypeID::M_ME_ND_1: typeIDStringView = "M_ME_ND_1";break;
+            case TypeID::M_SP_TB_1: typeIDStringView = "M_SP_TB_1";break;
+            case TypeID::M_DP_TB_1: typeIDStringView = "M_DP_TB_1";break;
+            case TypeID::M_ST_TB_1: typeIDStringView = "M_ST_TB_1";break;
+            case TypeID::M_BO_TB_1: typeIDStringView = "M_BO_TB_1";break;
+            case TypeID::M_ME_TD_1: typeIDStringView = "M_ME_TD_1";break;
+            case TypeID::M_ME_TE_1: typeIDStringView = "M_ME_TE_1";break;
+            case TypeID::M_ME_TF_1: typeIDStringView = "M_ME_TF_1";break;
+            case TypeID::M_IT_TB_1: typeIDStringView = "M_IT_TB_1";break;
+            case TypeID::M_EP_TD_1: typeIDStringView = "M_EP_TD_1";break;
+            case TypeID::M_EP_TE_1: typeIDStringView = "M_EP_TE_1";break;
+            case TypeID::M_EP_TF_1: typeIDStringView = "M_EP_TF_1";break;
+            case TypeID::C_SC_NA_1: typeIDStringView = "C_SC_NA_1";break;
+            case TypeID::C_DC_NA_1: typeIDStringView = "C_DC_NA_1";break;
+            case TypeID::C_RC_NA_1: typeIDStringView = "C_RC_NA_1";break;
+            case TypeID::C_SE_NA_1: typeIDStringView = "C_SE_NA_1";break;
+            case TypeID::C_SE_NB_1: typeIDStringView = "C_SE_NB_1";break;
+            case TypeID::C_SE_NC_1: typeIDStringView = "C_SE_NC_1";break;
+            case TypeID::C_BO_NA_1: typeIDStringView = "C_BO_NA_1";break;
+            case TypeID::C_SC_TA_1: typeIDStringView = "C_SC_TA_1";break;
+            case TypeID::C_DC_TA_1: typeIDStringView = "C_DC_TA_1";break;
+            case TypeID::C_RC_TA_1: typeIDStringView = "C_RC_TA_1";break;
+            case TypeID::C_SE_TA_1: typeIDStringView = "C_SE_TA_1";break;
+            case TypeID::C_SE_TB_1: typeIDStringView = "C_SE_TB_1";break;
+            case TypeID::C_SE_TC_1: typeIDStringView = "C_SE_TC_1";break;
+            case TypeID::C_BO_TA_1: typeIDStringView = "C_BO_TA_1";break;
+            case TypeID::M_EI_NA_1: typeIDStringView = "M_EI_NA_1";break;
+            case TypeID::C_IC_NA_1: typeIDStringView = "C_IC_NA_1";break;
+            case TypeID::C_CI_NA_1: typeIDStringView = "C_CI_NA_1";break;
+            case TypeID::C_RD_NA_1: typeIDStringView = "C_RD_NA_1";break;
+            case TypeID::C_CS_NA_1: typeIDStringView = "C_CS_NA_1";break;
+            case TypeID::C_TS_NA_1: typeIDStringView = "C_TS_NA_1";break;
+            case TypeID::C_RP_NA_1: typeIDStringView = "C_RP_NA_1";break;
+            case TypeID::C_CD_NA_1: typeIDStringView = "C_CD_NA_1";break;
+            case TypeID::C_TS_TA_1: typeIDStringView = "C_TS_TA_1";break;
+            case TypeID::P_ME_NA_1: typeIDStringView = "P_ME_NA_1";break;
+            case TypeID::P_ME_NB_1: typeIDStringView = "P_ME_NB_1";break;
+            case TypeID::P_ME_NC_1: typeIDStringView = "P_ME_NC_1";break;
+            case TypeID::P_AC_NA_1: typeIDStringView = "P_AC_NA_1";break;
+            case TypeID::F_FR_NA_1: typeIDStringView = "F_FR_NA_1";break;
+            case TypeID::F_SR_NA_1: typeIDStringView = "F_SR_NA_1";break;
+            case TypeID::F_SC_NA_1: typeIDStringView = "F_SC_NA_1";break;
+            case TypeID::F_LS_NA_1: typeIDStringView = "F_LS_NA_1";break;
+            case TypeID::F_AF_NA_1: typeIDStringView = "F_AF_NA_1";break;
+            case TypeID::F_SG_NA_1: typeIDStringView = "F_SG_NA_1";break;
+            case TypeID::F_DR_TA_1: typeIDStringView = "F_DR_TA_1";break;
+            case TypeID::F_SC_NB_1: typeIDStringView = "F_SC_NB_1";break;
+            default: typeIDStringView = "unknown";
+        }
+        // clang-format on
+        return std::formatter<std::string_view>::format(typeIDStringView, ctx);
+    }
+};
