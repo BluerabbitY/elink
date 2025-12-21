@@ -19,5 +19,7 @@
 #include "elink/iec60870/io/InformationObjectTypeID.h"
 #include "elink/iec60870/io/InformationObjectAddress.hpp"
 
+#include "elink/iec60870/cpxxtime2a/CPxxTime2a.hpp"
+
 #include "elink/iec60870/io/InformationObject.hpp"
 #include "elink/iec60870/io/SinglePointInformation.hpp"

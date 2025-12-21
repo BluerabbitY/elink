@@ -10,6 +10,8 @@ add_executable(${TEST_PROJECT_NAME}
         ## codec
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/codec/Test_OStream.cpp
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/codec/Test_IStream.cpp
+        ## cpxxtime2a
+        ${CMAKE_CURRENT_LIST_DIR}/iec60870/cpxxtime2a/Test_CPxxTime2a.cpp
         ## io
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_InformationObjectAddress.cpp
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_InformationObjectTypeID.cpp

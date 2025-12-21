@@ -21,6 +21,7 @@
 #include <cstddef>
 
 #include "elink/iec60870/io/InformationObjectAddress.hpp"
+#include "elink/iec60870/cpxxtime2a/CPxxTime2a.hpp"
 
 namespace elink::iec60870::internal {
 
@@ -81,6 +82,26 @@ public:
             int value = 0;
             std::copy_n(bufferM + readPosM, size, reinterpret_cast<uint8_t*>(&value));
             ioa.setAddress(value);
+            readPosM += size;
+        }
+        else
+        {
+            hasErrorM = true;
+        }
+
+        return *this;
+    }
+
+    template <typename T>
+    IStream& operator>>(T& cpxxtime2a) requires (std::is_same_v<T, CP16Time2a> || std::is_same_v<T, CP24Time2a> ||
+                                                 std::is_same_v<T, CP32Time2a> || std::is_same_v<T, CP56Time2a>)
+    {
+        if (hasErrorM)
+            return *this;
+
+        if (const auto size = getCPxxTime2aLength<T>(cpxxtime2a); readPosM + size <= sizeM)
+        {
+            std::copy_n(bufferM + readPosM, size, const_cast<uint8_t*>(getCPxxTime2aData<T>(cpxxtime2a)));
             readPosM += size;
         }
         else
