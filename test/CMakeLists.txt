@@ -16,6 +16,7 @@ add_executable(${TEST_PROJECT_NAME}
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_InformationObjectAddress.cpp
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_InformationObjectTypeID.cpp
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_SinglePointInformation.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_SinglePointWithCP24Time2a.cpp
 )
 
 target_link_libraries(${TEST_PROJECT_NAME} PRIVATE GTest::gtest_main)

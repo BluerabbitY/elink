@@ -40,24 +40,24 @@ public:
 
     ~SinglePointInformation() = default;
 
-    [[nodiscard]] bool getValue() const
-    {
-        return valueM & 0x01;
-    }
-
-    [[nodiscard]] uint8_t getQuality() const
-    {
-        return valueM & 0xf0;
-    }
-
     void setValue(const bool value)
     {
         value ? (valueM |= 0x01) : (valueM &= 0xfe);
     }
 
+    [[nodiscard]] bool getValue() const
+    {
+        return valueM & 0x01;
+    }
+
     void setQuality(const QualityDescriptor quality)
     {
         valueM |= (quality & 0xf0);
+    }
+
+    [[nodiscard]] QualityDescriptor getQuality() const
+    {
+        return static_cast<QualityDescriptor>(valueM & 0xf0);
     }
 
 protected:

@@ -68,6 +68,8 @@ public:
 
     ~CPxxTime2a() = default;
 
+    CPxxTime2a(const CPxxTime2a&) = default;
+
     CPxxTime2a(CPxxTime2a&) = default;
 
     CPxxTime2a& operator=(const CPxxTime2a&) = default;
