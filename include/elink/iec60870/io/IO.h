@@ -1,5 +1,5 @@
 /***********************************************************************************
- * \file io.h.h
+ * \file IO.h
  * \author BlueRabbitY (BlueRabbitY\@protonmail.com)
  * \brief all information objects
  * \date 2025-12-22 23:56:03
@@ -13,6 +13,9 @@
  *
  ***********************************************************************************/
 #pragma once
+
+#include "elink/iec60870/io/InformationObjectTypeID.h"
+#include "elink/iec60870/io/InformationObjectAddress.hpp"
 
 #include "elink/iec60870/io/InformationObject.hpp"
 #include "elink/iec60870/io/SinglePointInformation.hpp"

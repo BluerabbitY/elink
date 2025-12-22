@@ -16,9 +16,6 @@
 
 #include "elink/iec60870/codec/IOStream.h"
 
-#include "elink/iec60870/io/InformationObjectTypeID.h"
-#include "elink/iec60870/io/InformationObjectAddress.hpp"
+#include "elink/iec60870/io/IO.h"
 
 #include "elink/iec60870/cpxxtime2a/CPxxTime2a.hpp"
-
-#include "elink/iec60870/io/IO.h"
