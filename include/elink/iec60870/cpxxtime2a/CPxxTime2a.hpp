@@ -16,6 +16,7 @@
 
 #include <array>
 #include <ctime>
+#include <chrono>
 
 namespace elink::iec60870 {
 
@@ -231,6 +232,39 @@ public:
         const uint64_t msTimestamp = std::mktime(&tmTime) * static_cast<uint64_t>(1000) + getMillisecond();
 
         return msTimestamp;
+    }
+
+    static CPxxTime2a now() requires (N == CP24Time2aTag || N == CP32Time2aTag || N == CP56Time2aTag)
+    {
+        const auto now = std::chrono::system_clock::now();
+        auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+
+        std::tm tm{};
+        gmtime(std::chrono::system_clock::to_time_t(now), tm);
+
+        CPxxTime2a cpxxtime2a;
+
+        if constexpr (N == CP24Time2aTag)
+        {
+            cpxxtime2a.setMillisecond(millis.count());
+            cpxxtime2a.setSecond(tm.tm_sec);
+            cpxxtime2a.setMinute(tm.tm_min);
+        }
+
+        if constexpr (N == CP32Time2aTag)
+        {
+            cpxxtime2a.setHour(tm.tm_hour);
+        }
+
+        if constexpr (N == CP56Time2aTag)
+        {
+            cpxxtime2a.setDayOfWeek(tm.tm_wday + 1);
+            cpxxtime2a.setDayOfMonth(tm.tm_mday);
+            cpxxtime2a.setMonth(tm.tm_mon + 1);
+            cpxxtime2a.setYear(tm.tm_year);
+        }
+
+        return cpxxtime2a;
     }
 
 protected:

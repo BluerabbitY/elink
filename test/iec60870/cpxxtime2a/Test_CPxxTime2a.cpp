@@ -90,6 +90,11 @@ TEST_F(CPXXTime2aTest, CP56Time2a)
     cp56Time2a.setDayOfMonth(32);
     EXPECT_EQ(cp56Time2a.getDayOfMonth(), 31);
 
+    cp56Time2a.setMonth(10);
+    EXPECT_EQ(cp56Time2a.getMonth(), 10);
+    cp56Time2a.setMonth(13);
+    EXPECT_EQ(cp56Time2a.getMonth(), 12);
+
     cp56Time2a.setYear(2025);
     EXPECT_EQ(cp56Time2a.getYear(), 2025);
 
