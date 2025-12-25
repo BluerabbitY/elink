@@ -20,3 +20,4 @@
 #include "elink/iec60870/io/InformationObject.hpp"
 #include "elink/iec60870/io/SinglePointInformation.hpp"
 #include "elink/iec60870/io/SinglePointWithCP24Time2a.hpp"
+#include "elink/iec60870/io/DoublePointInformation.hpp"
