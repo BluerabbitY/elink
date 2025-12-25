@@ -29,7 +29,7 @@ protected:
     }
 
     const int validIOA = 0x200;
-    SinglePointInformation sio{IOA{validIOA}, true, SIP::BLOCKED};
+    SinglePointInformation sio{IOA{validIOA}, true, SQuality::BLOCKED};
 };
 
 TEST_F(SinglePointInformationTest, TypeID)
@@ -55,13 +55,13 @@ TEST_F(SinglePointInformationTest, Value)
 
 TEST_F(SinglePointInformationTest, Quality)
 {
-    EXPECT_TRUE(sio.getQuality() & SIP::BLOCKED);
-    EXPECT_FALSE(sio.getQuality() & SIP::SUBSTITUTED);
-    EXPECT_FALSE(sio.getQuality() & SIP::NON_TOPICAL);
+    EXPECT_TRUE(sio.getQuality() & SQuality::BLOCKED);
+    EXPECT_FALSE(sio.getQuality() & SQuality::SUBSTITUTED);
+    EXPECT_FALSE(sio.getQuality() & SQuality::NON_TOPICAL);
 
-    sio.setQuality(SIP::SUBSTITUTED | SIP::NON_TOPICAL);
-    EXPECT_TRUE(sio.getQuality() & SIP::SUBSTITUTED);
-    EXPECT_TRUE(sio.getQuality() & SIP::NON_TOPICAL);
+    sio.setQuality(SQuality::SUBSTITUTED | SQuality::NON_TOPICAL);
+    EXPECT_TRUE(sio.getQuality() & SQuality::SUBSTITUTED);
+    EXPECT_TRUE(sio.getQuality() & SQuality::NON_TOPICAL);
 }
 
 TEST_F(SinglePointInformationTest, Serialize)
@@ -89,10 +89,10 @@ TEST_F(SinglePointInformationTest, Deserialize)
 
     EXPECT_EQ(iop->getInformationObjectAddress().address(), 0x300);
     EXPECT_FALSE(pSio->getValue());
-    EXPECT_TRUE(pSio->getQuality() & SIP::BLOCKED);
-    EXPECT_FALSE(pSio->getQuality() & SIP::SUBSTITUTED);
-    EXPECT_FALSE(pSio->getQuality() & SIP::NON_TOPICAL);
-    EXPECT_FALSE(pSio->getQuality() & SIP::INVALID);
+    EXPECT_TRUE(pSio->getQuality() & SQuality::BLOCKED);
+    EXPECT_FALSE(pSio->getQuality() & SQuality::SUBSTITUTED);
+    EXPECT_FALSE(pSio->getQuality() & SQuality::NON_TOPICAL);
+    EXPECT_FALSE(pSio->getQuality() & SQuality::INVALID);
 }
 
 TEST_F(SinglePointInformationTest, IOLength)

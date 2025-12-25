@@ -21,8 +21,8 @@ namespace elink::iec60870 {
 
 class SinglePointWithCP24Time2a : public InformationObject<SinglePointWithCP24Time2a, TypeID::M_SP_TA_1> {
 public:
-    SinglePointWithCP24Time2a(const IOA ioa, const bool value, const SIP quality = SIP::GOOD, const CP24Time2a& cp24time2a = CP24Time2a::now())
-        : InformationObject{ioa}, valueM{0}, cp24time2aM{cp24time2a}
+    SinglePointWithCP24Time2a(const IOA ioa, const bool value, const SQuality quality = SQuality::GOOD, const CP24Time2a& cp24time2a = CP24Time2a::now())
+        : InformationObject{ioa}, siqM{0}, cp24time2aM{cp24time2a}
     {
         setValue(value);
         setQuality(quality);
@@ -30,34 +30,34 @@ public:
 
     ~SinglePointWithCP24Time2a() = default;
 
-    void setValue(const bool value)
-    {
-        value ? (valueM |= 0x01) : (valueM &= 0xfe);
-    }
-
     [[nodiscard]] bool getValue() const
     {
-        return valueM & 0x01;
+        return siqM & 0x01;
     }
 
-    void setQuality(const SIP quality)
+    void setValue(const bool value)
     {
-        valueM |= (quality & 0xf0);
+        siqM = (siqM & 0xfe) | value;
     }
 
-    [[nodiscard]] uint8_t getQuality() const
+    [[nodiscard]] SQuality getQuality() const
     {
-        return valueM & 0xf0;
+        return static_cast<SQuality>(siqM & 0xf0);
     }
 
-    void setTimestamp(const CP24Time2a& cp24time2a)
+    void setQuality(const SQuality quality)
     {
-        cp24time2aM = cp24time2a;
+        siqM = (siqM & 0x0f) | static_cast<uint8_t>(quality);
     }
 
     [[nodiscard]] CP24Time2a& getTimestamp()
     {
         return cp24time2aM;
+    }
+
+    void setTimestamp(const CP24Time2a& cp24time2a)
+    {
+        cp24time2aM = cp24time2a;
     }
 
 protected:
@@ -66,24 +66,24 @@ protected:
     template <typename OSream>
     void serialize(OSream& stream) const
     {
-        stream << valueM;
+        stream << siqM;
         stream << cp24time2aM;
     }
 
     template <typename IStream>
     void deserialize(IStream& stream)
     {
-        stream >> valueM;
+        stream >> siqM;
         stream >> cp24time2aM;
     }
 
     [[nodiscard]] constexpr std::size_t payloadLength() const
     {
-        return sizeof(valueM) + internal::getCPxxTime2aLength(cp24time2aM);
+        return sizeof(siqM) + internal::getCPxxTime2aLength(cp24time2aM);
     }
 
 private:
-    uint8_t valueM; // 4 bit quality + 1 bit bool
+    uint8_t siqM; // 4 bit quality + 1 bit bool
     CP24Time2a cp24time2aM;
 };
 

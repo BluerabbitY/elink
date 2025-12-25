@@ -32,7 +32,7 @@ public:
     // clang-format on
 
     SinglePointInformation(const IOA ioa, const bool value, const QualityDescriptor quality = GOOD)
-        : InformationObject{ioa}, valueM{0}
+        : InformationObject{ioa}, siqM{0}
     {
         setValue(value);
         setQuality(quality);
@@ -40,24 +40,24 @@ public:
 
     ~SinglePointInformation() = default;
 
-    void setValue(const bool value)
-    {
-        value ? (valueM |= 0x01) : (valueM &= 0xfe);
-    }
-
     [[nodiscard]] bool getValue() const
     {
-        return valueM & 0x01;
+        return siqM & 0x01;
     }
 
-    void setQuality(const QualityDescriptor quality)
+    void setValue(const bool value)
     {
-        valueM |= (quality & 0xf0);
+        siqM = (siqM & 0xfe) | value;
     }
 
     [[nodiscard]] QualityDescriptor getQuality() const
     {
-        return static_cast<QualityDescriptor>(valueM & 0xf0);
+        return static_cast<QualityDescriptor>(siqM & 0xf0);
+    }
+
+    void setQuality(const QualityDescriptor quality)
+    {
+        siqM = (siqM & 0x0f) | static_cast<uint8_t>(quality);
     }
 
 protected:
@@ -66,36 +66,36 @@ protected:
     template <typename OSream>
     void serialize(OSream& stream) const
     {
-        stream << valueM;
+        stream << siqM;
     }
 
     template <typename IStream>
     void deserialize(IStream& stream)
     {
-        stream >> valueM;
+        stream >> siqM;
     }
 
     [[nodiscard]] constexpr std::size_t payloadLength() const
     {
-        return sizeof(valueM);
+        return sizeof(siqM);
     }
 
 private:
     /** 4 bit quality + 1 bit bool */
-    uint8_t valueM;
+    uint8_t siqM;
 };
 
-using SIP = SinglePointInformation::QualityDescriptor;
+using SQuality = SinglePointInformation::QualityDescriptor;
 
-constexpr SIP operator|(const SIP left, const SIP right) noexcept
+constexpr SQuality operator|(const SQuality left, const SQuality right) noexcept
 {
-    using U = std::underlying_type_t<SIP>;
-    return static_cast<SIP>(static_cast<U>(left) | static_cast<U>(right));
+    using U = std::underlying_type_t<SQuality>;
+    return static_cast<SQuality>(static_cast<U>(left) | static_cast<U>(right));
 }
 
-inline bool operator&(const SIP left, const SIP right) noexcept
+inline bool operator&(const SQuality left, const SQuality right) noexcept
 {
-    using U = std::underlying_type_t<SIP>;
+    using U = std::underlying_type_t<SQuality>;
     return (static_cast<U>(left) & static_cast<U>(right)) != 0;
 }
 
