@@ -45,7 +45,7 @@ public:
         ioaM = ioa;
     }
 
-    [[nodiscard]] TypeID getTypeID() const
+    [[nodiscard]] constexpr TypeID getTypeID() const
     {
         return typeIDM;
     }
