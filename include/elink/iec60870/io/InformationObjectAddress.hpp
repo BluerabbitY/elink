@@ -14,6 +14,7 @@
  ***********************************************************************************/
 #pragma once
 
+#include <cstdint>
 #include <format>
 
 namespace elink::iec60870 {

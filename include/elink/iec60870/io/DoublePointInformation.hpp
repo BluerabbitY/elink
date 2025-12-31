@@ -72,8 +72,8 @@ public:
 protected:
     friend class InformationObject;
 
-    template <typename OSream>
-    void serialize(OSream& stream) const
+    template <typename OStream>
+    void serialize(OStream& stream) const
     {
         stream << diqM;
     }

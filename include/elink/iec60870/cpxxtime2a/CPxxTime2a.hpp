@@ -34,7 +34,7 @@ const uint8_t* getCPxxTime2aData(const T& cpxxtime2a)
 }
 
 template <typename T>
-std::size_t getCPxxTime2aLength(const T& cpxxtime2a)
+constexpr std::size_t getCPxxTime2aLength(const T& cpxxtime2a)
 {
     return cpxxtime2a.bufferM.size();
 }
@@ -46,8 +46,8 @@ public:
 
     explicit CPxxTime2a(const uint64_t timestamp) requires (N == CP32Time2aTag || N == CP56Time2aTag)
     {
-        const time_t timeVal = timestamp / 1000;
-        const int msPart = timestamp % 1000;
+        const auto timeVal = static_cast<time_t>(timestamp / 1000);
+        const int msPart = static_cast<int>(timestamp % 1000);
 
         std::tm tmTime{};
 
@@ -272,7 +272,7 @@ protected:
     friend const uint8_t* getCPxxTime2aData(const T& cpxxtime2a);
 
     template <typename T>
-    friend std::size_t getCPxxTime2aLength(const T& cpxxtime2a);
+    friend constexpr std::size_t getCPxxTime2aLength(const T& cpxxtime2a);
 
 private:
     static std::tm* gmtime(const time_t& in, std::tm& out)

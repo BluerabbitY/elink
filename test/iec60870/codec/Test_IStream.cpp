@@ -15,6 +15,7 @@
 #include "elink/elink.h"
 
 #include <gtest/gtest.h>
+#include <cstring>
 
 class IStreamTest : public ::testing::Test {
 protected:
