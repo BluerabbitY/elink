@@ -15,7 +15,6 @@
 #pragma once
 
 #include "elink/iec60870/io/InformationObject.hpp"
-#include "elink/iec60870/io/InformationObjectTypeID.h"
 
 namespace elink::iec60870
 {
