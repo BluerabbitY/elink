@@ -278,7 +278,7 @@ private:
     static std::tm* gmtime(const time_t& in, std::tm& out)
     {
 #ifdef _WIN32
-        return gmtime_s(&in, &out);
+        return (gmtime_s(&out, &in) == 0) ? &out : nullptr;
 #else
         return gmtime_r(&in, &out);
 #endif

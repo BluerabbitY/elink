@@ -21,7 +21,13 @@ namespace elink::iec60870 {
 
 class SinglePointWithCP24Time2a : public InformationObject<SinglePointWithCP24Time2a, TypeID::M_SP_TA_1> {
 public:
-    SinglePointWithCP24Time2a(const IOA ioa, const bool value, const SQuality quality = SQuality::GOOD, const CP24Time2a& cp24time2a = CP24Time2a::now())
+    SinglePointWithCP24Time2a()
+        : siqM{0}, cp24time2aM{CP24Time2a::now()}
+    {
+    }
+
+    // Valid Quality: GOOD, BLOCKED, SUBSTITUTED, NON_TOPICAL, INVALID
+    SinglePointWithCP24Time2a(const IOA ioa, const bool value, const Quality quality = Quality::GOOD, const CP24Time2a& cp24time2a = CP24Time2a::now())
         : InformationObject{ioa}, siqM{0}, cp24time2aM{cp24time2a}
     {
         setValue(value);
@@ -40,12 +46,12 @@ public:
         siqM = (siqM & 0xfe) | value;
     }
 
-    [[nodiscard]] SQuality getQuality() const
+    [[nodiscard]] Quality getQuality() const
     {
-        return static_cast<SQuality>(siqM & 0xf0);
+        return static_cast<Quality>(siqM & 0xf0);
     }
 
-    void setQuality(const SQuality quality)
+    void setQuality(const Quality quality)
     {
         siqM = (siqM & 0x0f) | static_cast<uint8_t>(quality);
     }

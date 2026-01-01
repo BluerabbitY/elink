@@ -22,7 +22,13 @@ namespace elink::iec60870 {
 class DoublePointWithCP24Time2a : public InformationObject<DoublePointWithCP24Time2a, TypeID::M_DP_TA_1>
 {
 public:
-    DoublePointWithCP24Time2a(const IOA ioa, const DValue value, const DQuality quality = DQuality::GOOD, const CP24Time2a& cp24time2a = CP24Time2a::now())
+    DoublePointWithCP24Time2a()
+        : diqM{0}, cp24time2aM{CP24Time2a::now()}
+    {
+    }
+
+    // Valid Quality: GOOD, BLOCKED, SUBSTITUTED, NON_TOPICAL, INVALID
+    DoublePointWithCP24Time2a(const IOA ioa, const DValue value, const Quality quality = Quality::GOOD, const CP24Time2a& cp24time2a = CP24Time2a::now())
         : InformationObject{ioa}, diqM{0}, cp24time2aM{cp24time2a}
     {
         setValue(value);
@@ -41,12 +47,12 @@ public:
         diqM = (diqM & 0xfc) | value;
     }
 
-    [[nodiscard]] DQuality getQuality() const
+    [[nodiscard]] Quality getQuality() const
     {
-        return static_cast<DQuality>(diqM & 0xf0);
+        return static_cast<Quality>(diqM & 0xf0);
     }
 
-    void setQuality(const DQuality value)
+    void setQuality(const Quality value)
     {
         diqM = (diqM & 0x0f) | static_cast<uint8_t>(value);
     }
@@ -56,7 +62,7 @@ public:
         return cp24time2aM;
     }
 
-    void setTimestamp(const CP24Time2a& cp24time2a)
+    void setTimestamp(const CP24Time2a& cp24time2a = CP24Time2a::now())
     {
         cp24time2aM = cp24time2a;
     }

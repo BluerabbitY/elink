@@ -22,3 +22,4 @@
 #include "elink/iec60870/io/SinglePointWithCP24Time2a.hpp"
 #include "elink/iec60870/io/DoublePointInformation.hpp"
 #include "elink/iec60870/io/DoublePointWithCP24Time2a.hpp"
+#include "elink/iec60870/io/StepPositionInformation.hpp"

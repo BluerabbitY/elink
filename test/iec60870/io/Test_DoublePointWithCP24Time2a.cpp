@@ -30,7 +30,7 @@ protected:
     }
 
     const int validIOA = 0x200;
-    DoublePointWithCP24Time2a dio{IOA{validIOA}, DValue::ON, DQuality::BLOCKED, CP24Time2a{}};
+    DoublePointWithCP24Time2a dio{IOA{validIOA}, DValue::ON, Quality::BLOCKED, CP24Time2a{}};
 };
 
 TEST_F(DoublePointWithCP24Time2aTest, TypeID)
@@ -56,13 +56,13 @@ TEST_F(DoublePointWithCP24Time2aTest, Value)
 
 TEST_F(DoublePointWithCP24Time2aTest, Quality)
 {
-    EXPECT_TRUE(dio.getQuality() & DQuality::BLOCKED);
-    EXPECT_FALSE(dio.getQuality() & DQuality::SUBSTITUTED);
-    EXPECT_FALSE(dio.getQuality() & DQuality::NON_TOPICAL);
+    EXPECT_TRUE(dio.getQuality() & Quality::BLOCKED);
+    EXPECT_FALSE(dio.getQuality() & Quality::SUBSTITUTED);
+    EXPECT_FALSE(dio.getQuality() & Quality::NON_TOPICAL);
 
-    dio.setQuality(DQuality::SUBSTITUTED | DQuality::NON_TOPICAL);
-    EXPECT_TRUE(dio.getQuality() & DQuality::SUBSTITUTED);
-    EXPECT_TRUE(dio.getQuality() & DQuality::NON_TOPICAL);
+    dio.setQuality(Quality::SUBSTITUTED | Quality::NON_TOPICAL);
+    EXPECT_TRUE(dio.getQuality() & Quality::SUBSTITUTED);
+    EXPECT_TRUE(dio.getQuality() & Quality::NON_TOPICAL);
 }
 
 TEST_F(DoublePointWithCP24Time2aTest, Serialize)
@@ -90,10 +90,10 @@ TEST_F(DoublePointWithCP24Time2aTest, Deserialize)
 
     EXPECT_EQ(iop->getInformationObjectAddress().address(), 0x300);
     EXPECT_EQ(pDio->getValue(), DValue::INDETERMINATE);
-    EXPECT_TRUE(pDio->getQuality() & DQuality::BLOCKED);
-    EXPECT_FALSE(pDio->getQuality() & DQuality::SUBSTITUTED);
-    EXPECT_FALSE(pDio->getQuality() & DQuality::NON_TOPICAL);
-    EXPECT_FALSE(pDio->getQuality() & DQuality::INVALID);
+    EXPECT_TRUE(pDio->getQuality() & Quality::BLOCKED);
+    EXPECT_FALSE(pDio->getQuality() & Quality::SUBSTITUTED);
+    EXPECT_FALSE(pDio->getQuality() & Quality::NON_TOPICAL);
+    EXPECT_FALSE(pDio->getQuality() & Quality::INVALID);
 }
 
 TEST_F(DoublePointWithCP24Time2aTest, IOLength)

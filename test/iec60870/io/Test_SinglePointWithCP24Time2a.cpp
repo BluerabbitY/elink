@@ -30,7 +30,7 @@ protected:
     }
 
     const int validIOA = 0x200;
-    SinglePointWithCP24Time2a sio{IOA{validIOA}, true, SQuality::BLOCKED, CP24Time2a{}};
+    SinglePointWithCP24Time2a sio{IOA{validIOA}, true, Quality::BLOCKED, CP24Time2a{}};
 };
 
 TEST_F(SinglePointWithCP24Time2aTest, TypeID)
@@ -56,13 +56,13 @@ TEST_F(SinglePointWithCP24Time2aTest, Value)
 
 TEST_F(SinglePointWithCP24Time2aTest, Quality)
 {
-    EXPECT_TRUE(sio.getQuality() & SQuality::BLOCKED);
-    EXPECT_FALSE(sio.getQuality() & SQuality::SUBSTITUTED);
-    EXPECT_FALSE(sio.getQuality() & SQuality::NON_TOPICAL);
+    EXPECT_TRUE(sio.getQuality() & Quality::BLOCKED);
+    EXPECT_FALSE(sio.getQuality() & Quality::SUBSTITUTED);
+    EXPECT_FALSE(sio.getQuality() & Quality::NON_TOPICAL);
 
-    sio.setQuality(SQuality::SUBSTITUTED | SQuality::NON_TOPICAL);
-    EXPECT_TRUE(sio.getQuality() & SQuality::SUBSTITUTED);
-    EXPECT_TRUE(sio.getQuality() & SQuality::NON_TOPICAL);
+    sio.setQuality(Quality::SUBSTITUTED | Quality::NON_TOPICAL);
+    EXPECT_TRUE(sio.getQuality() & Quality::SUBSTITUTED);
+    EXPECT_TRUE(sio.getQuality() & Quality::NON_TOPICAL);
 }
 
 TEST_F(SinglePointWithCP24Time2aTest, Serialize)
@@ -90,10 +90,10 @@ TEST_F(SinglePointWithCP24Time2aTest, Deserialize)
 
     EXPECT_EQ(iop->getInformationObjectAddress().address(), 0x300);
     EXPECT_FALSE(pSio->getValue());
-    EXPECT_TRUE(pSio->getQuality() & SQuality::BLOCKED);
-    EXPECT_FALSE(pSio->getQuality() & SQuality::SUBSTITUTED);
-    EXPECT_FALSE(pSio->getQuality() & SQuality::NON_TOPICAL);
-    EXPECT_FALSE(pSio->getQuality() & SQuality::INVALID);
+    EXPECT_TRUE(pSio->getQuality() & Quality::BLOCKED);
+    EXPECT_FALSE(pSio->getQuality() & Quality::SUBSTITUTED);
+    EXPECT_FALSE(pSio->getQuality() & Quality::NON_TOPICAL);
+    EXPECT_FALSE(pSio->getQuality() & Quality::INVALID);
 
     auto cp24Time2a = pSio->getTimestamp();
     EXPECT_EQ(cp24Time2a.getMillisecond(), 100);

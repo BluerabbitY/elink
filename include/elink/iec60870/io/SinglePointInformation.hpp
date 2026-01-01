@@ -15,22 +15,19 @@
 #pragma once
 
 #include "elink/iec60870/io/InformationObject.hpp"
+#include "elink/iec60870/io/QualityDescriptor.hpp"
 
 namespace elink::iec60870 {
 
 class SinglePointInformation : public InformationObject<SinglePointInformation, TypeID::M_SP_NA_1> {
 public:
-    // clang-format off
-    enum QualityDescriptor : uint8_t {
-        GOOD        = 0x00,
-        BLOCKED     = 0x10,
-        SUBSTITUTED = 0x20,
-        NON_TOPICAL = 0x40,
-        INVALID     = 0x80,
-    };
-    // clang-format on
+    SinglePointInformation()
+        : siqM{0}
+    {
+    }
 
-    SinglePointInformation(const IOA ioa, const bool value, const QualityDescriptor quality = GOOD)
+    // Valid Quality: GOOD, BLOCKED, SUBSTITUTED, NON_TOPICAL, INVALID
+    SinglePointInformation(const IOA ioa, const bool value, const Quality quality = Quality::GOOD)
         : InformationObject{ioa}, siqM{0}
     {
         setValue(value);
@@ -49,12 +46,12 @@ public:
         siqM = (siqM & 0xfe) | value;
     }
 
-    [[nodiscard]] QualityDescriptor getQuality() const
+    [[nodiscard]] Quality getQuality() const
     {
-        return static_cast<QualityDescriptor>(siqM & 0xf0);
+        return static_cast<Quality>(siqM & 0xf0);
     }
 
-    void setQuality(const QualityDescriptor quality)
+    void setQuality(const Quality quality)
     {
         siqM = (siqM & 0x0f) | static_cast<uint8_t>(quality);
     }
@@ -62,8 +59,8 @@ public:
 protected:
     friend class InformationObject;
 
-    template <typename OSream>
-    void serialize(OSream& stream) const
+    template <typename OStream>
+    void serialize(OStream& stream) const
     {
         stream << siqM;
     }
@@ -83,19 +80,5 @@ private:
     /** 4 bit quality + 1 bit bool */
     uint8_t siqM;
 };
-
-using SQuality = SinglePointInformation::QualityDescriptor;
-
-constexpr SQuality operator|(const SQuality left, const SQuality right) noexcept
-{
-    using U = std::underlying_type_t<SQuality>;
-    return static_cast<SQuality>(static_cast<U>(left) | static_cast<U>(right));
-}
-
-inline bool operator&(const SQuality left, const SQuality right) noexcept
-{
-    using U = std::underlying_type_t<SQuality>;
-    return (static_cast<U>(left) & static_cast<U>(right)) != 0;
-}
 
 }

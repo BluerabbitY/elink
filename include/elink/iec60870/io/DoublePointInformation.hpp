@@ -15,6 +15,7 @@
 #pragma once
 
 #include "elink/iec60870/io/InformationObject.hpp"
+#include "elink/iec60870/io/QualityDescriptor.hpp"
 
 namespace elink::iec60870
 {
@@ -23,14 +24,6 @@ class DoublePointInformation : public InformationObject<DoublePointInformation, 
 {
 public:
     // clang-format off
-    enum QualityDescriptor : uint8_t {
-        GOOD        = 0x00,
-        BLOCKED     = 0x10,
-        SUBSTITUTED = 0x20,
-        NON_TOPICAL = 0x40,
-        INVALID     = 0x80,
-    };
-
     enum DoublePointValue{
         INTERMEDIATE = 0,
         OFF = 1,
@@ -39,7 +32,13 @@ public:
      };
     // clang-format on
 
-    DoublePointInformation(const IOA ioa, const DoublePointValue value, const QualityDescriptor quality = GOOD)
+    DoublePointInformation()
+        : diqM{0}
+    {
+    }
+
+    // Valid Quality: GOOD, BLOCKED, SUBSTITUTED, NON_TOPICAL, INVALID
+    DoublePointInformation(const IOA ioa, const DoublePointValue value, const Quality quality = Quality::GOOD)
         : InformationObject{ioa}, diqM{0}
     {
         setValue(value);
@@ -58,12 +57,12 @@ public:
         diqM = (diqM & 0xfc) | value;
     }
 
-    [[nodiscard]] QualityDescriptor getQuality() const
+    [[nodiscard]] Quality getQuality() const
     {
-        return static_cast<QualityDescriptor>(diqM & 0xf0);
+        return static_cast<Quality>(diqM & 0xf0);
     }
 
-    void setQuality(const QualityDescriptor value)
+    void setQuality(const Quality value)
     {
         diqM = (diqM & 0x0f) | static_cast<uint8_t>(value);
     }
@@ -92,20 +91,6 @@ private:
     uint8_t diqM;
 };
 
-using DQuality = DoublePointInformation::QualityDescriptor;
-
 using DValue = DoublePointInformation::DoublePointValue;
 
-constexpr DQuality operator|(const DQuality left, const DQuality right) noexcept
-{
-    using U = std::underlying_type_t<DQuality>;
-    return static_cast<DQuality>(static_cast<U>(left) | static_cast<U>(right));
 }
-
-inline bool operator&(const DQuality left, const DQuality right) noexcept
-{
-    using U = std::underlying_type_t<DQuality>;
-    return (static_cast<U>(left) & static_cast<U>(right)) != 0;
-}
-
-} // namespace 
