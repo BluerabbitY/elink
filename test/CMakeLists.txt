@@ -6,6 +6,9 @@ set(TEST_SUFFIX "TestRunner")
 set(TEST_PROJECT_NAME "Elink${TEST_SUFFIX}")
 
 add_executable(${TEST_PROJECT_NAME}
+        # common tests
+        ${CMAKE_CURRENT_LIST_DIR}/common/Test_OStreamCommon.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/common/Test_IStreamCommon.cpp
         # iec60870 tests
         ## codec
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/codec/Test_OStream.cpp

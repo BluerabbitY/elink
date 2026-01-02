@@ -14,63 +14,22 @@
  ***********************************************************************************/
 #pragma once
 
-#include <algorithm>
-#include <cassert>
-#include <type_traits>
-#include <span>
-#include <cstddef>
+#include "elink/common/OStreamCommon.hpp"
 
 #include "elink/iec60870/io/InformationObjectAddress.hpp"
 #include "elink/iec60870/cpxxtime2a/CPxxTime2a.hpp"
 
 namespace elink::iec60870::internal {
 
-class OStream {
+class OStream : public common::internal::OStreamCommon {
 public:
-    OStream(uint8_t* buffer, const std::size_t size) : bufferM{buffer}, sizeM{size}, writePosM{0}, hasErrorM{false}
+    OStream(uint8_t* buffer, const std::size_t size) : OStreamCommon{buffer, size}
     {
-        assert(buffer);
     }
 
     ~OStream() = default;
 
-    template <typename T>
-    std::enable_if_t<std::is_arithmetic_v<T>, OStream&> operator<<(T value)
-    {
-        if (hasErrorM)
-            return *this;
-
-        if (writePosM + sizeof(T) <= sizeM)
-        {
-            std::copy_n(reinterpret_cast<uint8_t*>(&value), sizeof(T), bufferM + writePosM);
-            writePosM += sizeof(T);
-        }
-        else
-        {
-            hasErrorM = true;
-        }
-
-        return *this;
-    }
-
-    template <typename T, typename OriginT = std::underlying_type_t<T> >
-    std::enable_if_t<std::is_enum_v<T>, OStream&> operator<<(T value)
-    {
-        if (hasErrorM)
-            return *this;
-
-        if (writePosM + sizeof(OriginT) <= sizeM)
-        {
-            std::copy_n(reinterpret_cast<uint8_t*>(&value), sizeof(OriginT), bufferM + writePosM);
-            writePosM += sizeof(OriginT);
-        }
-        else
-        {
-            hasErrorM = true;
-        }
-
-        return *this;
-    }
+    using OStreamCommon::operator<<;
 
     OStream& operator<<(const IOA ioa)
     {
@@ -110,54 +69,6 @@ public:
 
         return *this;
     }
-
-    template <typename T>
-    OStream& operator<<(std::span<T> data)
-    {
-        static_assert(std::is_same_v<const uint8_t, T> || std::is_same_v<uint8_t, T>,
-                      "Only uint8_t or const uint8_t are supported");
-
-        if (hasErrorM && data.empty() && data.data() == nullptr)
-            return *this;
-
-        if (writePosM + data.size() <= sizeM)
-        {
-            std::copy_n(data.data(), data.size(), bufferM + writePosM);
-            writePosM += data.size();
-        }
-        else
-        {
-            hasErrorM = true;
-        }
-
-        return *this;
-    }
-
-    [[nodiscard]] std::size_t writenBytes() const
-    {
-        return writePosM;
-    }
-
-    void erase()
-    {
-        writePosM = 0;
-    }
-
-    [[nodiscard]] bool hasError() const
-    {
-        return hasErrorM;
-    }
-
-    void acknowledgeError()
-    {
-        hasErrorM = false;
-    }
-
-private:
-    uint8_t* bufferM;
-    const std::size_t sizeM;
-    std::size_t writePosM;
-    bool hasErrorM;
 };
 
 }
