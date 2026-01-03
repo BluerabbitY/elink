@@ -12,11 +12,12 @@
  * specific language governing permissions and limitations under the License. 
  *
  ***********************************************************************************/
-#include "elink/common/IStreamCommon.hpp"
-#include "elink/iec60870/io/InformationObjectTypeID.h"
-
 #include <gtest/gtest.h>
+
 #include <cstring>
+
+#include "../../include/elink/common/codec/IStreamCommon.hpp"
+#include "elink/iec60870/io/InformationObjectTypeID.h"
 
 using namespace elink::common::internal;
 
