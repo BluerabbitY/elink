@@ -61,7 +61,7 @@ public:
         return cp24time2aM;
     }
 
-    void setTimestamp(const CP24Time2a& cp24time2a)
+    void setTimestamp(const CP24Time2a& cp24time2a = CP24Time2a::now())
     {
         cp24time2aM = cp24time2a;
     }
