@@ -91,7 +91,7 @@ TEST_F(StepPositionWithCP24Time2aTest, Deserialize)
     EXPECT_EQ(iop->getInformationObjectAddress().address(), 0x300);
     EXPECT_EQ(pSio->getValue(), -52);
     EXPECT_FALSE(pSio->isTransient());
-    EXPECT_TRUE(pSio->getQuality() & Quality::OVERFLOW);
+    EXPECT_TRUE(pSio->getQuality() & Quality::SPILL);
     EXPECT_TRUE(pSio->getQuality() & Quality::BLOCKED);
     EXPECT_FALSE(pSio->getQuality() & Quality::SUBSTITUTED);
     EXPECT_FALSE(pSio->getQuality() & Quality::NON_TOPICAL);

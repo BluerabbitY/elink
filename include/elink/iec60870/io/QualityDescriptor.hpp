@@ -22,7 +22,7 @@ namespace elink::iec60870 {
 // clang-format off
 enum class QualityDescriptor : uint8_t {
     GOOD        = 0x00,
-    OVERFLOW    = 0x01,
+    SPILL       = 0x01, // Overflow
     BLOCKED     = 0x10,
     SUBSTITUTED = 0x20,
     NON_TOPICAL = 0x40,
