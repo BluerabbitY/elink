@@ -95,7 +95,7 @@ TEST_F(IStreamCommonTest, ReadSpan)
     IStreamCommon stream{buffer, sizeof(buffer)};
 
     uint8_t dest[sizeof(buffer)]{};
-    std::span span_dest{dest, sizeof(dest)};
+    const elink::LiteBuffer span_dest{dest, sizeof(dest)};
 
     stream >> span_dest;
     EXPECT_FALSE(stream.hasError());
@@ -109,7 +109,7 @@ TEST_F(IStreamCommonTest, ReadOverflow)
     IStreamCommon stream{buffer, sizeof(buffer)};
 
     uint8_t dest[512]{};
-    std::span span_dest{dest, sizeof(dest)};
+    const elink::LiteBuffer span_dest{dest, sizeof(dest)};
 
     stream >> span_dest;
     EXPECT_TRUE(stream.hasError());

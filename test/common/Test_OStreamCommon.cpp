@@ -87,8 +87,8 @@ TEST_F(OStreamCommonTest, WriteEnumAndEnumClass)
 
 TEST_F(OStreamCommonTest, WriteSpan)
 {
-    constexpr uint8_t dest[] = {0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC, 0xDE, 0xF0};
-    stream << std::span{dest, sizeof(dest)};
+    uint8_t dest[] = {0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC, 0xDE, 0xF0};
+    stream << elink::LiteBufferView{dest, sizeof(dest)};
     EXPECT_FALSE(stream.hasError());
     EXPECT_EQ(stream.writenBytes(), sizeof(dest));
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
@@ -96,8 +96,8 @@ TEST_F(OStreamCommonTest, WriteSpan)
 
 TEST_F(OStreamCommonTest, WriteOverflow)
 {
-    constexpr uint8_t buffer[512]{};
-    stream << std::span{buffer, sizeof(buffer)};
+    uint8_t buffer[512]{};
+    stream << elink::LiteBufferView{buffer, sizeof(buffer)};
     EXPECT_TRUE(stream.hasError());
     stream.acknowledgeError();
     EXPECT_FALSE(stream.hasError());

@@ -14,12 +14,12 @@
  ***********************************************************************************/
 #pragma once
 
+#include "elink/common/Type.hpp"
+
 #include <algorithm>
 #include <cassert>
 #include <type_traits>
-#include <span>
 #include <cstddef>
-#include <cstdint>
 
 namespace elink::common::internal {
 
@@ -70,12 +70,8 @@ public:
         return *this;
     }
 
-    template <typename T>
-    OStreamCommon& operator<<(std::span<T> data)
+    OStreamCommon& operator<<(const LiteBufferView data)
     {
-        static_assert(std::is_same_v<const uint8_t, T> || std::is_same_v<uint8_t, T>,
-                      "Only uint8_t or const uint8_t are supported");
-
         if (hasErrorM && data.empty() && data.data() == nullptr)
             return *this;
 
