@@ -123,10 +123,3 @@ TEST_F(InformationObjectAddressTest, ResetLength)
     ioaDefault.resetLengthOfInformationObjectAddress(elink::iec60870::IOAByteLength::One);
     EXPECT_EQ(ioaDefault.address(), MaxLengthOfIOAInBytes(elink::iec60870::IOAByteLength::One));
 }
-
-TEST_F(InformationObjectAddressTest, Format)
-{
-    EXPECT_EQ(std::format("IOA: {}", ioaParam), "IOA: 200");
-    EXPECT_EQ(std::format("{:#06x}", ioaParam), "0x00c8");
-    EXPECT_EQ(std::format("{:#06X}", ioaParam), "0X00C8");
-}

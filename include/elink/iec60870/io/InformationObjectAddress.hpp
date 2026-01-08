@@ -93,15 +93,3 @@ private:
 using IOA = InformationObjectAddress;
 
 }
-
-template <>
-struct std::formatter<elink::iec60870::IOA> : std::formatter<int> {
-    using std::formatter<int>::parse;
-
-    template <class FormatContext>
-    auto
-    format(const elink::iec60870::IOA& ioa, FormatContext& ctx) const
-    {
-        return std::formatter<int>::format(ioa.address(), ctx);
-    }
-};

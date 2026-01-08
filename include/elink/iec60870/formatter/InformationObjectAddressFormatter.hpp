@@ -1,10 +1,10 @@
 /***********************************************************************************
- * \file elink.h
+ * \file InformationObjectAddressFormatter.hpp
  * \author BlueRabbitY (BlueRabbitY\@protonmail.com)
  * \brief 
- * \date 2025-11-26 00:27:22
+ * \date 2026-01-08 23:28:21
  * 
- * \copyright Copyright (C) 2025 BlueRabbitY. All rights reserved.
+ * \copyright Copyright (C) 2026 BlueRabbitY. All rights reserved.
  *
  * Unless required by applicable law or agreed to in writing, software distributed
  * under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
@@ -14,12 +14,20 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/config.h"
+#include "elink/iec60870/io/InformationObjectAddress.hpp"
 
-#include "elink/iec60870/codec/IOStream.h"
+namespace std
+{
 
-#include "elink/iec60870/io/IO.h"
+template <>
+struct formatter<elink::iec60870::IOA> : formatter<int> {
+    using formatter<int>::parse;
 
-#include "elink/iec60870/cpxxtime2a/CPxxTime2a.hpp"
+    template <class FormatContext>
+    auto format(const elink::iec60870::IOA& ioa, FormatContext& ctx) const
+    {
+        return formatter<int>::format(ioa.address(), ctx);
+    }
+};
 
-#include "elink/iec60870/formatter/Formatter.h"
+}

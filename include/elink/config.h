@@ -1,10 +1,10 @@
 /***********************************************************************************
- * \file elink.h
+ * \file config.h
  * \author BlueRabbitY (BlueRabbitY\@protonmail.com)
  * \brief 
- * \date 2025-11-26 00:27:22
+ * \date 2026-01-08 00:43:40
  * 
- * \copyright Copyright (C) 2025 BlueRabbitY. All rights reserved.
+ * \copyright Copyright (C) 2026 BlueRabbitY. All rights reserved.
  *
  * Unless required by applicable law or agreed to in writing, software distributed
  * under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
@@ -14,12 +14,3 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/config.h"
-
-#include "elink/iec60870/codec/IOStream.h"
-
-#include "elink/iec60870/io/IO.h"
-
-#include "elink/iec60870/cpxxtime2a/CPxxTime2a.hpp"
-
-#include "elink/iec60870/formatter/Formatter.h"

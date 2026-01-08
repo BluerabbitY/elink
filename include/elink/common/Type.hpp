@@ -27,4 +27,24 @@ using MessageBufferView = std::span<const uint8_t>;
 
 using MessageBuffer = std::span<uint8_t>;
 
+enum class MessageDir : uint8_t {
+    MSG_RECV,
+    MSG_SEND,
+};
+
+template <typename T>
+concept RawMessageHandlerConcept = requires(T handler, MessageBufferView msg, MessageDir dir) {
+    { handler(msg, dir) } -> std::same_as<void>;
+};
+
+namespace internal
+{
+
+template <typename T>
+concept TXMessageHandlerConcept = requires(T handler, MessageBufferView msg) {
+    { handler(msg) } -> std::same_as<void>;
+};
+
+}
+
 }
