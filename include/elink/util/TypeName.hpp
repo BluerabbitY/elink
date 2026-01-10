@@ -28,7 +28,7 @@ constexpr std::string_view type_name() {
 #elif defined(__GNUC__)
     constexpr std::string_view p = __PRETTY_FUNCTION__;
     constexpr std::string_view prefix = "with T = ";
-    constexpr std::string_view suffix = "]";
+    constexpr std::string_view suffix = "; std::string_view";
 #elif defined(_MSC_VER)
     constexpr std::string_view p = __FUNCSIG__;
     constexpr std::string_view prefix = "type_name<";
