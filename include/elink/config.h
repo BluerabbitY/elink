@@ -14,3 +14,6 @@
  ***********************************************************************************/
 #pragma once
 
+#ifndef CONFIG_LOG_OUTPUT
+#define CONFIG_LOG_OUTPUT 1
+#endif

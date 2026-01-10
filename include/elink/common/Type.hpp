@@ -16,6 +16,8 @@
 
 #include <span>
 
+#define E_UNUSED(x) (void)(x)
+
 namespace elink
 {
 
@@ -35,6 +37,15 @@ enum class MessageDir : uint8_t {
 template <typename T>
 concept RawMessageHandlerConcept = requires(T handler, MessageBufferView msg, MessageDir dir) {
     { handler(msg, dir) } -> std::same_as<void>;
+};
+
+enum LogLevel {
+    DBG,
+    INF,
+    WRN,
+    ERR,
+    CRI,
+    FAT,
 };
 
 namespace internal

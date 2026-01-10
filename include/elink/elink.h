@@ -16,6 +16,8 @@
 
 #include "elink/config.h"
 
+#include "elink/common/logging/logger.hpp"
+
 #include "elink/iec60870/codec/IOStream.h"
 
 #include "elink/iec60870/io/IO.h"
