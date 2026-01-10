@@ -16,6 +16,7 @@
 
 #include <cstdint>
 #include <format>
+#include <algorithm>
 
 namespace elink::iec60870 {
 

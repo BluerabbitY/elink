@@ -15,6 +15,7 @@
 #pragma once
 
 #include <span>
+#include <cstdint>
 
 #define E_UNUSED(x) (void)(x)
 
