@@ -17,20 +17,21 @@
 #include <algorithm>
 
 #include "elink/iec60870/io/StepPositionInformation.hpp"
-#include "elink/iec60870/cpxxtime2a/CPxxTime2a.hpp"
+#include "elink/iec60870/details/CPxxTime2aUtil.hpp"
 
 namespace elink::iec60870 {
 
-class StepPositionWithCP24Time2a : public InformationObject<StepPositionWithCP24Time2a, TypeID::M_ST_TA_1> {
+class StepPositionWithCP24Time2a : public InformationObject<StepPositionWithCP24Time2a, TypeID::M_ST_TA_1>, public details::CPxxTime2aUtil<CP24Time2a>
+{
 public:
     StepPositionWithCP24Time2a()
-        : vtiM{0}, qualityM{static_cast<uint8_t>(Quality::GOOD)}, cp24time2aM{CP24Time2a::now()}
+        : vtiM{0}, qualityM{static_cast<uint8_t>(Quality::GOOD)}
     {
     }
 
     // Valid Quality: GOOD, OVERFLOW, BLOCKED, SUBSTITUTED, NON_TOPICAL, INVALID
     StepPositionWithCP24Time2a(const IOA ioa, const int value, const bool isTransient, const Quality quality = Quality::GOOD, const CP24Time2a& cp24time2a = CP24Time2a::now())
-        : InformationObject{ioa}, vtiM{0}, qualityM{static_cast<uint8_t>(quality)}, cp24time2aM{cp24time2a}
+        : InformationObject{ioa}, CPxxTime2aUtil{cp24time2a}, vtiM{0}, qualityM{static_cast<uint8_t>(quality)}
     {
         setValue(value);
         setTransient(isTransient);
@@ -76,16 +77,6 @@ public:
         qualityM = static_cast<uint8_t>(quality) & 0xf1;
     }
 
-    [[nodiscard]] CP24Time2a& getTimestamp()
-    {
-        return cp24time2aM;
-    }
-
-    void setTimestamp(const CP24Time2a& cp24time2a = CP24Time2a::now())
-    {
-        cp24time2aM = cp24time2a;
-    }
-
 protected:
     friend class InformationObject;
 
@@ -94,7 +85,7 @@ protected:
     {
         stream << vtiM;
         stream << qualityM;
-        stream << cp24time2aM;
+        stream << cpxxtime2aM;
     }
 
     template <typename IStream>
@@ -102,12 +93,12 @@ protected:
     {
         stream >> vtiM;
         stream >> qualityM;
-        stream >> cp24time2aM;
+        stream >> cpxxtime2aM;
     }
 
     [[nodiscard]] constexpr std::size_t payloadLength() const
     {
-        return sizeof(vtiM) + sizeof(qualityM) + internal::getCPxxTime2aLength(cp24time2aM);
+        return sizeof(vtiM) + sizeof(qualityM) + details::getCPxxTime2aLength(cpxxtime2aM);
     }
 
 private:
@@ -117,7 +108,6 @@ private:
 
     uint8_t vtiM;
     uint8_t qualityM;
-    CP24Time2a cp24time2aM;
 };
 
 }

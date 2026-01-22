@@ -58,14 +58,14 @@ TEST_F(IStreamTest, ReadCPxxtime2a)
     elink::iec60870::CP16Time2a cp16Time2a{};
     stream >> cp16Time2a;
     EXPECT_FALSE(stream.hasError());
-    length += elink::iec60870::internal::CP16Time2aTag;
+    length += elink::iec60870::details::CP16Time2aTag;
     EXPECT_EQ(stream.readBytes(), length);
     EXPECT_EQ(cp16Time2a.getEplapsedTimeInMs(), 100);
 
     elink::iec60870::CP24Time2a cp24Time2a{};
     stream >> cp24Time2a;
     EXPECT_FALSE(stream.hasError());
-    length += elink::iec60870::internal::CP24Time2aTag;
+    length += elink::iec60870::details::CP24Time2aTag;
     EXPECT_EQ(stream.readBytes(), length);
     EXPECT_EQ(cp24Time2a.getMillisecond(), 100);
     EXPECT_EQ(cp24Time2a.getSecond(), 59);
@@ -76,7 +76,7 @@ TEST_F(IStreamTest, ReadCPxxtime2a)
     elink::iec60870::CP32Time2a cp32Time2a{};
     stream >> cp32Time2a;
     EXPECT_FALSE(stream.hasError());
-    length += elink::iec60870::internal::CP32Time2aTag;
+    length += elink::iec60870::details::CP32Time2aTag;
     EXPECT_EQ(stream.readBytes(), length);
     EXPECT_EQ(cp32Time2a.getHour(), 22);
     EXPECT_TRUE(cp32Time2a.isSummerTime());
@@ -84,7 +84,7 @@ TEST_F(IStreamTest, ReadCPxxtime2a)
     elink::iec60870::CP56Time2a cp56Time2a{};
     stream >> cp56Time2a;
     EXPECT_FALSE(stream.hasError());
-    length += elink::iec60870::internal::CP56Time2aTag;
+    length += elink::iec60870::details::CP56Time2aTag;
     EXPECT_EQ(stream.readBytes(), length);
     EXPECT_EQ(cp56Time2a.getDayOfWeek(), 3);
     EXPECT_EQ(cp56Time2a.getDayOfMonth(), 27);

@@ -15,21 +15,21 @@
 #pragma once
 
 #include "elink/iec60870/io/DoublePointInformation.hpp"
-#include "elink/iec60870/cpxxtime2a/CPxxTime2a.hpp"
+#include "elink/iec60870/details/CPxxTime2aUtil.hpp"
 
 namespace elink::iec60870 {
 
-class DoublePointWithCP24Time2a : public InformationObject<DoublePointWithCP24Time2a, TypeID::M_DP_TA_1>
+class DoublePointWithCP24Time2a : public InformationObject<DoublePointWithCP24Time2a, TypeID::M_DP_TA_1>, public details::CPxxTime2aUtil<CP24Time2a>
 {
 public:
     DoublePointWithCP24Time2a()
-        : diqM{0}, cp24time2aM{CP24Time2a::now()}
+        : diqM{0}
     {
     }
 
     // Valid Quality: GOOD, BLOCKED, SUBSTITUTED, NON_TOPICAL, INVALID
     DoublePointWithCP24Time2a(const IOA ioa, const DValue value, const Quality quality = Quality::GOOD, const CP24Time2a& cp24time2a = CP24Time2a::now())
-        : InformationObject{ioa}, diqM{0}, cp24time2aM{cp24time2a}
+        : InformationObject{ioa}, CPxxTime2aUtil{cp24time2a}, diqM{0}
     {
         setValue(value);
         setQuality(quality);
@@ -57,16 +57,6 @@ public:
         diqM = (diqM & 0x0f) | static_cast<uint8_t>(value);
     }
 
-    [[nodiscard]] CP24Time2a& getTimestamp()
-    {
-        return cp24time2aM;
-    }
-
-    void setTimestamp(const CP24Time2a& cp24time2a = CP24Time2a::now())
-    {
-        cp24time2aM = cp24time2a;
-    }
-
 protected:
     friend class InformationObject;
 
@@ -74,24 +64,23 @@ protected:
     void serialize(OStream& stream) const
     {
         stream << diqM;
-        stream << cp24time2aM;
+        stream << cpxxtime2aM;
     }
 
     template <typename IStream>
     void deserialize(IStream& stream)
     {
         stream >> diqM;
-        stream >> cp24time2aM;
+        stream >> cpxxtime2aM;
     }
 
     [[nodiscard]] constexpr std::size_t payloadLength() const
     {
-        return sizeof(diqM) + internal::getCPxxTime2aLength(cp24time2aM);
+        return sizeof(diqM) + details::getCPxxTime2aLength(cpxxtime2aM);
     }
 
 private:
     uint8_t diqM;
-    CP24Time2a cp24time2aM;
 };
 
 }

@@ -15,20 +15,21 @@
 #pragma once
 
 #include "elink/iec60870/io/SinglePointInformation.hpp"
-#include "elink/iec60870/cpxxtime2a/CPxxTime2a.hpp"
+#include "elink/iec60870/details/CPxxTime2aUtil.hpp"
 
 namespace elink::iec60870 {
 
-class SinglePointWithCP24Time2a : public InformationObject<SinglePointWithCP24Time2a, TypeID::M_SP_TA_1> {
+class SinglePointWithCP24Time2a : public InformationObject<SinglePointWithCP24Time2a, TypeID::M_SP_TA_1>, public details::CPxxTime2aUtil<CP24Time2a>
+{
 public:
     SinglePointWithCP24Time2a()
-        : siqM{0}, cp24time2aM{CP24Time2a::now()}
+        : siqM{0}
     {
     }
 
     // Valid Quality: GOOD, BLOCKED, SUBSTITUTED, NON_TOPICAL, INVALID
     SinglePointWithCP24Time2a(const IOA ioa, const bool value, const Quality quality = Quality::GOOD, const CP24Time2a& cp24time2a = CP24Time2a::now())
-        : InformationObject{ioa}, siqM{0}, cp24time2aM{cp24time2a}
+        : InformationObject{ioa}, CPxxTime2aUtil{cp24time2a}, siqM{0}
     {
         setValue(value);
         setQuality(quality);
@@ -56,16 +57,6 @@ public:
         siqM = (siqM & 0x0f) | static_cast<uint8_t>(quality);
     }
 
-    [[nodiscard]] CP24Time2a& getTimestamp()
-    {
-        return cp24time2aM;
-    }
-
-    void setTimestamp(const CP24Time2a& cp24time2a = CP24Time2a::now())
-    {
-        cp24time2aM = cp24time2a;
-    }
-
 protected:
     friend class InformationObject;
 
@@ -73,24 +64,23 @@ protected:
     void serialize(OSream& stream) const
     {
         stream << siqM;
-        stream << cp24time2aM;
+        stream << cpxxtime2aM;
     }
 
     template <typename IStream>
     void deserialize(IStream& stream)
     {
         stream >> siqM;
-        stream >> cp24time2aM;
+        stream >> cpxxtime2aM;
     }
 
     [[nodiscard]] constexpr std::size_t payloadLength() const
     {
-        return sizeof(siqM) + internal::getCPxxTime2aLength(cp24time2aM);
+        return sizeof(siqM) + details::getCPxxTime2aLength(cpxxtime2aM);
     }
 
 private:
     uint8_t siqM; // 4 bit quality + 1 bit bool
-    CP24Time2a cp24time2aM;
 };
 
 }
