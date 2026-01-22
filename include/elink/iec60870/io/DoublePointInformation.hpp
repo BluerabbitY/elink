@@ -14,58 +14,25 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/io/InformationObject.hpp"
-#include "elink/iec60870/io/QualityDescriptor.hpp"
+#include "elink/iec60870/io/details/DoublePointInformationImp.hpp"
 
 namespace elink::iec60870
 {
 
-class DoublePointInformation : public InformationObject<DoublePointInformation, TypeID::M_DP_NA_1>
+using DValue = details::DoublePointValue;
+
+class DoublePointInformation : public details::DoublePointInformationImp<DoublePointInformation, TypeID::M_DP_NA_1>
 {
 public:
-    // clang-format off
-    enum DoublePointValue{
-        INTERMEDIATE = 0,
-        OFF = 1,
-        ON = 2,
-        INDETERMINATE = 3
-     };
-    // clang-format on
-
-    DoublePointInformation()
-        : diqM{0}
-    {
-    }
+    DoublePointInformation() = default;
 
     // Valid Quality: GOOD, BLOCKED, SUBSTITUTED, NON_TOPICAL, INVALID
-    DoublePointInformation(const IOA ioa, const DoublePointValue value, const Quality quality = Quality::GOOD)
-        : InformationObject{ioa}, diqM{0}
+    DoublePointInformation(const IOA ioa, const DValue value, const Quality quality = Quality::GOOD)
+        : DoublePointInformationImp{ioa, value, quality}
     {
-        setValue(value);
-        setQuality(quality);
     }
 
     ~DoublePointInformation() = default;
-
-    [[nodiscard]] DoublePointValue getValue() const
-    {
-        return static_cast<DoublePointValue>(diqM & 0x03);
-    }
-
-    void setValue(const DoublePointValue value)
-    {
-        diqM = (diqM & 0xfc) | value;
-    }
-
-    [[nodiscard]] Quality getQuality() const
-    {
-        return static_cast<Quality>(diqM & 0xf0);
-    }
-
-    void setQuality(const Quality value)
-    {
-        diqM = (diqM & 0x0f) | static_cast<uint8_t>(value);
-    }
 
 protected:
     friend class InformationObject;
@@ -86,11 +53,6 @@ protected:
     {
         return sizeof(diqM);
     }
-
-private:
-    uint8_t diqM;
 };
-
-using DValue = DoublePointInformation::DoublePointValue;
 
 }

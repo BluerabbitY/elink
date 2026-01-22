@@ -19,43 +19,18 @@
 
 namespace elink::iec60870 {
 
-class SinglePointWithCP24Time2a : public InformationObject<SinglePointWithCP24Time2a, TypeID::M_SP_TA_1>, public details::CPxxTime2aUtil<CP24Time2a>
+class SinglePointWithCP24Time2a : public details::SinglePointInformationImp<SinglePointWithCP24Time2a, TypeID::M_SP_TA_1>, public details::CPxxTime2aUtil<CP24Time2a>
 {
 public:
-    SinglePointWithCP24Time2a()
-        : siqM{0}
-    {
-    }
+    SinglePointWithCP24Time2a() = default;
 
     // Valid Quality: GOOD, BLOCKED, SUBSTITUTED, NON_TOPICAL, INVALID
     SinglePointWithCP24Time2a(const IOA ioa, const bool value, const Quality quality = Quality::GOOD, const CP24Time2a& cp24time2a = CP24Time2a::now())
-        : InformationObject{ioa}, CPxxTime2aUtil{cp24time2a}, siqM{0}
+        : SinglePointInformationImp{ioa, value, quality}, CPxxTime2aUtil{cp24time2a}
     {
-        setValue(value);
-        setQuality(quality);
     }
 
     ~SinglePointWithCP24Time2a() = default;
-
-    [[nodiscard]] bool getValue() const
-    {
-        return siqM & 0x01;
-    }
-
-    void setValue(const bool value)
-    {
-        siqM = (siqM & 0xfe) | value;
-    }
-
-    [[nodiscard]] Quality getQuality() const
-    {
-        return static_cast<Quality>(siqM & 0xf0);
-    }
-
-    void setQuality(const Quality quality)
-    {
-        siqM = (siqM & 0x0f) | static_cast<uint8_t>(quality);
-    }
 
 protected:
     friend class InformationObject;
@@ -78,9 +53,6 @@ protected:
     {
         return sizeof(siqM) + details::getCPxxTime2aLength(cpxxtime2aM);
     }
-
-private:
-    uint8_t siqM; // 4 bit quality + 1 bit bool
 };
 
 }

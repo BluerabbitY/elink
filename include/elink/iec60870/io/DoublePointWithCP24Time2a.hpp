@@ -19,43 +19,18 @@
 
 namespace elink::iec60870 {
 
-class DoublePointWithCP24Time2a : public InformationObject<DoublePointWithCP24Time2a, TypeID::M_DP_TA_1>, public details::CPxxTime2aUtil<CP24Time2a>
+class DoublePointWithCP24Time2a : public details::DoublePointInformationImp<DoublePointWithCP24Time2a, TypeID::M_DP_TA_1>, public details::CPxxTime2aUtil<CP24Time2a>
 {
 public:
-    DoublePointWithCP24Time2a()
-        : diqM{0}
-    {
-    }
+    DoublePointWithCP24Time2a() = default;
 
     // Valid Quality: GOOD, BLOCKED, SUBSTITUTED, NON_TOPICAL, INVALID
     DoublePointWithCP24Time2a(const IOA ioa, const DValue value, const Quality quality = Quality::GOOD, const CP24Time2a& cp24time2a = CP24Time2a::now())
-        : InformationObject{ioa}, CPxxTime2aUtil{cp24time2a}, diqM{0}
+        : DoublePointInformationImp{ioa, value, quality}, CPxxTime2aUtil{cp24time2a}
     {
-        setValue(value);
-        setQuality(quality);
     }
 
     ~DoublePointWithCP24Time2a() = default;
-
-    [[nodiscard]] DValue getValue() const
-    {
-        return static_cast<DValue>(diqM & 0x03);
-    }
-
-    void setValue(const DValue value)
-    {
-        diqM = (diqM & 0xfc) | value;
-    }
-
-    [[nodiscard]] Quality getQuality() const
-    {
-        return static_cast<Quality>(diqM & 0xf0);
-    }
-
-    void setQuality(const Quality value)
-    {
-        diqM = (diqM & 0x0f) | static_cast<uint8_t>(value);
-    }
 
 protected:
     friend class InformationObject;
@@ -78,9 +53,6 @@ protected:
     {
         return sizeof(diqM) + details::getCPxxTime2aLength(cpxxtime2aM);
     }
-
-private:
-    uint8_t diqM;
 };
 
 }

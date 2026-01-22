@@ -14,68 +14,25 @@
  ***********************************************************************************/
 #pragma once
 
-#include <algorithm>
-
 #include "elink/iec60870/io/StepPositionInformation.hpp"
 #include "elink/iec60870/details/CPxxTime2aUtil.hpp"
 
 namespace elink::iec60870 {
 
-class StepPositionWithCP24Time2a : public InformationObject<StepPositionWithCP24Time2a, TypeID::M_ST_TA_1>, public details::CPxxTime2aUtil<CP24Time2a>
+class StepPositionWithCP24Time2a : public details::StepPositionInformationImp<StepPositionWithCP24Time2a, TypeID::M_ST_TA_1>, public details::CPxxTime2aUtil<CP24Time2a>
 {
 public:
-    StepPositionWithCP24Time2a()
-        : vtiM{0}, qualityM{static_cast<uint8_t>(Quality::GOOD)}
-    {
-    }
+    StepPositionWithCP24Time2a() = default;
 
     // Valid Quality: GOOD, OVERFLOW, BLOCKED, SUBSTITUTED, NON_TOPICAL, INVALID
     StepPositionWithCP24Time2a(const IOA ioa, const int value, const bool isTransient, const Quality quality = Quality::GOOD, const CP24Time2a& cp24time2a = CP24Time2a::now())
-        : InformationObject{ioa}, CPxxTime2aUtil{cp24time2a}, vtiM{0}, qualityM{static_cast<uint8_t>(quality)}
+        : StepPositionInformationImp{ioa, value, isTransient, quality}, CPxxTime2aUtil{cp24time2a}
     {
         setValue(value);
         setTransient(isTransient);
     }
 
     ~StepPositionWithCP24Time2a() = default;
-
-    [[nodiscard]] int getValue() const
-    {
-        int value = vtiM & 0x7f;
-
-        if (value > upLimit)
-            value -= offset;
-
-        return value;
-    }
-
-    void setValue(const int value)
-    {
-        vtiM = std::clamp(value, lowLimit, upLimit);
-
-        if (vtiM < 0)
-            vtiM += offset;
-    }
-
-    [[nodiscard]] bool isTransient() const
-    {
-        return (vtiM & 0x80) == 0x80;
-    }
-
-    void setTransient(const bool isTransient)
-    {
-        isTransient ? vtiM |= 0x80 : vtiM &= 0x7f;
-    }
-
-    [[nodiscard]] Quality getQuality() const
-    {
-        return static_cast<Quality>(qualityM);
-    }
-
-    void setQuality(const Quality quality)
-    {
-        qualityM = static_cast<uint8_t>(quality) & 0xf1;
-    }
 
 protected:
     friend class InformationObject;
@@ -100,14 +57,6 @@ protected:
     {
         return sizeof(vtiM) + sizeof(qualityM) + details::getCPxxTime2aLength(cpxxtime2aM);
     }
-
-private:
-    static constexpr int upLimit = 63;
-    static constexpr int lowLimit = -64;
-    static constexpr int offset = 128;
-
-    uint8_t vtiM;
-    uint8_t qualityM;
 };
 
 }

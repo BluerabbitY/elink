@@ -14,47 +14,21 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/io/InformationObject.hpp"
-#include "elink/iec60870/io/QualityDescriptor.hpp"
+#include "elink/iec60870/io/details/SinglePointInformationImp.hpp"
 
 namespace elink::iec60870 {
 
-class SinglePointInformation : public InformationObject<SinglePointInformation, TypeID::M_SP_NA_1> {
+class SinglePointInformation : public details::SinglePointInformationImp<SinglePointInformation, TypeID::M_SP_NA_1> {
 public:
-    SinglePointInformation()
-        : siqM{0}
-    {
-    }
+    SinglePointInformation() = default;
 
     // Valid Quality: GOOD, BLOCKED, SUBSTITUTED, NON_TOPICAL, INVALID
     SinglePointInformation(const IOA ioa, const bool value, const Quality quality = Quality::GOOD)
-        : InformationObject{ioa}, siqM{0}
+        : SinglePointInformationImp{ioa, value, quality}
     {
-        setValue(value);
-        setQuality(quality);
     }
 
     ~SinglePointInformation() = default;
-
-    [[nodiscard]] bool getValue() const
-    {
-        return siqM & 0x01;
-    }
-
-    void setValue(const bool value)
-    {
-        siqM = (siqM & 0xfe) | value;
-    }
-
-    [[nodiscard]] Quality getQuality() const
-    {
-        return static_cast<Quality>(siqM & 0xf0);
-    }
-
-    void setQuality(const Quality quality)
-    {
-        siqM = (siqM & 0x0f) | static_cast<uint8_t>(quality);
-    }
 
 protected:
     friend class InformationObject;
@@ -75,10 +49,6 @@ protected:
     {
         return sizeof(siqM);
     }
-
-private:
-    /** 4 bit quality + 1 bit bool */
-    uint8_t siqM;
 };
 
 }
