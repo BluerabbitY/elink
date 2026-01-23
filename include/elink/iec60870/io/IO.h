@@ -25,4 +25,4 @@
 #include "elink/iec60870/io/StepPositionInformation.hpp"
 #include "elink/iec60870/io/StepPositionWithCP24Time2a.hpp"
 
-#include "../formatter/InformationObjectFormatter.hpp"
+#include "elink/iec60870/formatter/InformationObjectFormatter.hpp"

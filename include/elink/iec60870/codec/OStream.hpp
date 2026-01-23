@@ -14,7 +14,7 @@
  ***********************************************************************************/
 #pragma once
 
-#include "../../common/codec/OStreamCommon.hpp"
+#include "elink/common/codec/OStreamCommon.hpp"
 #include "elink/iec60870/cpxxtime2a/CPxxTime2a.hpp"
 #include "elink/iec60870/io/InformationObjectAddress.hpp"
 

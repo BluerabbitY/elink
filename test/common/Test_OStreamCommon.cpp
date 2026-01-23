@@ -16,7 +16,7 @@
 
 #include <cstring>
 
-#include "../../include/elink/common/codec/OStreamCommon.hpp"
+#include "elink/common/codec/OStreamCommon.hpp"
 #include "elink/iec60870/io/InformationObjectTypeID.h"
 
 using namespace elink::common::internal;
