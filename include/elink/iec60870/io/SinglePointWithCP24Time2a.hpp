@@ -33,7 +33,7 @@ public:
     ~SinglePointWithCP24Time2a() = default;
 
 protected:
-    friend class InformationObject;
+    ELINK_IO_OBJECT;
 
     template <typename OSream>
     void serialize(OSream& stream) const

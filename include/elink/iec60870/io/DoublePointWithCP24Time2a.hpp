@@ -33,7 +33,7 @@ public:
     ~DoublePointWithCP24Time2a() = default;
 
 protected:
-    friend class InformationObject;
+    ELINK_IO_OBJECT;
 
     template <typename OStream>
     void serialize(OStream& stream) const

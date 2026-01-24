@@ -19,6 +19,8 @@
 
 #include <memory>
 
+#define ELINK_IO_OBJECT friend class InformationObject
+
 namespace elink::iec60870 {
 
 template <typename inherit, TypeID typeID>
