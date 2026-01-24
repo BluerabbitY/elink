@@ -16,6 +16,8 @@
 
 #include "elink/iec60870/io/InformationObjectTypeID.h"
 
+#include <format>
+
 namespace std
 {
 
