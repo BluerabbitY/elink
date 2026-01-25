@@ -14,14 +14,14 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/io/InformationObject.hpp"
+#include "elink/iec60870/details/InformationObjectSerializable.hpp"
 #include "elink/iec60870/io/QualityDescriptor.hpp"
 
 namespace elink::iec60870::details
 {
 
 template <typename inherit, TypeID typeID>
-class StepPositionInformationImp : public InformationObject<inherit, typeID> {
+class StepPositionInformationImp : public InformationObjectSerializable<inherit, typeID> {
 public:
     StepPositionInformationImp()
         : vtiM{0}, qualityM{static_cast<uint8_t>(Quality::GOOD)}
@@ -30,7 +30,7 @@ public:
 
     // Valid Quality: GOOD, OVERFLOW, BLOCKED, SUBSTITUTED, NON_TOPICAL, INVALID
     StepPositionInformationImp(const IOA ioa, const int value, const bool isTransient, const Quality quality)
-        : InformationObject<inherit, typeID>{ioa}, vtiM{0}, qualityM{static_cast<uint8_t>(quality)}
+        : InformationObjectSerializable<inherit, typeID>{ioa}, vtiM{0}, qualityM{static_cast<uint8_t>(quality)}
     {
         setValue(value);
         setTransient(isTransient);

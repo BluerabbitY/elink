@@ -27,7 +27,7 @@ enum class InformationObjectAddressByteLength : uint8_t {
 
 using IOAByteLength = InformationObjectAddressByteLength;
 
-class InformationObjectAddress {
+class InformationObjectAddress final {
 public:
     InformationObjectAddress() : addressM{0}, byteOfIOAM{IOAByteLength::Three}
     {

@@ -19,7 +19,7 @@
 
 namespace elink::iec60870 {
 
-class DoublePointWithCP24Time2a : public details::DoublePointInformationImp<DoublePointWithCP24Time2a, TypeID::M_DP_TA_1>, public details::CPxxTime2aUtil<CP24Time2a>
+class DoublePointWithCP24Time2a final : public details::DoublePointInformationImp<DoublePointWithCP24Time2a, TypeID::M_DP_TA_1>, public details::CPxxTime2aUtil<CP24Time2a>
 {
 public:
     DoublePointWithCP24Time2a() = default;

@@ -67,7 +67,7 @@ TEST_F(DoublePointInformationTest, Quality)
 
 TEST_F(DoublePointInformationTest, Serialize)
 {
-    const DoublePointInformation::OriginPtr ptr = std::make_shared<DoublePointInformation>(dio);
+    const DoublePointInformation::SerializePtr ptr = std::make_shared<DoublePointInformation>(dio);
     uint8_t buffer[256]{};
     internal::OStream os{buffer, sizeof(buffer)};
     EXPECT_TRUE(ptr->serialize(os, false));
@@ -83,7 +83,7 @@ TEST_F(DoublePointInformationTest, Deserialize)
     internal::IStream is{buffer, sizeof(buffer)};
 
     const auto pDio = std::make_shared<DoublePointInformation>(dio);
-    const DoublePointInformation::OriginPtr iop = pDio;
+    const DoublePointInformation::SerializePtr iop = pDio;
     EXPECT_TRUE(iop->deserialize(is, false));
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.readBytes(), sizeof(buffer));

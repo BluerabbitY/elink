@@ -67,7 +67,7 @@ TEST_F(StepPositionInformationTest, Quality)
 
 TEST_F(StepPositionInformationTest, Serialize)
 {
-    const StepPositionInformation::OriginPtr ptr = std::make_shared<StepPositionInformation>(sio);
+    const StepPositionInformation::SerializePtr ptr = std::make_shared<StepPositionInformation>(sio);
     uint8_t buffer[256]{};
     internal::OStream os{buffer, sizeof(buffer)};
     EXPECT_TRUE(ptr->serialize(os, false));
@@ -83,7 +83,7 @@ TEST_F(StepPositionInformationTest, Deserialize)
     internal::IStream is{buffer, sizeof(buffer)};
 
     const auto pSio = std::make_shared<StepPositionInformation>(sio);
-    const StepPositionInformation::OriginPtr iop = pSio;
+    const StepPositionInformation::SerializePtr iop = pSio;
     EXPECT_TRUE(iop->deserialize(is, false));
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.readBytes(), sizeof(buffer));

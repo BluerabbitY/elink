@@ -19,7 +19,7 @@
 
 namespace elink::iec60870 {
 
-class SinglePointWithCP24Time2a : public details::SinglePointInformationImp<SinglePointWithCP24Time2a, TypeID::M_SP_TA_1>, public details::CPxxTime2aUtil<CP24Time2a>
+class SinglePointWithCP24Time2a final : public details::SinglePointInformationImp<SinglePointWithCP24Time2a, TypeID::M_SP_TA_1>, public details::CPxxTime2aUtil<CP24Time2a>
 {
 public:
     SinglePointWithCP24Time2a() = default;

@@ -14,14 +14,14 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/io/InformationObject.hpp"
+#include "elink/iec60870/details/InformationObjectSerializable.hpp"
 #include "elink/iec60870/io/QualityDescriptor.hpp"
 
 namespace elink::iec60870::details
 {
 
 template <typename inherit, TypeID typeID>
-class SinglePointInformationImp : public InformationObject<inherit, typeID> {
+class SinglePointInformationImp : public InformationObjectSerializable<inherit, typeID> {
 public:
     SinglePointInformationImp()
         : siqM{0}
@@ -30,7 +30,7 @@ public:
 
     // Valid Quality: GOOD, BLOCKED, SUBSTITUTED, NON_TOPICAL, INVALID
     SinglePointInformationImp(const IOA ioa, const bool value, const Quality quality)
-        : InformationObject<inherit, typeID>{ioa}, siqM{0}
+        : InformationObjectSerializable<inherit, typeID>{ioa}, siqM{0}
     {
         setValue(value);
         setQuality(quality);

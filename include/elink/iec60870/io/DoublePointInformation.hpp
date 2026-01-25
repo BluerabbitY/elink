@@ -21,7 +21,7 @@ namespace elink::iec60870
 
 using DValue = details::DoublePointValue;
 
-class DoublePointInformation : public details::DoublePointInformationImp<DoublePointInformation, TypeID::M_DP_NA_1>
+class DoublePointInformation final : public details::DoublePointInformationImp<DoublePointInformation, TypeID::M_DP_NA_1>
 {
 public:
     DoublePointInformation() = default;

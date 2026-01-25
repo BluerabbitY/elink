@@ -14,7 +14,7 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/io/InformationObject.hpp"
+#include "elink/iec60870/details/InformationObjectSerializable.hpp"
 #include "elink/iec60870/io/QualityDescriptor.hpp"
 
 namespace elink::iec60870::details
@@ -30,7 +30,7 @@ enum DoublePointValue {
 // clang-format on
 
 template <typename inherit, TypeID typeID>
-class DoublePointInformationImp : public InformationObject<inherit, typeID>
+class DoublePointInformationImp : public InformationObjectSerializable<inherit, typeID>
 {
 public:
     DoublePointInformationImp()
@@ -40,7 +40,7 @@ public:
 
     // Valid Quality: GOOD, BLOCKED, SUBSTITUTED, NON_TOPICAL, INVALID
     DoublePointInformationImp(const IOA ioa, const DoublePointValue value, const Quality quality)
-        : InformationObject<inherit, typeID>{ioa}, diqM{0}
+        : InformationObjectSerializable<inherit, typeID>{ioa}, diqM{0}
     {
         setValue(value);
         setQuality(quality);

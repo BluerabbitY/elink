@@ -17,24 +17,15 @@
 #include "elink/iec60870/io/InformationObjectAddress.hpp"
 #include "elink/iec60870/io/InformationObjectTypeID.h"
 
-#include <memory>
-
-#ifndef ELINK_IO_OBJECT
-#define ELINK_IO_OBJECT friend class InformationObject
-#else
-#error "ELINK_IO_OBJECT already defined"
-#endif
-
 namespace elink::iec60870 {
 
-template <typename inherit, TypeID typeID>
 class InformationObject {
 protected:
-    explicit InformationObject(const IOA ioa) : ioaM{ioa}, typeIDM{typeID}
+    explicit InformationObject(const IOA ioa, const TypeID typeID) : ioaM{ioa}, typeIDM{typeID}
     {
     }
 
-    InformationObject() : typeIDM{typeID}
+    explicit InformationObject(const TypeID typeID) : typeIDM{typeID}
     {
     }
 
@@ -56,56 +47,9 @@ public:
         return typeIDM;
     }
 
-    template <typename OStream>
-    bool serialize(OStream& stream, const bool isSequence) const
-    {
-        if (!isSequence)
-        {
-            stream << ioaM;
-        }
+    using OriginPtr = std::shared_ptr<InformationObject>;
 
-        static_cast<inherit const*>(this)->serialize(stream);
-
-        if (stream.hasError())
-        {
-            stream.acknowledgeError();
-            return false;
-        }
-
-        return true;
-    }
-
-    template <typename IStream>
-    bool deserialize(IStream& stream, const bool isSequence)
-    {
-        if (!isSequence)
-        {
-            stream >> ioaM;
-        }
-
-        static_cast<inherit*>(this)->deserialize(stream);
-
-        if (stream.hasError())
-        {
-            stream.acknowledgeError();
-            return false;
-        }
-
-        return true;
-    }
-
-    [[nodiscard]] std::size_t size() const
-    {
-        return ioaM.getLengthOfInformationObjectAddress() + static_cast<const inherit*>(this)->payloadLength();
-    }
-
-    using OriginType = InformationObject;
-
-    using Ptr = std::shared_ptr<inherit>;
-
-    using OriginPtr = std::shared_ptr<OriginType>;
-
-private:
+protected:
     InformationObjectAddress ioaM;
     const InformationObjectTypeID typeIDM;
 };

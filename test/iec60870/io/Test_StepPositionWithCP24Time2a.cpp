@@ -67,7 +67,7 @@ TEST_F(StepPositionWithCP24Time2aTest, Quality)
 
 TEST_F(StepPositionWithCP24Time2aTest, Serialize)
 {
-    const StepPositionWithCP24Time2a::OriginPtr ptr = std::make_shared<StepPositionWithCP24Time2a>(sio);
+    const StepPositionWithCP24Time2a::SerializePtr ptr = std::make_shared<StepPositionWithCP24Time2a>(sio);
     uint8_t buffer[256]{};
     internal::OStream os{buffer, sizeof(buffer)};
     EXPECT_TRUE(ptr->serialize(os, false));
@@ -83,7 +83,7 @@ TEST_F(StepPositionWithCP24Time2aTest, Deserialize)
     internal::IStream is{buffer, sizeof(buffer)};
 
     const auto pSio = std::make_shared<StepPositionWithCP24Time2a>(sio);
-    const StepPositionWithCP24Time2a::OriginPtr iop = pSio;
+    const StepPositionWithCP24Time2a::SerializePtr iop = pSio;
     EXPECT_TRUE(iop->deserialize(is, false));
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.readBytes(), sizeof(buffer));

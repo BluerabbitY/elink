@@ -18,7 +18,7 @@
 
 namespace elink::iec60870 {
 
-class SinglePointInformation : public details::SinglePointInformationImp<SinglePointInformation, TypeID::M_SP_NA_1> {
+class SinglePointInformation final : public details::SinglePointInformationImp<SinglePointInformation, TypeID::M_SP_NA_1> {
 public:
     SinglePointInformation() = default;
 

@@ -18,7 +18,7 @@
 
 namespace elink::iec60870 {
 
-class StepPositionInformation : public details::StepPositionInformationImp<StepPositionInformation, TypeID::M_ST_NA_1> {
+class StepPositionInformation final : public details::StepPositionInformationImp<StepPositionInformation, TypeID::M_ST_NA_1> {
 public:
     StepPositionInformation() = default;
 

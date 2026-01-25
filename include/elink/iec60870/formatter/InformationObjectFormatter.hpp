@@ -14,7 +14,7 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/io/InformationObject.hpp"
+#include "elink/iec60870/details/InformationObjectSerializable.hpp"
 #include "elink/iec60870/codec/OStream.hpp"
 #include "elink/util/TypeName.hpp"
 
@@ -22,9 +22,9 @@ namespace std
 {
 
 template <typename inherit, elink::iec60870::TypeID typeID>
-struct formatter<elink::iec60870::InformationObject<inherit, typeID>> : formatter<std::string_view>
+struct formatter<elink::iec60870::details::InformationObjectSerializable<inherit, typeID>> : formatter<std::string_view>
 {
-    using IO = elink::iec60870::InformationObject<inherit, typeID>;
+    using IO = elink::iec60870::details::InformationObjectSerializable<inherit, typeID>;
 
     bool intuitive = false;
     std::size_t maxLen = 256;
@@ -139,32 +139,32 @@ namespace std {
 
 template <>
 struct formatter<elink::iec60870::SinglePointInformation>
-    : formatter<elink::iec60870::InformationObject<elink::iec60870::SinglePointInformation, elink::iec60870::TypeID::M_SP_NA_1>> {
+    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::SinglePointInformation, elink::iec60870::TypeID::M_SP_NA_1>> {
 };
 
 template <>
 struct formatter<elink::iec60870::SinglePointWithCP24Time2a>
-    : formatter<elink::iec60870::InformationObject<elink::iec60870::SinglePointWithCP24Time2a, elink::iec60870::TypeID::M_SP_TA_1>> {
+    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::SinglePointWithCP24Time2a, elink::iec60870::TypeID::M_SP_TA_1>> {
 };
 
 template <>
 struct formatter<elink::iec60870::DoublePointInformation>
-    : formatter<elink::iec60870::InformationObject<elink::iec60870::DoublePointInformation, elink::iec60870::TypeID::M_DP_NA_1>> {
+    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::DoublePointInformation, elink::iec60870::TypeID::M_DP_NA_1>> {
 };
 
 template <>
 struct formatter<elink::iec60870::DoublePointWithCP24Time2a>
-    : formatter<elink::iec60870::InformationObject<elink::iec60870::DoublePointWithCP24Time2a, elink::iec60870::TypeID::M_DP_TA_1>> {
+    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::DoublePointWithCP24Time2a, elink::iec60870::TypeID::M_DP_TA_1>> {
 };
 
 template <>
 struct formatter<elink::iec60870::StepPositionInformation>
-    : formatter<elink::iec60870::InformationObject<elink::iec60870::StepPositionInformation, elink::iec60870::TypeID::M_ST_NA_1>> {
+    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::StepPositionInformation, elink::iec60870::TypeID::M_ST_NA_1>> {
 };
 
 template <>
 struct formatter<elink::iec60870::StepPositionWithCP24Time2a>
-    : formatter<elink::iec60870::InformationObject<elink::iec60870::StepPositionWithCP24Time2a, elink::iec60870::TypeID::M_ST_TA_1>> {
+    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::StepPositionWithCP24Time2a, elink::iec60870::TypeID::M_ST_TA_1>> {
 };
 
 }

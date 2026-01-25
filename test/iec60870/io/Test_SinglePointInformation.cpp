@@ -16,6 +16,8 @@
 
 #include <gtest/gtest.h>
 #include <cstring>
+#include "elink/iec60870/io/InformationObjectUtil.hpp"
+#include "elink/iec60870/details/InformationObjectSerializable.hpp"
 
 using namespace elink::iec60870;
 
@@ -36,6 +38,13 @@ protected:
 TEST_F(SinglePointInformationTest, TypeID)
 {
     EXPECT_EQ(sio.getTypeID(), TypeID::M_SP_NA_1);
+}
+
+TEST_F(SinglePointInformationTest, IOCast)
+{
+    InformationObject& io = sio;
+    auto& castedSio = io_cast<SinglePointInformation>(io);
+    EXPECT_EQ(&castedSio, &sio);
 }
 
 TEST_F(SinglePointInformationTest, IOA)
@@ -67,7 +76,7 @@ TEST_F(SinglePointInformationTest, Quality)
 
 TEST_F(SinglePointInformationTest, Serialize)
 {
-    const SinglePointInformation::OriginPtr ptr = std::make_shared<SinglePointInformation>(sio);
+    const SinglePointInformation::SerializePtr ptr = std::make_shared<SinglePointInformation>(sio);
     uint8_t buffer[256]{};
     internal::OStream os{buffer, sizeof(buffer)};
     EXPECT_TRUE(ptr->serialize(os, false));
@@ -83,7 +92,7 @@ TEST_F(SinglePointInformationTest, Deserialize)
     internal::IStream is{buffer, sizeof(buffer)};
 
     const auto pSio = std::make_shared<SinglePointInformation>(sio);
-    const SinglePointInformation::OriginPtr iop = pSio;
+    const SinglePointInformation::SerializePtr iop = pSio;
     EXPECT_TRUE(iop->deserialize(is, false));
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.readBytes(), sizeof(buffer));

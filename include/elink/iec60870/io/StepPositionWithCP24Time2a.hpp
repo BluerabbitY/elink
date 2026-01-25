@@ -19,7 +19,7 @@
 
 namespace elink::iec60870 {
 
-class StepPositionWithCP24Time2a : public details::StepPositionInformationImp<StepPositionWithCP24Time2a, TypeID::M_ST_TA_1>, public details::CPxxTime2aUtil<CP24Time2a>
+class StepPositionWithCP24Time2a final : public details::StepPositionInformationImp<StepPositionWithCP24Time2a, TypeID::M_ST_TA_1>, public details::CPxxTime2aUtil<CP24Time2a>
 {
 public:
     StepPositionWithCP24Time2a() = default;

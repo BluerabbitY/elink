@@ -67,7 +67,7 @@ TEST_F(DoublePointWithCP24Time2aTest, Quality)
 
 TEST_F(DoublePointWithCP24Time2aTest, Serialize)
 {
-    const DoublePointWithCP24Time2a::OriginPtr ptr = std::make_shared<DoublePointWithCP24Time2a>(dio);
+    const DoublePointWithCP24Time2a::SerializePtr ptr = std::make_shared<DoublePointWithCP24Time2a>(dio);
     uint8_t buffer[256]{};
     internal::OStream os{buffer, sizeof(buffer)};
     EXPECT_TRUE(ptr->serialize(os, false));
@@ -83,7 +83,7 @@ TEST_F(DoublePointWithCP24Time2aTest, Deserialize)
     internal::IStream is{buffer, sizeof(buffer)};
 
     const auto pDio = std::make_shared<DoublePointWithCP24Time2a>(dio);
-    const DoublePointWithCP24Time2a::OriginPtr iop = pDio;
+    const DoublePointWithCP24Time2a::SerializePtr iop = pDio;
     EXPECT_TRUE(iop->deserialize(is, false));
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.readBytes(), sizeof(buffer));
