@@ -16,6 +16,7 @@
 
 #include "elink/common/Type.hpp"
 #include "elink/config.h"
+#include "elink/common/thread/Thread.hpp"
 
 #include <string_view>
 #include <format>
@@ -26,7 +27,7 @@ namespace elink
 
 class Log {
 public:
-    using LogHandler = std::function<void(LogLevel, std::string_view, int, const std::string&)>;
+    using LogHandler = std::function<void(LogLevel, std::string_view, int, const std::string&, const std::string&)>;
 
     template <typename... Args>
     static void print(const LogLevel level, const std::string_view file, const int line, std::format_string<Args...> fmt, Args&&... args)
@@ -34,7 +35,7 @@ public:
         if (logHandlerS && logOutputEnabledM)
         {
             const std::size_t pos = file.find_last_of("/\\");
-            logHandlerS(level, pos == std::string_view::npos ? file : file.substr(pos + 1), line, std::format(fmt, std::forward<Args>(args)...));
+            logHandlerS(level, pos == std::string_view::npos ? file : file.substr(pos + 1), line, details::ThreadName::threadName(), std::format(fmt, std::forward<Args>(args)...));
         }
     }
 
@@ -43,7 +44,7 @@ public:
         if (logHandlerS && logOutputEnabledM)
         {
             const std::size_t pos = file.find_last_of("/\\");
-            logHandlerS(level, pos == std::string_view::npos ? file : file.substr(pos + 1), line, std::string(msg));
+            logHandlerS(level, pos == std::string_view::npos ? file : file.substr(pos + 1), line, details::ThreadName::threadName(), std::string(msg));
         }
     }
 

@@ -20,9 +20,11 @@ class LogTest : public ::testing::Test {
 protected:
     void SetUp() override
     {
-        elink::Log::setLogOutputHanlder([&](const elink::LogLevel level, const std::string_view file, const int line, const std::string& content){
-            logHandler(level, file, line, content);
+        elink::Log::setLogOutputHanlder([&](const elink::LogLevel level, const std::string_view file, const int line, const std::string& threadName, const std::string& content){
+            logHandler(level, file, line, threadName, content);
         });
+
+        elink::details::ThreadName::setThreadName("LogTest");
     }
 
     void TearDown() override
@@ -33,14 +35,16 @@ protected:
         elink::LogLevel level;
         std::string_view file;
         int line;
+        std::string threadName;
         std::string content;
     };
 
-    void logHandler(const elink::LogLevel level, const std::string_view file, const int line, const std::string& content)
+    void logHandler(const elink::LogLevel level, const std::string_view file, const int line, const std::string& threadName, const std::string& content)
     {
         buffer.level = level;
         buffer.file = file;
         buffer.line = line;
+        buffer.threadName = threadName;
         buffer.content = content;
     };
 
@@ -53,7 +57,8 @@ TEST_F(LogTest, RelocatedLog)
 
     EXPECT_EQ(buffer.level, elink::LogLevel::DBG);
     EXPECT_EQ(buffer.file, "Test_RelocatedLog.cpp");
-    EXPECT_EQ(buffer.line, 52);
+    EXPECT_EQ(buffer.line, 56);
+    EXPECT_EQ(buffer.threadName, "LogTest");
     EXPECT_EQ(buffer.content, "This is a test log: 12345");
 }
 
@@ -64,37 +69,43 @@ TEST_F(LogTest, Print)
     DLOG("This is a debug test log: {}", ++count);
     EXPECT_EQ(buffer.level, elink::LogLevel::DBG);
     EXPECT_EQ(buffer.file, "Test_RelocatedLog.cpp");
-    EXPECT_EQ(buffer.line, 64);
+    EXPECT_EQ(buffer.line, 69);
+    EXPECT_EQ(buffer.threadName, "LogTest");
     EXPECT_EQ(buffer.content, "This is a debug test log: 1");
 
     ILOG("This is a information test log: {}", ++count);
     EXPECT_EQ(buffer.level, elink::LogLevel::INF);
     EXPECT_EQ(buffer.file, "Test_RelocatedLog.cpp");
-    EXPECT_EQ(buffer.line, 70);
+    EXPECT_EQ(buffer.line, 76);
+    EXPECT_EQ(buffer.threadName, "LogTest");
     EXPECT_EQ(buffer.content, "This is a information test log: 2");
 
     WLOG("This is a warn test log: {}", ++count);
     EXPECT_EQ(buffer.level, elink::LogLevel::WRN);
     EXPECT_EQ(buffer.file, "Test_RelocatedLog.cpp");
-    EXPECT_EQ(buffer.line, 76);
+    EXPECT_EQ(buffer.line, 83);
+    EXPECT_EQ(buffer.threadName, "LogTest");
     EXPECT_EQ(buffer.content, "This is a warn test log: 3");
 
     ELOG("This is a error test log: {}", ++count);
     EXPECT_EQ(buffer.level, elink::LogLevel::ERR);
     EXPECT_EQ(buffer.file, "Test_RelocatedLog.cpp");
-    EXPECT_EQ(buffer.line, 82);
+    EXPECT_EQ(buffer.line, 90);
+    EXPECT_EQ(buffer.threadName, "LogTest");
     EXPECT_EQ(buffer.content, "This is a error test log: 4");
 
     CLOG("This is a critical test log: {}", ++count);
     EXPECT_EQ(buffer.level, elink::LogLevel::CRI);
     EXPECT_EQ(buffer.file, "Test_RelocatedLog.cpp");
-    EXPECT_EQ(buffer.line, 88);
+    EXPECT_EQ(buffer.line, 97);
+    EXPECT_EQ(buffer.threadName, "LogTest");
     EXPECT_EQ(buffer.content, "This is a critical test log: 5");
 
     FLOG("This is a fatal test log: {}", ++count);
     EXPECT_EQ(buffer.level, elink::LogLevel::FAT);
     EXPECT_EQ(buffer.file, "Test_RelocatedLog.cpp");
-    EXPECT_EQ(buffer.line, 94);
+    EXPECT_EQ(buffer.line, 104);
+    EXPECT_EQ(buffer.threadName, "LogTest");
     EXPECT_EQ(buffer.content, "This is a fatal test log: 6");
 }
 
@@ -106,5 +117,6 @@ TEST_F(LogTest, Enabled)
     EXPECT_EQ(buffer.level, elink::LogLevel::DBG);
     EXPECT_EQ(buffer.file, "");
     EXPECT_EQ(buffer.line, 0);
+    EXPECT_EQ(buffer.threadName, "");
     EXPECT_EQ(buffer.content, "");
 }
