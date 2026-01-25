@@ -14,6 +14,8 @@
  ***********************************************************************************/
 #pragma once
 
+#include "elink/common/details/Platform.hpp"
+
 #include <array>
 #include <ctime>
 #include <chrono>
@@ -276,11 +278,11 @@ protected:
 private:
     static std::tm* gmtime(const time_t& in, std::tm& out)
     {
-#ifdef _WIN32
+        #if (ELINK_API == ELINK_API_WIN32)
         return (gmtime_s(&out, &in) == 0) ? &out : nullptr;
-#else
+        #else
         return gmtime_r(&in, &out);
-#endif
+        #endif
     }
 
     std::array<uint8_t, N> bufferM;
