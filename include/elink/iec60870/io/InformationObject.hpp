@@ -19,7 +19,11 @@
 
 #include <memory>
 
+#ifndef ELINK_IO_OBJECT
 #define ELINK_IO_OBJECT friend class InformationObject
+#else
+#error "ELINK_IO_OBJECT already defined"
+#endif
 
 namespace elink::iec60870 {
 
