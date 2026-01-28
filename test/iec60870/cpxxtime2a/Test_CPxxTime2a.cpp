@@ -12,7 +12,7 @@
  * specific language governing permissions and limitations under the License. 
  *
  ***********************************************************************************/
-#include "elink/iec60870/cpxxtime2a/CPxxTime2a.hpp"
+#include "elink/iec60870/CPxxTime2a.hpp"
 
 #include <gtest/gtest.h>
 

@@ -14,12 +14,10 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/io/details/DoublePointInformationImp.hpp"
+#include "elink/iec60870/details/io/DoublePointInformationImp.hpp"
 
 namespace elink::iec60870
 {
-
-using DValue = details::DoublePointValue;
 
 class DoublePointInformation final : public details::DoublePointInformationImp<DoublePointInformation, TypeID::M_DP_NA_1>
 {

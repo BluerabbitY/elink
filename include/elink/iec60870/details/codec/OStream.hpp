@@ -15,7 +15,7 @@
 #pragma once
 
 #include "elink/common/codec/OStreamCommon.hpp"
-#include "elink/iec60870/cpxxtime2a/CPxxTime2a.hpp"
+#include "elink/iec60870/CPxxTime2a.hpp"
 #include "elink/iec60870/io/InformationObjectAddress.hpp"
 
 namespace elink::iec60870::internal {

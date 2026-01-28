@@ -17,7 +17,7 @@
 #include <gtest/gtest.h>
 #include <cstring>
 #include "elink/iec60870/io/InformationObjectUtil.hpp"
-#include "elink/iec60870/details/InformationObjectSerializable.hpp"
+#include "elink/iec60870/details/io/InformationObjectSerializable.hpp"
 
 using namespace elink::iec60870;
 

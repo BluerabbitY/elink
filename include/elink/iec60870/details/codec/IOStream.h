@@ -14,5 +14,5 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/codec/OStream.hpp"
-#include "elink/iec60870/codec/IStream.hpp"
+#include "elink/iec60870/details/codec/OStream.hpp"
+#include "elink/iec60870/details/codec/IStream.hpp"

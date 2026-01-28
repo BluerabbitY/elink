@@ -14,7 +14,7 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/io/details/StepPositionInformationImp.hpp"
+#include "elink/iec60870/details/io/StepPositionInformationImp.hpp"
 
 namespace elink::iec60870 {
 

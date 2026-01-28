@@ -1,8 +1,8 @@
 /***********************************************************************************
- * \file DoublePointInformationImp.hpp
+ * \file SinglePointInformationImp.hpp
  * \author BlueRabbitY (BlueRabbitY\@protonmail.com)
  * \brief 
- * \date 2026-01-22 23:51:24
+ * \date 2026-01-22 23:37:06
  * 
  * \copyright Copyright (C) 2026 BlueRabbitY. All rights reserved.
  *
@@ -14,62 +14,53 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/details/InformationObjectSerializable.hpp"
+#include "elink/iec60870/details/io/InformationObjectSerializable.hpp"
 #include "elink/iec60870/io/QualityDescriptor.hpp"
 
 namespace elink::iec60870::details
 {
 
-// clang-format off
-enum DoublePointValue {
-    INTERMEDIATE  = 0,
-    OFF           = 1,
-    ON            = 2,
-    INDETERMINATE = 3,
- };
-// clang-format on
-
 template <typename inherit, TypeID typeID>
-class DoublePointInformationImp : public InformationObjectSerializable<inherit, typeID>
-{
+class SinglePointInformationImp : public InformationObjectSerializable<inherit, typeID> {
 public:
-    DoublePointInformationImp()
-        : diqM{0}
+    SinglePointInformationImp()
+        : siqM{0}
     {
     }
 
     // Valid Quality: GOOD, BLOCKED, SUBSTITUTED, NON_TOPICAL, INVALID
-    DoublePointInformationImp(const IOA ioa, const DoublePointValue value, const Quality quality)
-        : InformationObjectSerializable<inherit, typeID>{ioa}, diqM{0}
+    SinglePointInformationImp(const IOA ioa, const bool value, const Quality quality)
+        : InformationObjectSerializable<inherit, typeID>{ioa}, siqM{0}
     {
         setValue(value);
         setQuality(quality);
     }
 
-    ~DoublePointInformationImp() = default;
+    ~SinglePointInformationImp() = default;
 
-    [[nodiscard]] DoublePointValue getValue() const
+    [[nodiscard]] bool getValue() const
     {
-        return static_cast<DoublePointValue>(diqM & 0x03);
+        return siqM & 0x01;
     }
 
-    void setValue(const DoublePointValue value)
+    void setValue(const bool value)
     {
-        diqM = (diqM & 0xfc) | value;
+        siqM = (siqM & 0xfe) | value;
     }
 
     [[nodiscard]] Quality getQuality() const
     {
-        return static_cast<Quality>(diqM & 0xf0);
+        return static_cast<Quality>(siqM & 0xf0);
     }
 
-    void setQuality(const Quality value)
+    void setQuality(const Quality quality)
     {
-        diqM = (diqM & 0x0f) | static_cast<uint8_t>(value);
+        siqM = (siqM & 0x0f) | static_cast<uint8_t>(quality);
     }
 
 protected:
-    uint8_t diqM;
+    /** 4 bit quality + 1 bit bool */
+    uint8_t siqM;
 };
 
 }

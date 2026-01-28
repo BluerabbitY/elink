@@ -14,8 +14,8 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/details/InformationObjectSerializable.hpp"
-#include "elink/iec60870/codec/OStream.hpp"
+#include "elink/iec60870/details/io/InformationObjectSerializable.hpp"
+#include "elink/iec60870/details/codec/OStream.hpp"
 #include "elink/util/TypeName.hpp"
 
 namespace std

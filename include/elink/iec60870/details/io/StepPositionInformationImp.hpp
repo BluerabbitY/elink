@@ -14,7 +14,7 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/details/InformationObjectSerializable.hpp"
+#include "InformationObjectSerializable.hpp"
 #include "elink/iec60870/io/QualityDescriptor.hpp"
 
 namespace elink::iec60870::details

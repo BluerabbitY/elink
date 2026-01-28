@@ -14,8 +14,8 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/io/DoublePointInformation.hpp"
-#include "elink/iec60870/details/CPxxTime2aUtil.hpp"
+#include "elink/iec60870/details/io/DoublePointInformationImp.hpp"
+#include "elink/iec60870/details/cpxxtime2a/CPxxTime2aUtil.hpp"
 
 namespace elink::iec60870 {
 

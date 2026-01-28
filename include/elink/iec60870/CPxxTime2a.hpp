@@ -14,7 +14,7 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/details/CPxxTime2aImp.hpp"
+#include "details/cpxxtime2a/CPxxTime2aImp.hpp"
 
 namespace elink::iec60870 {
 
