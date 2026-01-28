@@ -19,7 +19,7 @@
 namespace mock
 {
 
-class IStream : public elink::common::internal::IStreamCommon<IStream> {
+class IStream : public elink::details::IStreamCommon<IStream> {
 public:
     IStream(const uint8_t* buffer, const std::size_t size) : IStreamCommon{buffer, size}
     {

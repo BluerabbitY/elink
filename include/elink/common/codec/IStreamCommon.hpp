@@ -21,7 +21,7 @@
 #include <type_traits>
 #include <cstddef>
 
-namespace elink::common::internal {
+namespace elink::details {
 
 template <typename inherit>
 class IStreamCommon {

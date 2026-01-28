@@ -18,9 +18,9 @@
 #include "elink/iec60870/CPxxTime2a.hpp"
 #include "elink/iec60870/io/InformationObjectAddress.hpp"
 
-namespace elink::iec60870::internal {
+namespace elink::iec60870::details {
 
-class IStream : public common::internal::IStreamCommon<IStream> {
+class IStream : public elink::details::IStreamCommon<IStream> {
 public:
     IStream(const uint8_t* buffer, const std::size_t size) : IStreamCommon{buffer, size}
     {

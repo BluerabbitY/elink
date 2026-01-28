@@ -19,7 +19,7 @@
 namespace mock
 {
 
-class OStream : public elink::common::internal::OStreamCommon<OStream> {
+class OStream : public elink::details::OStreamCommon<OStream> {
 public:
     OStream(uint8_t* buffer, const std::size_t size) : OStreamCommon{buffer, size}
     {

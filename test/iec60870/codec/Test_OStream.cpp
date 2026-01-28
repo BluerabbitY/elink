@@ -28,7 +28,7 @@ protected:
     }
 
     uint8_t buffer[256]{};
-    elink::iec60870::internal::OStream stream{buffer, sizeof(buffer)};
+    elink::iec60870::details::OStream stream{buffer, sizeof(buffer)};
 };
 
 TEST_F(OStreamTest, WriteIOA)

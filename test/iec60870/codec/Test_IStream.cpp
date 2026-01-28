@@ -31,7 +31,7 @@ protected:
 TEST_F(IStreamTest, ReadIOA)
 {
     constexpr uint8_t buffer[] = {0x34, 0x12, 0x56, 0x34, 0x12};
-    elink::iec60870::internal::IStream stream{buffer, sizeof(buffer)};
+    elink::iec60870::details::IStream stream{buffer, sizeof(buffer)};
 
     std::size_t length = 0;
     elink::iec60870::IOA ioa(0, elink::iec60870::IOAByteLength::Two);
@@ -52,7 +52,7 @@ TEST_F(IStreamTest, ReadCPxxtime2a)
 {
     constexpr uint8_t buffer[] = {0x64, 0x00, 0xdc, 0xe6, 0xfb, 0x00, 0x00, 0x00, 0x96, 0x00, 0x00, 0x00, 0x00, 0x7b,
                                   0x00, 0x19};
-    elink::iec60870::internal::IStream stream{buffer, sizeof(buffer)};
+    elink::iec60870::details::IStream stream{buffer, sizeof(buffer)};
 
     std::size_t length = 0;
     elink::iec60870::CP16Time2a cp16Time2a{};

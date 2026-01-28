@@ -78,7 +78,7 @@ TEST_F(SinglePointInformationTest, Serialize)
 {
     const SinglePointInformation::SerializePtr ptr = std::make_shared<SinglePointInformation>(sio);
     uint8_t buffer[256]{};
-    internal::OStream os{buffer, sizeof(buffer)};
+    details::OStream os{buffer, sizeof(buffer)};
     EXPECT_TRUE(ptr->serialize(os, false));
     EXPECT_FALSE(os.hasError());
     constexpr uint8_t dest[] = {0x00, 0x02, 0x00, 0x11};
@@ -89,7 +89,7 @@ TEST_F(SinglePointInformationTest, Serialize)
 TEST_F(SinglePointInformationTest, Deserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x10};
-    internal::IStream is{buffer, sizeof(buffer)};
+    details::IStream is{buffer, sizeof(buffer)};
 
     const auto pSio = std::make_shared<SinglePointInformation>(sio);
     const SinglePointInformation::SerializePtr iop = pSio;

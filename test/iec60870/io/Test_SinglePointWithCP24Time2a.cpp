@@ -69,7 +69,7 @@ TEST_F(SinglePointWithCP24Time2aTest, Serialize)
 {
     const SinglePointWithCP24Time2a::SerializePtr ptr = std::make_shared<SinglePointWithCP24Time2a>(sio);
     uint8_t buffer[256]{};
-    internal::OStream os{buffer, sizeof(buffer)};
+    details::OStream os{buffer, sizeof(buffer)};
     EXPECT_TRUE(ptr->serialize(os, false));
     EXPECT_FALSE(os.hasError());
     constexpr uint8_t dest[] = {0x00, 0x02, 0x00, 0x11, 0x00, 0x00, 0x00};
@@ -80,7 +80,7 @@ TEST_F(SinglePointWithCP24Time2aTest, Serialize)
 TEST_F(SinglePointWithCP24Time2aTest, Deserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x10, 0xdc, 0xe6, 0xfb};
-    internal::IStream is{buffer, sizeof(buffer)};
+    details::IStream is{buffer, sizeof(buffer)};
 
     const auto pSio = std::make_shared<SinglePointWithCP24Time2a>(sio);
     const SinglePointWithCP24Time2a::SerializePtr iop = pSio;

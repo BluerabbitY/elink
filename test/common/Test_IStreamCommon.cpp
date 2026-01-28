@@ -19,7 +19,7 @@
 #include "mock/MockIStream.hpp"
 #include "elink/iec60870/io/InformationObjectTypeID.h"
 
-using namespace elink::common::internal;
+using namespace elink::details;
 
 class IStreamCommonTest : public ::testing::Test {
 protected:
