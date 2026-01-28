@@ -38,15 +38,13 @@ protected:
     template <typename OSream>
     void serialize(OSream& stream) const
     {
-        stream << siqM;
-        stream << cpxxtime2aM;
+        stream << siqM << cpxxtime2aM;
     }
 
     template <typename IStream>
     void deserialize(IStream& stream)
     {
-        stream >> siqM;
-        stream >> cpxxtime2aM;
+        stream >> siqM >> cpxxtime2aM;
     }
 
     [[nodiscard]] constexpr std::size_t payloadLength() const

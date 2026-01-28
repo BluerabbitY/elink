@@ -20,7 +20,7 @@
 
 namespace elink::iec60870::internal {
 
-class IStream : public common::internal::IStreamCommon {
+class IStream : public common::internal::IStreamCommon<IStream> {
 public:
     IStream(const uint8_t* buffer, const std::size_t size) : IStreamCommon{buffer, size}
     {

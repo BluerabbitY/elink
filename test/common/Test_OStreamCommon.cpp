@@ -16,7 +16,7 @@
 
 #include <cstring>
 
-#include "elink/common/codec/OStreamCommon.hpp"
+#include "mock/MockOStream.hpp"
 #include "elink/iec60870/io/InformationObjectTypeID.h"
 
 using namespace elink::common::internal;
@@ -32,7 +32,7 @@ protected:
     }
 
     uint8_t buffer[256]{};
-    OStreamCommon stream{buffer, sizeof(buffer)};
+    mock::OStream stream{buffer, sizeof(buffer)};
 };
 
 TEST_F(OStreamCommonTest, WriteArithmetic)

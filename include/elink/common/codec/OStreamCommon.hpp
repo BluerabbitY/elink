@@ -23,6 +23,7 @@
 
 namespace elink::common::internal {
 
+template <typename inherit>
 class OStreamCommon {
 public:
     OStreamCommon(uint8_t* buffer, const std::size_t size) : bufferM{buffer}, sizeM{size}, writePosM{0}, hasErrorM{false}
@@ -33,10 +34,10 @@ public:
     ~OStreamCommon() = default;
 
     template <typename T>
-    std::enable_if_t<std::is_arithmetic_v<T>, OStreamCommon&> operator<<(T value)
+    std::enable_if_t<std::is_arithmetic_v<T>, inherit&> operator<<(T value)
     {
         if (hasErrorM)
-            return *this;
+            return static_cast<inherit&>(*this);
 
         if (writePosM + sizeof(T) <= sizeM)
         {
@@ -48,14 +49,14 @@ public:
             hasErrorM = true;
         }
 
-        return *this;
+        return static_cast<inherit&>(*this);
     }
 
     template <typename T, typename OriginT = std::underlying_type_t<T> >
-    std::enable_if_t<std::is_enum_v<T>, OStreamCommon&> operator<<(T value)
+    std::enable_if_t<std::is_enum_v<T>, inherit&> operator<<(T value)
     {
         if (hasErrorM)
-            return *this;
+            return static_cast<inherit&>(*this);
 
         if (writePosM + sizeof(OriginT) <= sizeM)
         {
@@ -67,13 +68,13 @@ public:
             hasErrorM = true;
         }
 
-        return *this;
+        return static_cast<inherit&>(*this);
     }
 
-    OStreamCommon& operator<<(const LiteBufferView data)
+    inherit& operator<<(const LiteBufferView data)
     {
         if (hasErrorM && data.empty() && data.data() == nullptr)
-            return *this;
+            return static_cast<inherit&>(*this);
 
         if (writePosM + data.size() <= sizeM)
         {
@@ -85,7 +86,7 @@ public:
             hasErrorM = true;
         }
 
-        return *this;
+        return static_cast<inherit&>(*this);
     }
 
     [[nodiscard]] std::size_t writenBytes() const

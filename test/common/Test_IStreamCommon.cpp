@@ -16,7 +16,7 @@
 
 #include <cstring>
 
-#include "elink/common/codec/IStreamCommon.hpp"
+#include "mock/MockIStream.hpp"
 #include "elink/iec60870/io/InformationObjectTypeID.h"
 
 using namespace elink::common::internal;
@@ -35,7 +35,7 @@ protected:
 TEST_F(IStreamCommonTest, ReadArithmetic)
 {
     constexpr uint8_t buffer[256]{0x12, 0x34, 0x12, 0x78, 0x56, 0x34, 0x12};
-    IStreamCommon stream{buffer, sizeof(buffer)};
+    mock::IStream stream{buffer, sizeof(buffer)};
 
     std::size_t length = 0;
     uint8_t value_u8{0x00};
@@ -62,7 +62,7 @@ TEST_F(IStreamCommonTest, ReadArithmetic)
 TEST_F(IStreamCommonTest, ReadFloat)
 {
     constexpr uint8_t buffer[] = {0x9A, 0x99, 0x31, 0x41};
-    IStreamCommon stream{buffer, sizeof(buffer)};
+    mock::IStream stream{buffer, sizeof(buffer)};
 
     float fixpoint = 0;
     stream >> fixpoint;
@@ -73,7 +73,7 @@ TEST_F(IStreamCommonTest, ReadFloat)
 TEST_F(IStreamCommonTest, ReadEnumAndEnumClass)
 {
     constexpr uint8_t buffer[] = {0x33, 0x3A};
-    IStreamCommon stream{buffer, sizeof(buffer)};
+    mock::IStream stream{buffer, sizeof(buffer)};
 
     std::size_t length = 0;
     elink::iec60870::TypeID iotypeid;
@@ -92,7 +92,7 @@ TEST_F(IStreamCommonTest, ReadEnumAndEnumClass)
 TEST_F(IStreamCommonTest, ReadSpan)
 {
     constexpr uint8_t buffer[] = {0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC, 0xDE, 0xF0};
-    IStreamCommon stream{buffer, sizeof(buffer)};
+    mock::IStream stream{buffer, sizeof(buffer)};
 
     uint8_t dest[sizeof(buffer)]{};
     const elink::LiteBuffer span_dest{dest, sizeof(dest)};
@@ -106,7 +106,7 @@ TEST_F(IStreamCommonTest, ReadSpan)
 TEST_F(IStreamCommonTest, ReadOverflow)
 {
     uint8_t buffer[16]{};
-    IStreamCommon stream{buffer, sizeof(buffer)};
+    mock::IStream stream{buffer, sizeof(buffer)};
 
     uint8_t dest[512]{};
     const elink::LiteBuffer span_dest{dest, sizeof(dest)};
