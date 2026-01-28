@@ -16,8 +16,13 @@
 
 #include <span>
 #include <cstdint>
+#include <functional>
 
 #define E_UNUSED(x) (void)(x)
+
+#define E_INTERRUPTABLE_BEGIN do {
+#define E_INTERRUPTABLE_END } while(false)
+#define E_INTERRUPT break
 
 namespace elink
 {
@@ -31,14 +36,16 @@ using MessageBufferView = std::span<const uint8_t>;
 using MessageBuffer = std::span<uint8_t>;
 
 enum class MessageDir : uint8_t {
-    MSG_RECV,
-    MSG_SEND,
+    MSG_DIR_RECV,
+    MSG_DIR_SEND,
 };
 
 template <typename T>
 concept RawMessageHandlerConcept = requires(T handler, MessageBufferView msg, MessageDir dir) {
     { handler(msg, dir) } -> std::same_as<void>;
 };
+
+using RawMessageHandler = std::function<void(MessageBufferView, MessageDir)>;
 
 enum LogLevel {
     DBG,
