@@ -1,5 +1,5 @@
 /***********************************************************************************
- * \file OStreamCommon.hpp
+ * \file OStream.hpp
  * \author BlueRabbitY (BlueRabbitY\@protonmail.com)
  * \brief
  * \date 2026-01-02 23:26:57
@@ -24,14 +24,14 @@
 namespace elink::details {
 
 template <typename inherit>
-class OStreamCommon {
+class OStream {
 public:
-    OStreamCommon(uint8_t* buffer, const std::size_t size) : bufferM{buffer}, sizeM{size}, writePosM{0}, hasErrorM{false}
+    OStream(uint8_t* buffer, const std::size_t size) : bufferM{buffer}, sizeM{size}, writePosM{0}, hasErrorM{false}
     {
         assert(buffer);
     }
 
-    ~OStreamCommon() = default;
+    ~OStream() = default;
 
     template <typename T>
     std::enable_if_t<std::is_arithmetic_v<T>, inherit&> operator<<(T value)

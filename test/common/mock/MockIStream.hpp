@@ -14,20 +14,20 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/common/codec/IStreamCommon.hpp"
+#include "elink/common/details/codec/IStream.hpp"
 
 namespace mock
 {
 
-class IStream : public elink::details::IStreamCommon<IStream> {
+class IStream : public elink::details::IStream<IStream> {
 public:
-    IStream(const uint8_t* buffer, const std::size_t size) : IStreamCommon{buffer, size}
+    IStream(const uint8_t* buffer, const std::size_t size) : elink::details::IStream<IStream>{buffer, size}
     {
     }
 
     ~IStream() = default;
 
-    using IStreamCommon::operator>>;
+    using elink::details::IStream<IStream>::operator>>;
 };
 
 }

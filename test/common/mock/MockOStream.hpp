@@ -14,20 +14,20 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/common/codec/OStreamCommon.hpp"
+#include "elink/common/details/codec/OStream.hpp"
 
 namespace mock
 {
 
-class OStream : public elink::details::OStreamCommon<OStream> {
+class OStream : public elink::details::OStream<OStream> {
 public:
-    OStream(uint8_t* buffer, const std::size_t size) : OStreamCommon{buffer, size}
+    OStream(uint8_t* buffer, const std::size_t size) : elink::details::OStream<OStream>{buffer, size}
     {
     }
 
     ~OStream() = default;
 
-    using OStreamCommon::operator<<;
+    using elink::details::OStream<OStream>::operator<<;
 };
 
 }

@@ -14,21 +14,21 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/common/codec/OStreamCommon.hpp"
+#include "elink/common/details/codec/OStream.hpp"
 #include "elink/iec60870/CPxxTime2a.hpp"
 #include "elink/iec60870/io/InformationObjectAddress.hpp"
 
 namespace elink::iec60870::details {
 
-class OStream : public elink::details::OStreamCommon<OStream> {
+class OStream : public elink::details::OStream<OStream> {
 public:
-    OStream(uint8_t* buffer, const std::size_t size) : OStreamCommon{buffer, size}
+    OStream(uint8_t* buffer, const std::size_t size) : elink::details::OStream<OStream>{buffer, size}
     {
     }
 
     ~OStream() = default;
 
-    using OStreamCommon::operator<<;
+    using elink::details::OStream<OStream>::operator<<;
 
     OStream& operator<<(const IOA ioa)
     {

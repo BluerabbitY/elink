@@ -1,5 +1,5 @@
 /***********************************************************************************
- * \file IStreamCommon.hpp
+ * \file IStream.hpp
  * \author BlueRabbitY (BlueRabbitY\@protonmail.com)
  * \brief 
  * \date 2026-01-02 23:13:01
@@ -24,14 +24,14 @@
 namespace elink::details {
 
 template <typename inherit>
-class IStreamCommon {
+class IStream {
 public:
-    IStreamCommon(const uint8_t* buffer, const std::size_t size) : bufferM{buffer}, sizeM{size}, readPosM{0}, hasErrorM{false}
+    IStream(const uint8_t* buffer, const std::size_t size) : bufferM{buffer}, sizeM{size}, readPosM{0}, hasErrorM{false}
     {
         assert(buffer);
     }
 
-    ~IStreamCommon() = default;
+    ~IStream() = default;
 
     template <typename T>
     std::enable_if_t<std::is_arithmetic_v<T>, inherit&> operator>>(T& value)
