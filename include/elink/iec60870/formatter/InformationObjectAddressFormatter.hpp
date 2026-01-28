@@ -16,6 +16,8 @@
 
 #include "elink/iec60870/io/InformationObjectAddress.hpp"
 
+#include <format>
+
 namespace std
 {
 
