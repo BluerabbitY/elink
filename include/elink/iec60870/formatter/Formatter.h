@@ -17,3 +17,4 @@
 #include "elink/iec60870/formatter/InformationObjectTypeIDFormatter.hpp"
 #include "elink/iec60870/formatter/InformationObjectFormatter.hpp"
 #include "elink/iec60870/formatter/InformationObjectAddressFormatter.hpp"
+#include "elink/iec60870/formatter/CauseOfTransmissionFormatter.hpp"
