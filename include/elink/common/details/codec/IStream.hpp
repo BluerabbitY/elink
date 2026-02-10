@@ -89,6 +89,11 @@ public:
         return static_cast<inherit&>(*this);
     }
 
+    const uint8_t* const_data() const
+    {
+        return bufferM;
+    }
+
     [[nodiscard]] std::size_t readBytes() const
     {
         return readPosM;

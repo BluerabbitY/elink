@@ -28,3 +28,5 @@
 #include "elink/iec60870/formatter/Formatter.h"
 
 #include "elink/iec60870/communication/link_layer/SerialFT12MessageTransceiver.hpp"
+
+#include "elink/iec60870/ApplicationServiceDataUnit.hpp"

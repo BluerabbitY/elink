@@ -24,7 +24,7 @@ namespace elink::iec60870::ft12
 
 namespace details {
 // maximum FT1.2 frame length
-constexpr uint8_t MaxFT12FrameLength = 261;
+constexpr uint16_t MaxFT12FrameLength = 261;
 }
 
 template<SerialPortLike TransceiverImp, std::size_t N = details::MaxFT12FrameLength>

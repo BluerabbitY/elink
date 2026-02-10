@@ -14,6 +14,7 @@
  ***********************************************************************************/
 #pragma once
 
+#include <array>
 #include <span>
 #include <cstdint>
 #include <functional>
@@ -26,6 +27,9 @@
 
 namespace elink
 {
+
+template <std::size_t N>
+using Buffer = std::array<uint8_t, N>;
 
 using LiteBufferView = std::span<const uint8_t>;
 

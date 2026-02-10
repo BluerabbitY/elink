@@ -14,18 +14,12 @@
  ***********************************************************************************/
 #pragma once
 
-#include <cstdint>
+#include "elink/iec60870/AppLayerParameters.hpp"
+#include "elink/common/Type.hpp"
+
 #include <algorithm>
 
 namespace elink::iec60870 {
-
-enum class InformationObjectAddressByteLength : uint8_t {
-    One = 1,
-    Two = 2,
-    Three = 3,
-};
-
-using IOAByteLength = InformationObjectAddressByteLength;
 
 class InformationObjectAddress final {
 public:
@@ -33,10 +27,32 @@ public:
     {
     }
 
-    explicit InformationObjectAddress(const int ioa,
-                                      const IOAByteLength byteOfIOA = IOAByteLength::Three) : addressM{ioa},
-        byteOfIOAM{byteOfIOA}
+    explicit InformationObjectAddress(const int ioa, const IOAByteLength byteOfIOA = IOAByteLength::Three)
+    : addressM{ioa}, byteOfIOAM{byteOfIOA}
     {
+    }
+
+    InformationObjectAddress(const int ioa, const AppLayerParameters& parameters)
+    : addressM{ioa}, byteOfIOAM{parameters.getLengthOfIOA()}
+    {
+    }
+
+    explicit InformationObjectAddress(const LiteBufferView buffer)
+    {
+        addressM = buffer[0];
+        byteOfIOAM = IOAByteLength::One;
+
+        if (buffer.size_bytes() >= 2)
+        {
+            byteOfIOAM = IOAByteLength::Two;
+            addressM += buffer[1] * 0x100;
+        }
+
+        if (buffer.size_bytes() >= 3)
+        {
+            byteOfIOAM = IOAByteLength::Three;
+            addressM += buffer[2] * 0x10000;
+        }
     }
 
     ~InformationObjectAddress() = default;
@@ -57,8 +73,7 @@ public:
         return *this;
     }
 
-    bool
-    setAddress(const int ioa)
+    bool setAddress(const int ioa)
     {
         addressM = std::clamp<int>(ioa, 0, (1 << 8 * static_cast<int>(byteOfIOAM)) - 1);
         return addressM == ioa;

@@ -17,6 +17,8 @@
 #include "elink/iec60870/io/InformationObjectAddress.hpp"
 #include "elink/iec60870/io/InformationObjectTypeID.h"
 
+#include <memory>
+
 namespace elink::iec60870 {
 
 class InformationObject {
