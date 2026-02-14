@@ -47,6 +47,27 @@ TEST_F(InformationObjectAddressTest, Constructor)
               static_cast<size_t>(elink::iec60870::IOAByteLength::Two));
 }
 
+TEST_F(InformationObjectAddressTest, ConstructorFromBuffer)
+{
+    uint8_t ioabuffer1[] = {0x12};
+    const elink::LiteBuffer buffer1{ioabuffer1};
+    const elink::iec60870::IOA ioa1{buffer1};
+    EXPECT_EQ(ioa1.address(), 18);
+    EXPECT_EQ(ioa1.getLengthOfInformationObjectAddress(), static_cast<size_t>(elink::iec60870::IOAByteLength::One));
+
+    uint8_t ioabuffer2[] = {0xfe, 0xff};
+    const elink::LiteBuffer buffer2{ioabuffer2};
+    const elink::iec60870::IOA ioa2{buffer2};
+    EXPECT_EQ(ioa2.address(), 65'534);
+    EXPECT_EQ(ioa2.getLengthOfInformationObjectAddress(), static_cast<size_t>(elink::iec60870::IOAByteLength::Two));
+
+    uint8_t ioabuffer3[] = {0xfe, 0xff, 0xff};
+    const elink::LiteBuffer buffer3{ioabuffer3};
+    const elink::iec60870::IOA ioa3{buffer3};
+    EXPECT_EQ(ioa3.address(), 16'777'214);
+    EXPECT_EQ(ioa3.getLengthOfInformationObjectAddress(), static_cast<size_t>(elink::iec60870::IOAByteLength::Three));
+}
+
 // test operator== and operator!=
 TEST_F(InformationObjectAddressTest, OperatorEuqal)
 {

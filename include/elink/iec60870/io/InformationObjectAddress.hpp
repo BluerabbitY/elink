@@ -23,35 +23,44 @@ namespace elink::iec60870 {
 
 class InformationObjectAddress final {
 public:
-    InformationObjectAddress() : addressM{0}, byteOfIOAM{IOAByteLength::Three}
+    InformationObjectAddress() : addressM{0}
     {
+        setIOAByteLength(IOAByteLength::Three);
     }
 
     explicit InformationObjectAddress(const int ioa, const IOAByteLength byteOfIOA = IOAByteLength::Three)
-    : addressM{ioa}, byteOfIOAM{byteOfIOA}
+    : addressM{0}
     {
+        setIOAByteLength(byteOfIOA);
+        setAddress(ioa);
     }
 
     InformationObjectAddress(const int ioa, const AppLayerParameters& parameters)
-    : addressM{ioa}, byteOfIOAM{parameters.getLengthOfIOA()}
+    : addressM{0}
     {
+        setIOAByteLength(parameters.getLengthOfIOA());
+        setAddress(ioa);
     }
 
     explicit InformationObjectAddress(const LiteBufferView buffer)
+    : addressM{0}
     {
-        addressM = buffer[0];
-        byteOfIOAM = IOAByteLength::One;
+        if (buffer.size_bytes() >= 1)
+        {
+            setIOAByteLength(IOAByteLength::One);
+            setAddress(buffer[0]);
+        }
 
         if (buffer.size_bytes() >= 2)
         {
-            byteOfIOAM = IOAByteLength::Two;
-            addressM += buffer[1] * 0x100;
+            setIOAByteLength(IOAByteLength::Two);
+            setAddress(address() + buffer[1] * 0x100);
         }
 
         if (buffer.size_bytes() >= 3)
         {
-            byteOfIOAM = IOAByteLength::Three;
-            addressM += buffer[2] * 0x10000;
+            setIOAByteLength(IOAByteLength::Three);
+            setAddress(address() + buffer[2] * 0x10000);
         }
     }
 
@@ -59,12 +68,12 @@ public:
 
     bool operator==(const InformationObjectAddress& other) const
     {
-        return addressM == other.addressM && byteOfIOAM == other.byteOfIOAM;
+        return addressM == other.addressM && getIOAByteLength() == other.getIOAByteLength();
     }
 
     bool operator!=(const InformationObjectAddress& other) const
     {
-        return addressM != other.address() || byteOfIOAM != other.byteOfIOAM;
+        return addressM != other.address() || getIOAByteLength() != other.getIOAByteLength();
     }
 
     InformationObjectAddress& operator=(const int address)
@@ -75,34 +84,44 @@ public:
 
     bool setAddress(const int ioa)
     {
-        addressM = std::clamp<int>(ioa, 0, (1 << 8 * static_cast<int>(byteOfIOAM)) - 1);
-        return addressM == ioa;
+        addressM = (addressM & 0xff000000) | (std::clamp<int>(ioa, 0, (1 << 8 * static_cast<int>(getIOAByteLength())) - 1) & 0x00ffffff);
+        return address() == ioa;
     }
 
     [[nodiscard]] int address() const
     {
-        return addressM;
+        return static_cast<int>(addressM & 0x00ffffff);
     }
 
     [[nodiscard]] int getLengthOfInformationObjectAddress() const
     {
-        return static_cast<int>(byteOfIOAM);
+        return static_cast<int>(getIOAByteLength());
     }
 
     [[nodiscard]] IOAByteLength getLengthOfInformationObjectAddressStrategy() const
     {
-        return byteOfIOAM;
+        return getIOAByteLength();
     }
 
     void resetLengthOfInformationObjectAddress(const IOAByteLength byteOfIOA)
     {
-        byteOfIOAM = byteOfIOA;
-        setAddress(addressM);
+        setIOAByteLength(byteOfIOA);
+        setAddress(address());
     }
 
 private:
-    int addressM;
-    IOAByteLength byteOfIOAM;
+    void setIOAByteLength(const IOAByteLength byteOfIOA)
+    {
+        addressM = (addressM & ~0xff000000) | ((static_cast<int>(byteOfIOA) << 24) & 0xff000000);
+    }
+
+    [[nodiscard]] IOAByteLength getIOAByteLength() const
+    {
+        return static_cast<IOAByteLength>((addressM & 0xff000000) >> 24);
+    }
+
+    // 1 byte length + 3 byte address
+    uint32_t addressM;
 };
 
 using IOA = InformationObjectAddress;
