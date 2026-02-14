@@ -17,9 +17,14 @@
 #include "elink/common/details/Platform.hpp"
 
 #if (ELINK_PLATFORM == ELINK_WIN32)
+#include <sstream>
+
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+
 #include <windows.h>
 #include <processthreadsapi.h>
-#include <wstring>
 #elif (ELINK_PLATFORM == ELINK_LINUX || ELINK_PLATFORM == ELINK_UNIX || ELINK_PLATFORM == ELINK_APPLE)
 #include <pthread.h>
 #endif
@@ -42,17 +47,26 @@ class ThreadName
 public:
     static void setThreadName(const std::string& threadName)
     {
-        if (!threadNameS.empty())
+        if (!threadNameStorage().empty())
             return;
 
-        threadNameS = threadName;
+        threadNameStorage() = threadName;
 
         // Regardless of the platform,
         // follow Linux naming conventions to ensure that thread names are the same on any platform.
         const std::string limitedThreadName = threadName.size() > 15 ? threadName.substr(0, 15) : threadName;
 #if (ELINK_PLATFORM == ELINK_WIN32)
-        const std::wstring winThreadName{limitedThreadName.begin(), limitedThreadName.end()};
-        SetThreadDescription(GetCurrentThread(), winThreadName.c_str());
+        using SetThreadDescriptionFunc = HRESULT (WINAPI *)(HANDLE, PCWSTR);
+        const HMODULE hKernel32 = GetModuleHandleW(L"kernel32.dll");
+        if (!hKernel32)
+            return;
+
+        if (const auto pSetThreadDescription = reinterpret_cast<SetThreadDescriptionFunc>(GetProcAddress(hKernel32, "SetThreadDescription")))
+        {
+            const std::wstring winThreadName{limitedThreadName.begin(), limitedThreadName.end()};
+            std::ignore = pSetThreadDescription(GetCurrentThread(), winThreadName.c_str());
+            // if (SUCCEEDED(hr)) {}
+        }
 #elif (ELINK_PLATFORM == ELINK_LINUX || ELINK_PLATFORM == ELINK_UNIX)
         pthread_setname_np(pthread_self(), limitedThreadName.c_str());
 #elif (ELINK_PLATFORM == ELINK_APPLE)
@@ -62,12 +76,12 @@ public:
 
     static std::string threadName()
     {
-        if (threadNameS.empty())
+        if (threadNameStorage().empty())
         {
             return threadId();
         }
 
-        return threadNameS;
+        return threadNameStorage();
     }
 
 private:
@@ -85,7 +99,13 @@ private:
         return id;
     }
 
-    thread_local static inline std::string threadNameS{};
+    static std::string& threadNameStorage()
+    {
+        // Header-only safe accessor: returns a reference to a function-local thread_local string.
+        // This avoids emitting TLS init functions in every translation unit that includes this header.
+        thread_local std::string s;
+        return s;
+    }
 };
 
 }

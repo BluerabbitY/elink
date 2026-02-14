@@ -19,6 +19,8 @@
 #include "asio/serial_port_base.hpp"
 #include "asio/awaitable.hpp"
 
+#include <chrono>
+
 namespace elink {
 
 struct SerialPortCFG {

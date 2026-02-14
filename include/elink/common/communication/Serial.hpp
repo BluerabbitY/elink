@@ -14,6 +14,14 @@
  ***********************************************************************************/
 #pragma once
 
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+
+// Prevent windows.h from pulling in the old WinSock.h (which conflicts with winsock2.h used by ASIO)
+// Note: do not define _WINSOCKAPI_ here; defining it can make ASIO think WinSock.h was already
+// included and trigger an error. Let ASIO include winsock2.h when it needs to.
+
 #include "elink/common/communication/Type.hpp"
 #include "elink/common/Type.hpp"
 #include "elink/common/logging/logger.hpp"
