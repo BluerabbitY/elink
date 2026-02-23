@@ -19,6 +19,14 @@
 namespace elink::iec60870
 {
 
+enum class TypeIdByteLength : uint8_t {
+    One = 1,
+};
+
+enum class VSQByteLength : uint8_t {
+    One = 1,
+};
+
 enum class InformationObjectAddressByteLength : uint8_t {
     One = 1,
     Two = 2,
@@ -38,7 +46,9 @@ enum class CommonAddressByteLength : uint8_t {
 class AppLayerParameters {
 public:
     AppLayerParameters()
-    : sizeOfCOTM{CauseOfTransmissionByteLength::Two},
+    : sizeOfTypeIdM{TypeIdByteLength::One},
+      sizeOfVSQM{VSQByteLength::One},
+      sizeOfCOTM{CauseOfTransmissionByteLength::Two},
       originatorAddress{0},
       sizeOfCAM{CommonAddressByteLength::Two},
       sizeOfIOAM{InformationObjectAddressByteLength::Three}
@@ -46,6 +56,16 @@ public:
     }
 
     ~AppLayerParameters() = default;
+
+    [[nodiscard]] TypeIdByteLength getLengthOfTypeId() const
+    {
+        return sizeOfTypeIdM.load(std::memory_order::acquire);
+    }
+
+    [[nodiscard]] VSQByteLength getLengthOfVSQ() const
+    {
+        return sizeOfVSQM.load(std::memory_order::acquire);
+    }
 
     [[nodiscard]] InformationObjectAddressByteLength getLengthOfIOA() const
     {
@@ -77,9 +97,17 @@ public:
         return sizeOfCAM.store(sizeOfCA, std::memory_order::release);
     }
 
+    [[nodiscard]] uint8_t getHeaderLength() const
+    {
+        return static_cast<uint8_t>(sizeOfTypeIdM.load(std::memory_order::acquire)) +
+               static_cast<uint8_t>(sizeOfVSQM.load(std::memory_order::acquire)) +
+               static_cast<uint8_t>(sizeOfCOTM.load(std::memory_order::acquire)) +
+               static_cast<uint8_t>(sizeOfCAM.load(std::memory_order::acquire));
+    }
+
 private:
-    std::atomic_uint8_t sizeOfTypeId;
-    std::atomic_uint8_t sizeOfVSQ;
+    std::atomic<TypeIdByteLength> sizeOfTypeIdM;
+    std::atomic<VSQByteLength> sizeOfVSQM;
     std::atomic<CauseOfTransmissionByteLength> sizeOfCOTM;
     std::atomic_uint8_t originatorAddress;
     std::atomic<CommonAddressByteLength> sizeOfCAM;

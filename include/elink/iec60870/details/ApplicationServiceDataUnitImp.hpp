@@ -28,20 +28,20 @@ class ApplicationServiceDataUnitImp
 {
 public:
     explicit ApplicationServiceDataUnitImp(const AppLayerParameters& parameters)
-    : parametersM{parameters},
-      asduHeaderLengthM{static_cast<uint8_t>(LENGTH_OF_TTPEID + LENGTH_OF_VSQ + static_cast<uint8_t>(parameters.getLengthOfCOT()) + static_cast<uint8_t>(parameters.getLengthOfCA()))},
+    : typeM{ASDUType::CONSTRUCT},
+      parametersM{parameters},
       bufferM{},
       asduM{bufferM},
-      payloadM{bufferM.data() + asduHeaderLengthM, MaxLengthOfASDU - asduHeaderLengthM}
+      payloadM{bufferM.data() + parameters.getHeaderLength(), MaxLengthOfASDU - parameters.getHeaderLength()}
     {
     }
 
     ApplicationServiceDataUnitImp(const AppLayerParameters& parameters, const bool isSequence, const COT cot, const int oa, const int ca, const bool isTest = false, const bool isNegative = false)
-        : parametersM{parameters},
-          asduHeaderLengthM{static_cast<uint8_t>(LENGTH_OF_TTPEID + LENGTH_OF_VSQ + static_cast<uint8_t>(parameters.getLengthOfCOT()) + static_cast<uint8_t>(parameters.getLengthOfCA()))},
-          bufferM{},
-          asduM{bufferM},
-          payloadM{bufferM.data() + asduHeaderLengthM, MaxLengthOfASDU - asduHeaderLengthM}
+    : typeM{ASDUType::CONSTRUCT},
+      parametersM{parameters},
+      bufferM{},
+      asduM{bufferM},
+      payloadM{bufferM.data() + parameters.getHeaderLength(), MaxLengthOfASDU - parameters.getHeaderLength()}
     {
         setSequence(isSequence);
         setCOT(cot);
@@ -52,11 +52,11 @@ public:
     }
 
     explicit ApplicationServiceDataUnitImp(const AppLayerParameters& parameters, const LiteBufferView buffer)
-    : parametersM{parameters},
-      asduHeaderLengthM{static_cast<uint8_t>(LENGTH_OF_TTPEID + LENGTH_OF_VSQ + static_cast<uint8_t>(parameters.getLengthOfCOT()) + static_cast<uint8_t>(parameters.getLengthOfCA()))},
+    : typeM{ASDUType::TEMPLATE},
+      parametersM{parameters},
       bufferM{},
-      asduM{const_cast<uint8_t*>(buffer.data()), buffer.size()},
-      payloadM{bufferM.data() + asduHeaderLengthM, MaxLengthOfASDU - asduHeaderLengthM}
+      asduM{const_cast<uint8_t*>(buffer.data()), buffer.size_bytes()},
+      payloadM{bufferM.data() + parameters.getHeaderLength(), MaxLengthOfASDU - parameters.getHeaderLength()}
     {
     }
 
@@ -150,7 +150,9 @@ public:
 
     [[nodiscard]] uint16_t getCA() const
     {
-        const int caIndex = LENGTH_OF_TTPEID + LENGTH_OF_VSQ + static_cast<int>(parametersM.getLengthOfCOT());
+        const int caIndex = static_cast<int>(parametersM.getLengthOfTypeId()) +
+                            static_cast<int>(parametersM.getLengthOfVSQ()) +
+                            static_cast<int>(parametersM.getLengthOfCOT());
 
         int ca = asduM[caIndex];
 
@@ -162,7 +164,9 @@ public:
 
     void setCA(uint16_t ca)
     {
-        const int caIndex = LENGTH_OF_TTPEID + LENGTH_OF_VSQ + static_cast<int>(parametersM.getLengthOfCOT());
+        const int caIndex = static_cast<int>(parametersM.getLengthOfTypeId()) +
+                            static_cast<int>(parametersM.getLengthOfVSQ()) +
+                            static_cast<int>(parametersM.getLengthOfCOT());
 
         if (parametersM.getLengthOfCA() == CAByteLength::One)
         {
@@ -189,11 +193,13 @@ public:
     {
         bool encoded = false;
 
+        const auto& ioserialze = static_cast<const InformationObjectSerializable::SerializeType&>(io);
+
         if (const int numberOfElements = getNumberOfElements(); numberOfElements == 0)
         {
             setTypeID(io.getTypeID());
-            io.serialize(payloadM, false);
-            encoded = payloadM.hasError();
+            ioserialze.serialize(payloadM, false);
+            encoded = !payloadM.hasError();
         }
         else if (numberOfElements <= 0x7f)
         {
@@ -202,19 +208,20 @@ public:
             {
                 if (isSequence())
                 {
+                    const IOA firstIOA{LiteBufferView{asduM.data() + parametersM.getHeaderLength(), static_cast<std::size_t>(parametersM.getLengthOfIOA())}};
                     /* check that new information object has correct IOA */
-                    if (getObjectAddress(io) == (getFirstIOA() + numberOfElements))
+                    if (io.getInformationObjectAddress().address() == (firstIOA.address() + numberOfElements))
                     {
-                        io.serialize(payloadM, true);
-                        encoded = payloadM.hasError();
+                        ioserialze.serialize(payloadM, true);
+                        encoded = !payloadM.hasError();
                     }
                     else
                         encoded = false;
                 }
                 else
                 {
-                    io.serialize(payloadM, false);
-                    encoded = payloadM.hasError();
+                    ioserialze.serialize(payloadM, false);
+                    encoded = !payloadM.hasError();
                 }
             }
         }
@@ -226,6 +233,57 @@ public:
         payloadM.acknowledgeError();
 
         return encoded;
+    }
+
+    template <typename IOType>
+    std::optional<IOType> getElement(const int index) const
+    {
+        if (getTypeID() == IOType::IDENT_T)
+        {
+            std::optional<IOType> io{std::in_place};
+            const bool isSeq = isSequence();
+            const int elementLength = io->length(isSeq);
+
+            int startIndex = parametersM.getHeaderLength();
+
+            if (isSeq)
+            {
+                startIndex += static_cast<uint8_t>(parametersM.getLengthOfIOA()) + elementLength * index;
+                const IOA firstIOA{LiteBufferView{asduM.data() + parametersM.getHeaderLength(), static_cast<std::size_t>(parametersM.getLengthOfIOA())}};
+                io->setInformationObjectAddress(IOA{firstIOA.address() + index, parametersM.getLengthOfIOA()});
+            }
+            else
+            {
+                startIndex += (static_cast<uint8_t>(parametersM.getLengthOfIOA()) + elementLength) * index;
+            }
+
+            switch (typeM)
+            {
+                case ASDUType::CONSTRUCT: {
+                    if (startIndex + elementLength > payloadM.writenBytes() + parametersM.getHeaderLength())
+                        return std::nullopt;
+                    break;
+                }
+                case ASDUType::TEMPLATE: {
+                    if (index >= getNumberOfElements())
+                        return std::nullopt;
+                    break;
+                }
+            }
+
+            IStream istream{asduM.data() + startIndex, asduM.size_bytes()};
+
+            static_cast<IOType::SerializeType&>(*io).deserialize(istream, isSeq);
+
+            if (istream.hasError())
+            {
+                return std::nullopt;
+            }
+
+            return io;
+        }
+
+        return std::nullopt;
     }
 
     void removeAllElements()
@@ -242,29 +300,21 @@ public:
     bool addPayload(const LiteBufferView buffer)
     {
         payloadM << buffer;
-        const bool encoded = payloadM.hasError();
+        const bool encoded = !payloadM.hasError();
         payloadM.acknowledgeError();
         return encoded;
     }
 
 private:
-    [[nodiscard]] int getFirstIOA() const
-    {
-        const IOA ioa{LiteBufferView{asduM.data(), static_cast<int>(parametersM.getLengthOfIOA())}};
-        return ioa.getLengthOfInformationObjectAddress();
-    }
+    enum class ASDUType : uint8_t {
+        CONSTRUCT,
+        TEMPLATE,
+    };
 
-    static constexpr uint16_t MAX_LENGTH_OF_ASDU = 256;
-    static constexpr uint8_t LENGTH_OF_TTPEID = 1;
-    static constexpr uint8_t LENGTH_OF_VSQ = 1;
-
+    const ASDUType typeM;
     const AppLayerParameters& parametersM;
-    const uint8_t asduHeaderLengthM;
-
-    Buffer<MAX_LENGTH_OF_ASDU> bufferM;
-
+    Buffer<MaxLengthOfASDU> bufferM;
     LiteBuffer asduM;
-
     OStream payloadM;
 };
 

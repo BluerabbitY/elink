@@ -11,6 +11,8 @@ add_executable(${TEST_PROJECT_NAME}
         ${CMAKE_CURRENT_LIST_DIR}/common/Test_IStreamCommon.cpp
         ${CMAKE_CURRENT_LIST_DIR}/common/Test_RelocatedLog.cpp
         # iec60870 tests
+        ## asdu
+        ${CMAKE_CURRENT_LIST_DIR}/iec60870/asdu/Test_ApplicationServiceDataUnit.cpp
         ## codec
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/codec/Test_OStream.cpp
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/codec/Test_IStream.cpp

@@ -16,6 +16,7 @@
 
 #include "elink/iec60870/io/InformationObject.hpp"
 #include "elink/iec60870/io/InformationObjectTypeID.h"
+#include "elink/iec60870/AppLayerParameters.hpp"
 
 #include <memory>
 
@@ -77,9 +78,19 @@ public:
         return ioaM.getLengthOfInformationObjectAddress() + static_cast<const inherit*>(this)->payloadLength();
     }
 
+    [[nodiscard]] std::size_t length(const bool isSequence) const
+    {
+        if (isSequence)
+            return static_cast<const inherit*>(this)->payloadLength();
+        else
+            return ioaM.getLengthOfInformationObjectAddress() + static_cast<const inherit*>(this)->payloadLength();
+    }
+
     using Ptr = std::shared_ptr<inherit>;
 
     using SerializePtr = std::shared_ptr<InformationObjectSerializable>;
+
+    using SerializeType = InformationObjectSerializable;
 
     static constexpr TypeID IDENT_T = typeID;
 };
