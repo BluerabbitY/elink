@@ -217,7 +217,7 @@ TEST_F(ApplicationServiceDataUnitTest, ConstructorFlags_CS104)
 
 TEST_F(ApplicationServiceDataUnitTest, AddInformationObjectSerialize_CS104)
 {
-    AppLayerParameters params;
+    const AppLayerParameters params;
     cs104::ASDU asdu{params};
 
     SinglePointInformation sio{IOA{0x200}, true, Quality::BLOCKED};
