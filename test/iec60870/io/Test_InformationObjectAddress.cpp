@@ -99,6 +99,22 @@ TEST_F(InformationObjectAddressTest, OperatorAssignment)
     EXPECT_EQ(ioaParam.address(), validIOA);
 }
 
+// test operator+=
+TEST_F(InformationObjectAddressTest, OperatorPlus)
+{
+    elink::iec60870::IOA ioa{1234};
+    ioa += 10;
+    EXPECT_EQ(ioa.address(), 1244);
+}
+
+// test operator-
+TEST_F(InformationObjectAddressTest, OperatorMinus)
+{
+    elink::iec60870::IOA ioa{1234};
+    ioa -= 10;
+    EXPECT_EQ(ioa.address(), 1224);
+}
+
 TEST_F(InformationObjectAddressTest, Limits)
 {
     constexpr int invalidIOALow{-1};

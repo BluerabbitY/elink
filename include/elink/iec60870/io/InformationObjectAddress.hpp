@@ -82,6 +82,18 @@ public:
         return *this;
     }
 
+    InformationObjectAddress& operator+=(const int offset)
+    {
+        setAddress(address() + offset);
+        return *this;
+    }
+
+    InformationObjectAddress& operator-=(const int offset)
+    {
+        setAddress(address() - offset);
+        return *this;
+    }
+
     bool setAddress(const int ioa)
     {
         addressM = (addressM & 0xff000000) | (std::clamp<int>(ioa, 0, (1 << 8 * static_cast<int>(getIOAByteLength())) - 1) & 0x00ffffff);
