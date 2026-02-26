@@ -1,4 +1,3 @@
-
 find_package(GTest REQUIRED)
 
 set(TEST_SUFFIX "TestRunner")
@@ -22,15 +21,15 @@ add_executable(${TEST_PROJECT_NAME}
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/cpxxtime2a/Test_CPxxTime2a.cpp
         ## formatter
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/formatter/Test_Formatter.cpp
-        ## io
+        ## io - common
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_InformationObjectAddress.cpp
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_InformationObjectTypeID.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_SinglePointInformation.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_SinglePointWithCP24Time2a.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_DoublePointInformation.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_DoublePointWithCP24Time2a.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_StepPositionInformation.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_StepPositionWithCP24Time2a.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_InformationObjectSerializable.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_InformationObjectWithCPxxTime2a.cpp
+        ## io - information objects
+        ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_SinglePointInformationSet.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_DoublePointInformationSet.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_StepPositionInformationSet.cpp
 )
 
 target_link_libraries(${TEST_PROJECT_NAME} PRIVATE GTest::gtest_main)

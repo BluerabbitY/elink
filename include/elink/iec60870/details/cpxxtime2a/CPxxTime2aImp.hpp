@@ -15,8 +15,8 @@
 #pragma once
 
 #include "elink/common/details/Platform.hpp"
+#include "elink/common/Type.hpp"
 
-#include <array>
 #include <ctime>
 #include <chrono>
 
@@ -268,6 +268,11 @@ public:
         return cpxxtime2a;
     }
 
+    bool operator==(const CPxxTime2aImp& other) const
+    {
+        return (other.bufferM.size() == bufferM.size()) && (other.bufferM == bufferM);
+    }
+
 protected:
     template <typename T>
     friend const uint8_t* getCPxxTime2aData(const T& cpxxtime2a);
@@ -285,7 +290,7 @@ private:
         #endif
     }
 
-    std::array<uint8_t, N> bufferM;
+    Buffer<N> bufferM;
 };
 
 }

@@ -26,7 +26,15 @@ template <typename Timestamp> requires (std::is_same_v<Timestamp, CP16Time2a> ||
 class CPxxTime2aUtil
 {
 public:
-    CPxxTime2aUtil() : cpxxtime2aM{Timestamp::now()}
+    CPxxTime2aUtil() requires (std::is_same_v<Timestamp, CP24Time2a> ||
+                               std::is_same_v<Timestamp, CP32Time2a> ||
+                               std::is_same_v<Timestamp, CP56Time2a>)
+    : cpxxtime2aM{Timestamp::now()}
+    {
+    }
+
+    CPxxTime2aUtil() requires (std::is_same_v<Timestamp, CP16Time2a>)
+    : cpxxtime2aM{}
     {
     }
 
