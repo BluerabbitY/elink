@@ -40,20 +40,20 @@ TEST_F(OStreamCommonTest, WriteArithmetic)
     std::size_t length = 0;
     stream << uint8_t{0x12};
     EXPECT_FALSE(stream.hasError());
-    EXPECT_EQ(stream.writenBytes(), sizeof(uint8_t));
+    EXPECT_EQ(stream.size(), sizeof(uint8_t));
 
-    length = stream.writenBytes();
+    length = stream.size();
     stream << uint16_t{0x1234};
     EXPECT_FALSE(stream.hasError());
-    EXPECT_EQ(stream.writenBytes(), length + sizeof(uint16_t));
+    EXPECT_EQ(stream.size(), length + sizeof(uint16_t));
 
-    length = stream.writenBytes();
+    length = stream.size();
     stream << uint32_t{0x12345678};
     EXPECT_FALSE(stream.hasError());
-    EXPECT_EQ(stream.writenBytes(), length + sizeof(uint32_t));
+    EXPECT_EQ(stream.size(), length + sizeof(uint32_t));
 
     constexpr uint8_t dest[] = {0x12, 0x34, 0x12, 0x78, 0x56, 0x34, 0x12};
-    EXPECT_EQ(stream.writenBytes(), sizeof(dest));
+    EXPECT_EQ(stream.size(), sizeof(dest));
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 }
 
@@ -64,7 +64,7 @@ TEST_F(OStreamCommonTest, WriteFloat)
     EXPECT_FALSE(stream.hasError());
 
     constexpr uint8_t dest[] = {0x9A, 0x99, 0x31, 0x41};
-    EXPECT_EQ(stream.writenBytes(), sizeof(dest));
+    EXPECT_EQ(stream.size(), sizeof(dest));
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 }
 
@@ -73,15 +73,15 @@ TEST_F(OStreamCommonTest, WriteEnumAndEnumClass)
     std::size_t length = 0;
     stream << elink::iec60870::TypeID::C_BO_NA_1;
     EXPECT_FALSE(stream.hasError());
-    EXPECT_EQ(stream.writenBytes(), sizeof(std::underlying_type_t<elink::iec60870::TypeID>));
+    EXPECT_EQ(stream.size(), sizeof(std::underlying_type_t<elink::iec60870::TypeID>));
 
-    length = stream.writenBytes();
+    length = stream.size();
     stream << elink::iec60870::TypeID::C_SC_TA_1;
     EXPECT_FALSE(stream.hasError());
-    EXPECT_EQ(stream.writenBytes(), length + sizeof(std::underlying_type_t<elink::iec60870::TypeID>));
+    EXPECT_EQ(stream.size(), length + sizeof(std::underlying_type_t<elink::iec60870::TypeID>));
 
     constexpr uint8_t dest[] = {0x33, 0x3A};
-    EXPECT_EQ(stream.writenBytes(), sizeof(dest));
+    EXPECT_EQ(stream.size(), sizeof(dest));
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 }
 
@@ -90,7 +90,7 @@ TEST_F(OStreamCommonTest, WriteSpan)
     uint8_t dest[] = {0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC, 0xDE, 0xF0};
     stream << elink::LiteBufferView{dest, sizeof(dest)};
     EXPECT_FALSE(stream.hasError());
-    EXPECT_EQ(stream.writenBytes(), sizeof(dest));
+    EXPECT_EQ(stream.size(), sizeof(dest));
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 }
 

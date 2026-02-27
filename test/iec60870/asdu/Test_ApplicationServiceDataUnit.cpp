@@ -229,7 +229,7 @@ TEST_F(ApplicationServiceDataUnitTest, AddInformationObjectSerialize_CS104)
     EXPECT_TRUE(ptr->serialize(os, false));
     EXPECT_FALSE(os.hasError());
 
-    const std::size_t serLen = os.writenBytes();
+    const std::size_t serLen = os.size();
     EXPECT_TRUE(asdu.addPayload(elink::LiteBufferView{buffer, serLen}));
 
     const auto payload = asdu.getPayload();

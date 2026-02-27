@@ -41,21 +41,21 @@ TEST_F(IStreamCommonTest, ReadArithmetic)
     uint8_t value_u8{0x00};
     stream >> value_u8;
     EXPECT_FALSE(stream.hasError());
-    EXPECT_EQ(stream.readBytes(), sizeof(uint8_t));
+    EXPECT_EQ(stream.size(), sizeof(uint8_t));
     EXPECT_EQ(value_u8, 0x12);
 
-    length = stream.readBytes();
+    length = stream.size();
     uint16_t value_u16{0x0000};
     stream >> value_u16;
     EXPECT_FALSE(stream.hasError());
-    EXPECT_EQ(stream.readBytes(), length + sizeof(uint16_t));
+    EXPECT_EQ(stream.size(), length + sizeof(uint16_t));
     EXPECT_EQ(value_u16, 0x1234);
 
-    length = stream.readBytes();
+    length = stream.size();
     uint32_t value_u32{0};
     stream >> value_u32;
     EXPECT_FALSE(stream.hasError());
-    EXPECT_EQ(stream.readBytes(), length + sizeof(uint32_t));
+    EXPECT_EQ(stream.size(), length + sizeof(uint32_t));
     EXPECT_EQ(value_u32, 0x12345678);
 }
 
@@ -79,13 +79,13 @@ TEST_F(IStreamCommonTest, ReadEnumAndEnumClass)
     elink::iec60870::TypeID iotypeid;
     stream >> iotypeid;
     EXPECT_FALSE(stream.hasError());
-    EXPECT_EQ(stream.readBytes(), sizeof(std::underlying_type_t<elink::iec60870::TypeID>));
+    EXPECT_EQ(stream.size(), sizeof(std::underlying_type_t<elink::iec60870::TypeID>));
     EXPECT_EQ(iotypeid, elink::iec60870::TypeID::C_BO_NA_1);
 
-    length = stream.readBytes();
+    length = stream.size();
     stream >> iotypeid;
     EXPECT_FALSE(stream.hasError());
-    EXPECT_EQ(stream.readBytes(), length + sizeof(std::underlying_type_t<elink::iec60870::TypeID>));
+    EXPECT_EQ(stream.size(), length + sizeof(std::underlying_type_t<elink::iec60870::TypeID>));
     EXPECT_EQ(iotypeid, elink::iec60870::TypeID::C_SC_TA_1);
 }
 
@@ -99,7 +99,7 @@ TEST_F(IStreamCommonTest, ReadSpan)
 
     stream >> span_dest;
     EXPECT_FALSE(stream.hasError());
-    EXPECT_EQ(stream.readBytes(), sizeof(dest));
+    EXPECT_EQ(stream.size(), sizeof(dest));
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 }
 

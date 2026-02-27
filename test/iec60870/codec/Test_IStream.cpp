@@ -37,14 +37,14 @@ TEST_F(IStreamTest, ReadIOA)
     elink::iec60870::IOA ioa(0, elink::iec60870::IOAByteLength::Two);
     stream >> ioa;
     EXPECT_FALSE(stream.hasError());
-    EXPECT_EQ(stream.readBytes(), static_cast<int>(elink::iec60870::IOAByteLength::Two));
+    EXPECT_EQ(stream.size(), static_cast<int>(elink::iec60870::IOAByteLength::Two));
     EXPECT_EQ(ioa.address(), 0x1234);
 
-    length = stream.readBytes();
+    length = stream.size();
     ioa.resetLengthOfInformationObjectAddress(elink::iec60870::IOAByteLength::Three);
     stream >> ioa;
     EXPECT_FALSE(stream.hasError());
-    EXPECT_EQ(stream.readBytes(), length + static_cast<int>(elink::iec60870::IOAByteLength::Three));
+    EXPECT_EQ(stream.size(), length + static_cast<int>(elink::iec60870::IOAByteLength::Three));
     EXPECT_EQ(ioa.address(), 0x123456);
 }
 
@@ -59,14 +59,14 @@ TEST_F(IStreamTest, ReadCPxxtime2a)
     stream >> cp16Time2a;
     EXPECT_FALSE(stream.hasError());
     length += elink::iec60870::details::CP16Time2aTag;
-    EXPECT_EQ(stream.readBytes(), length);
+    EXPECT_EQ(stream.size(), length);
     EXPECT_EQ(cp16Time2a.getEplapsedTimeInMs(), 100);
 
     elink::iec60870::CP24Time2a cp24Time2a{};
     stream >> cp24Time2a;
     EXPECT_FALSE(stream.hasError());
     length += elink::iec60870::details::CP24Time2aTag;
-    EXPECT_EQ(stream.readBytes(), length);
+    EXPECT_EQ(stream.size(), length);
     EXPECT_EQ(cp24Time2a.getMillisecond(), 100);
     EXPECT_EQ(cp24Time2a.getSecond(), 59);
     EXPECT_EQ(cp24Time2a.getMinute(), 59);
@@ -77,7 +77,7 @@ TEST_F(IStreamTest, ReadCPxxtime2a)
     stream >> cp32Time2a;
     EXPECT_FALSE(stream.hasError());
     length += elink::iec60870::details::CP32Time2aTag;
-    EXPECT_EQ(stream.readBytes(), length);
+    EXPECT_EQ(stream.size(), length);
     EXPECT_EQ(cp32Time2a.getHour(), 22);
     EXPECT_TRUE(cp32Time2a.isSummerTime());
 
@@ -85,7 +85,7 @@ TEST_F(IStreamTest, ReadCPxxtime2a)
     stream >> cp56Time2a;
     EXPECT_FALSE(stream.hasError());
     length += elink::iec60870::details::CP56Time2aTag;
-    EXPECT_EQ(stream.readBytes(), length);
+    EXPECT_EQ(stream.size(), length);
     EXPECT_EQ(cp56Time2a.getDayOfWeek(), 3);
     EXPECT_EQ(cp56Time2a.getDayOfMonth(), 27);
     EXPECT_EQ(cp56Time2a.getYear(), 2025);

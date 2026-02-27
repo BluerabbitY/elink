@@ -37,16 +37,16 @@ TEST_F(OStreamTest, WriteIOA)
     const elink::iec60870::IOA ioa1(0x1234, elink::iec60870::IOAByteLength::Two);
     stream << ioa1;
     EXPECT_FALSE(stream.hasError());
-    EXPECT_EQ(stream.writenBytes(), static_cast<int>(elink::iec60870::IOAByteLength::Two));
+    EXPECT_EQ(stream.size(), static_cast<int>(elink::iec60870::IOAByteLength::Two));
 
-    length = stream.writenBytes();
+    length = stream.size();
     const elink::iec60870::IOA ioa2(0x123456);
     stream << ioa2;
     EXPECT_FALSE(stream.hasError());
-    EXPECT_EQ(stream.writenBytes(), length + static_cast<int>(elink::iec60870::IOAByteLength::Three));
+    EXPECT_EQ(stream.size(), length + static_cast<int>(elink::iec60870::IOAByteLength::Three));
 
     constexpr uint8_t dest[] = {0x34, 0x12, 0x56, 0x34, 0x12};
-    EXPECT_EQ(stream.writenBytes(), sizeof(dest));
+    EXPECT_EQ(stream.size(), sizeof(dest));
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 }
 
@@ -58,7 +58,7 @@ TEST_F(OStreamTest, WriteCPxxtime2a)
     stream << cp16Time2a;
     EXPECT_FALSE(stream.hasError());
     length += elink::iec60870::details::CP16Time2aTag;
-    EXPECT_EQ(stream.writenBytes(), length);
+    EXPECT_EQ(stream.size(), length);
 
     elink::iec60870::CP24Time2a cp24Time2a{};
     cp24Time2a.setMillisecond(100);
@@ -69,7 +69,7 @@ TEST_F(OStreamTest, WriteCPxxtime2a)
     stream << cp24Time2a;
     EXPECT_FALSE(stream.hasError());
     length += elink::iec60870::details::CP24Time2aTag;
-    EXPECT_EQ(stream.writenBytes(), length);
+    EXPECT_EQ(stream.size(), length);
 
     elink::iec60870::CP32Time2a cp32Time2a{};
     cp32Time2a.setHour(22);
@@ -77,7 +77,7 @@ TEST_F(OStreamTest, WriteCPxxtime2a)
     stream << cp32Time2a;
     EXPECT_FALSE(stream.hasError());
     length += elink::iec60870::details::CP32Time2aTag;
-    EXPECT_EQ(stream.writenBytes(), length);
+    EXPECT_EQ(stream.size(), length);
 
     elink::iec60870::CP56Time2a cp56Time2a{};
     cp56Time2a.setDayOfWeek(3);
@@ -86,7 +86,7 @@ TEST_F(OStreamTest, WriteCPxxtime2a)
     stream << cp56Time2a;
     EXPECT_FALSE(stream.hasError());
     length += elink::iec60870::details::CP56Time2aTag;
-    EXPECT_EQ(stream.writenBytes(), length);
+    EXPECT_EQ(stream.size(), length);
 
     constexpr uint8_t dest[] = {0x64, 0x00, 0xdc, 0xe6, 0xfb, 0x00, 0x00, 0x00, 0x96, 0x00, 0x00, 0x00, 0x00, 0x7b,
                                 0x00, 0x19};

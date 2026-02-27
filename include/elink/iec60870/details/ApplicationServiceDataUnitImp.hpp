@@ -260,7 +260,7 @@ public:
             switch (typeM)
             {
                 case ASDUType::CONSTRUCT: {
-                    if (startIndex + elementLength > payloadM.writenBytes() + parametersM.getHeaderLength())
+                    if (startIndex + elementLength > payloadM.size() + parametersM.getHeaderLength())
                         return std::nullopt;
                     break;
                 }
@@ -294,7 +294,7 @@ public:
 
     [[nodiscard]] LiteBufferView getPayload() const
     {
-        return {payloadM.data(), payloadM.writenBytes()};
+        return {payloadM.data(), payloadM.size()};
     }
 
     bool addPayload(const LiteBufferView buffer)

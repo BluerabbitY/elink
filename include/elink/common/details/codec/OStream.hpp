@@ -41,7 +41,17 @@ public:
 
         if (writePosM + sizeof(T) <= sizeM)
         {
-            std::copy_n(reinterpret_cast<uint8_t*>(&value), sizeof(T), bufferM + writePosM);
+            const auto ita = reinterpret_cast<uint8_t*>(&value);
+
+            if constexpr (sizeof(T) == 1 || std::endian::native == std::endian::little)
+            {
+                std::copy_n(ita, sizeof(T), bufferM + writePosM);
+            }
+            else
+            {
+                std::reverse_copy(ita, ita + sizeof(T), bufferM + writePosM);
+            }
+
             writePosM += sizeof(T);
         }
         else
@@ -60,7 +70,17 @@ public:
 
         if (writePosM + sizeof(OriginT) <= sizeM)
         {
-            std::copy_n(reinterpret_cast<uint8_t*>(&value), sizeof(OriginT), bufferM + writePosM);
+            const auto ita = reinterpret_cast<uint8_t*>(&value);
+
+            if constexpr (sizeof(T) == 1 || std::endian::native == std::endian::little)
+            {
+                std::copy_n(ita, sizeof(OriginT), bufferM + writePosM);
+            }
+            else
+            {
+                std::reverse_copy(ita, ita + sizeof(OriginT), bufferM + writePosM);
+            }
+
             writePosM += sizeof(OriginT);
         }
         else
@@ -89,14 +109,19 @@ public:
         return static_cast<inherit&>(*this);
     }
 
-    uint8_t* data() const
+    [[nodiscard]] uint8_t* data() const
     {
         return bufferM;
     }
 
-    [[nodiscard]] std::size_t writenBytes() const
+    [[nodiscard]] std::size_t size() const
     {
         return writePosM;
+    }
+
+    [[nodiscard]] std::size_t capacity() const
+    {
+        return sizeM;
     }
 
     void erase()

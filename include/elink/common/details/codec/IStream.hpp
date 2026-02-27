@@ -41,7 +41,15 @@ public:
 
         if (readPosM + sizeof(T) <= sizeM)
         {
-            std::copy_n(bufferM + readPosM, sizeof(T), reinterpret_cast<uint8_t*>(&value));
+            if constexpr (sizeof(T) == 1 || std::endian::native == std::endian::little)
+            {
+                std::copy_n(bufferM + readPosM, sizeof(T), reinterpret_cast<uint8_t*>(&value));
+            }
+            else
+            {
+                std::reverse_copy(bufferM + readPosM, bufferM + readPosM + sizeof(T), reinterpret_cast<uint8_t*>(&value));
+            }
+
             readPosM += sizeof(T);
         }
         else
@@ -60,7 +68,15 @@ public:
 
         if (readPosM + sizeof(OriginT) <= sizeM)
         {
-            std::copy_n(bufferM + readPosM, sizeof(OriginT), reinterpret_cast<uint8_t*>(&value));
+            if constexpr (sizeof(T) == 1 || std::endian::native == std::endian::little)
+            {
+                std::copy_n(bufferM + readPosM, sizeof(OriginT), reinterpret_cast<uint8_t*>(&value));
+            }
+            else
+            {
+                std::reverse_copy(bufferM + readPosM, bufferM + readPosM + sizeof(OriginT), reinterpret_cast<uint8_t*>(&value));
+            }
+
             readPosM += sizeof(OriginT);
         }
         else
@@ -89,14 +105,19 @@ public:
         return static_cast<inherit&>(*this);
     }
 
-    const uint8_t* const_data() const
+    [[nodiscard]] const uint8_t* data() const
     {
         return bufferM;
     }
 
-    [[nodiscard]] std::size_t readBytes() const
+    [[nodiscard]] std::size_t size() const
     {
         return readPosM;
+    }
+
+    [[nodiscard]] std::size_t capacity() const
+    {
+        return sizeM;
     }
 
     [[nodiscard]] bool hasError() const

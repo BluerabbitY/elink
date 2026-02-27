@@ -86,7 +86,7 @@ TEST_F(SinglePointInformationSetTest, SinglePointInformationSerialize)
     EXPECT_FALSE(os.hasError());
 
     constexpr uint8_t dest[] = {0x00, 0x02, 0x00, 0x11};
-    EXPECT_EQ(os.writenBytes(), sizeof(dest));
+    EXPECT_EQ(os.size(), sizeof(dest));
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 }
 
@@ -99,7 +99,7 @@ TEST_F(SinglePointInformationSetTest, SinglePointInformationDeserialize)
     const SinglePointInformation::SerializePtr ios = io;
     EXPECT_TRUE(ios->deserialize(is, false));
     EXPECT_FALSE(is.hasError());
-    EXPECT_EQ(is.readBytes(), sizeof(buffer));
+    EXPECT_EQ(is.size(), sizeof(buffer));
 
     EXPECT_EQ(ios->getInformationObjectAddress().address(), 0x300);
     EXPECT_FALSE(io->getValue());
@@ -120,7 +120,7 @@ TEST_F(SinglePointInformationSetTest, SinglePointWithCP24Time2aSerialize)
     EXPECT_FALSE(os.hasError());
 
     constexpr uint8_t dest[] = {0x00, 0x02, 0x00, 0x11, 0x00, 0x00, 0x00};
-    EXPECT_EQ(os.writenBytes(), sizeof(dest));
+    EXPECT_EQ(os.size(), sizeof(dest));
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 }
 
@@ -133,7 +133,7 @@ TEST_F(SinglePointInformationSetTest, SinglePointWithCP24Time2aDeserialize)
     const SinglePointWithCP24Time2a::SerializePtr ios = io;
     EXPECT_TRUE(ios->deserialize(is, false));
     EXPECT_FALSE(is.hasError());
-    EXPECT_EQ(is.readBytes(), sizeof(buffer));
+    EXPECT_EQ(is.size(), sizeof(buffer));
 
     EXPECT_EQ(ios->getInformationObjectAddress().address(), 0x300);
     EXPECT_FALSE(io->getValue());
