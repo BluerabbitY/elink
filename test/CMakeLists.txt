@@ -30,6 +30,7 @@ add_executable(${TEST_PROJECT_NAME}
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_SinglePointInformationSet.cpp
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_DoublePointInformationSet.cpp
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_StepPositionInformationSet.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_BitString32Set.cpp
 )
 
 target_link_libraries(${TEST_PROJECT_NAME} PRIVATE GTest::gtest_main)

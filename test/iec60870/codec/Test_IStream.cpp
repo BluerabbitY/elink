@@ -12,7 +12,7 @@
  * specific language governing permissions and limitations under the License. 
  *
  ***********************************************************************************/
-#include "elink/elink.h"
+#include "elink/iec60870/details/codec/IStream.hpp"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -89,4 +89,28 @@ TEST_F(IStreamTest, ReadCPxxtime2a)
     EXPECT_EQ(cp56Time2a.getDayOfWeek(), 3);
     EXPECT_EQ(cp56Time2a.getDayOfMonth(), 27);
     EXPECT_EQ(cp56Time2a.getYear(), 2025);
+}
+
+TEST_F(IStreamTest, ReadBitString32Value)
+{
+    constexpr uint8_t buffer[] = {0x55, 0x55, 0x55, 0x55};
+
+    elink::iec60870::details::IStream stream{buffer, sizeof(buffer)};
+    elink::iec60870::BitString32Value bs32Value;
+
+    stream >> bs32Value;
+
+    EXPECT_FALSE(stream.hasError());
+
+    for (int i = 0; i < 32; i++)
+    {
+        if (i % 2 == 0)
+        {
+            EXPECT_TRUE(bs32Value.test(i));
+        }
+        else
+        {
+            EXPECT_FALSE(bs32Value.test(i));
+        }
+    }
 }

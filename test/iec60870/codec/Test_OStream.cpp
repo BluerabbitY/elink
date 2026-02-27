@@ -12,7 +12,7 @@
  * specific language governing permissions and limitations under the License. 
  *
  ***********************************************************************************/
-#include "elink/elink.h"
+#include "elink/iec60870/details/codec/OStream.hpp"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -90,5 +90,19 @@ TEST_F(OStreamTest, WriteCPxxtime2a)
 
     constexpr uint8_t dest[] = {0x64, 0x00, 0xdc, 0xe6, 0xfb, 0x00, 0x00, 0x00, 0x96, 0x00, 0x00, 0x00, 0x00, 0x7b,
                                 0x00, 0x19};
+    EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
+}
+
+TEST_F(OStreamTest, WriteBitString32Value)
+{
+    uint8_t buffer[] = {};
+    constexpr uint8_t dest[] = {0x55, 0x55, 0x55, 0x55};
+
+    elink::iec60870::details::OStream stream{buffer, sizeof(dest)};
+    const elink::iec60870::BitString32Value bs32Value{"01010101010101010101010101010101"};
+
+    stream << bs32Value;
+
+    EXPECT_FALSE(stream.hasError());
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 }

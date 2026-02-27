@@ -17,6 +17,7 @@
 #include "elink/common/details/codec/IStream.hpp"
 #include "elink/iec60870/CPxxTime2a.hpp"
 #include "elink/iec60870/io/InformationObjectAddress.hpp"
+#include "elink/iec60870/details/io/BitString32Imp.hpp"
 
 namespace elink::iec60870::details {
 
@@ -61,6 +62,35 @@ public:
         {
             std::copy_n(bufferM + readPosM, size, const_cast<uint8_t*>(getCPxxTime2aData<T>(cpxxtime2a)));
             readPosM += size;
+        }
+        else
+        {
+            hasErrorM = true;
+        }
+
+        return *this;
+    }
+
+    IStream& operator>>(BitString32Value& value)
+    {
+        if (hasErrorM)
+            return *this;
+
+        if (readPosM + sizeof(uint32_t) <= sizeM)
+        {
+            uint32_t bs32Value = 0;
+
+            if constexpr (std::endian::native == std::endian::little)
+            {
+                std::copy_n(bufferM + readPosM, sizeof(bs32Value), reinterpret_cast<uint8_t*>(&bs32Value));
+            }
+            else
+            {
+                std::reverse_copy(bufferM + readPosM, bufferM + readPosM + sizeof(bs32Value), reinterpret_cast<uint8_t*>(&bs32Value));
+            }
+
+            value = bs32Value;
+            readPosM += sizeof(bs32Value);
         }
         else
         {

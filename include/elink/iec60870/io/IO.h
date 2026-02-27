@@ -24,5 +24,7 @@
 #include "elink/iec60870/io/DoublePointWithCP24Time2a.hpp"
 #include "elink/iec60870/io/StepPositionInformation.hpp"
 #include "elink/iec60870/io/StepPositionWithCP24Time2a.hpp"
+#include "elink/iec60870/io/BitString32.hpp"
+#include "elink/iec60870/io/BitString32WithCP24Time2a.hpp"
 
 #include "elink/iec60870/formatter/InformationObjectFormatter.hpp"
