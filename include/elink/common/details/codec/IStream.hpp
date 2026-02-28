@@ -120,6 +120,14 @@ public:
         return sizeM;
     }
 
+    void resetLength(const std::size_t size)
+    {
+        if (size <= sizeM)
+        {
+            readPosM = size;
+        }
+    }
+
     [[nodiscard]] bool hasError() const
     {
         return hasErrorM;

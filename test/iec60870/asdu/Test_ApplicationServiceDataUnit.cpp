@@ -45,6 +45,64 @@ TEST_F(ApplicationServiceDataUnitTest, Constructor)
     EXPECT_EQ(asdu.getCA(), 200);
 }
 
+TEST_F(ApplicationServiceDataUnitTest, CopyConstructor)
+{
+    const AppLayerParameters params;
+    cs101::ASDU asdu{params, true, COT::REQUEST, 250, 200, true, true};
+
+    const SinglePointInformation io{IOA{0x200}, true, Quality::BLOCKED};
+    asdu.addInformationObject(io);
+
+    cs101::ASDU copy{asdu};
+
+    EXPECT_EQ(asdu.getPayload().size(), copy.getPayload().size());
+    EXPECT_TRUE(copy.isSequence());
+    EXPECT_EQ(copy.getCOT(), COT::REQUEST);
+    EXPECT_TRUE(copy.isTest());
+    EXPECT_TRUE(copy.isNegative());
+    EXPECT_EQ(copy.getOA(), 250);
+    EXPECT_EQ(copy.getCA(), 200);
+}
+
+TEST_F(ApplicationServiceDataUnitTest, MoveConstructor)
+{
+    const AppLayerParameters params;
+    cs101::ASDU asdu{params, true, COT::REQUEST, 250, 200, true, true};
+
+    const SinglePointInformation io{IOA{0x200}, true, Quality::BLOCKED};
+    asdu.addInformationObject(io);
+
+    cs101::ASDU copy = std::move(asdu);
+
+    EXPECT_EQ(asdu.getPayload().size(), copy.getPayload().size());
+    EXPECT_TRUE(copy.isSequence());
+    EXPECT_EQ(copy.getCOT(), COT::REQUEST);
+    EXPECT_TRUE(copy.isTest());
+    EXPECT_TRUE(copy.isNegative());
+    EXPECT_EQ(copy.getOA(), 250);
+    EXPECT_EQ(copy.getCA(), 200);
+}
+
+TEST_F(ApplicationServiceDataUnitTest, Copy)
+{
+    const AppLayerParameters params;
+    cs101::ASDU asdu{params, true, COT::REQUEST, 250, 200, true, true};
+
+    const SinglePointInformation io{IOA{0x200}, true, Quality::BLOCKED};
+    asdu.addInformationObject(io);
+
+    cs101::ASDU copy{params};
+    copy = asdu;
+
+    EXPECT_EQ(asdu.getPayload().size(), copy.getPayload().size());
+    EXPECT_TRUE(copy.isSequence());
+    EXPECT_EQ(copy.getCOT(), COT::REQUEST);
+    EXPECT_TRUE(copy.isTest());
+    EXPECT_TRUE(copy.isNegative());
+    EXPECT_EQ(copy.getOA(), 250);
+    EXPECT_EQ(copy.getCA(), 200);
+}
+
 TEST_F(ApplicationServiceDataUnitTest, SetGetFields)
 {
     // defaults: COT length = Two, CA = Two, IOA = Three

@@ -124,6 +124,14 @@ public:
         return sizeM;
     }
 
+    void resetLength(const std::size_t size)
+    {
+        if (size <= sizeM)
+        {
+            writePosM = size;
+        }
+    }
+
     void erase()
     {
         writePosM = 0;

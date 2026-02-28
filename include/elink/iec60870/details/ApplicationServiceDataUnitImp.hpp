@@ -23,13 +23,28 @@
 namespace elink::iec60870::details
 {
 
-template <std::size_t MaxLengthOfASDU>
-class ApplicationServiceDataUnitImp
+template <typename T>
+T createASDUFromBuffer(const AppLayerParameters& parameters, const LiteBufferView buffer)
 {
+    return {parameters, buffer};
+}
+
+template <std::size_t MaxLengthOfASDU>
+class ApplicationServiceDataUnitImp final
+{
+protected:
+    explicit ApplicationServiceDataUnitImp(const AppLayerParameters& parameters, const LiteBufferView buffer)
+    : parametersM{parameters},
+      bufferM{},
+      asduM{const_cast<uint8_t*>(buffer.data()), buffer.size_bytes()},
+      payloadM{bufferM.data() + parameters.getHeaderLength(), MaxLengthOfASDU - parameters.getHeaderLength()}
+    {
+        payloadM.resetLength(buffer.size() - parameters.getHeaderLength());
+    }
+
 public:
     explicit ApplicationServiceDataUnitImp(const AppLayerParameters& parameters)
-    : typeM{ASDUType::CONSTRUCT},
-      parametersM{parameters},
+    : parametersM{parameters},
       bufferM{},
       asduM{bufferM},
       payloadM{bufferM.data() + parameters.getHeaderLength(), MaxLengthOfASDU - parameters.getHeaderLength()}
@@ -37,8 +52,7 @@ public:
     }
 
     ApplicationServiceDataUnitImp(const AppLayerParameters& parameters, const bool isSequence, const COT cot, const int oa, const int ca, const bool isTest = false, const bool isNegative = false)
-    : typeM{ASDUType::CONSTRUCT},
-      parametersM{parameters},
+    : parametersM{parameters},
       bufferM{},
       asduM{bufferM},
       payloadM{bufferM.data() + parameters.getHeaderLength(), MaxLengthOfASDU - parameters.getHeaderLength()}
@@ -51,13 +65,35 @@ public:
         setNegative(isNegative);
     }
 
-    explicit ApplicationServiceDataUnitImp(const AppLayerParameters& parameters, const LiteBufferView buffer)
-    : typeM{ASDUType::TEMPLATE},
-      parametersM{parameters},
+    ApplicationServiceDataUnitImp(const ApplicationServiceDataUnitImp& other)
+    : parametersM{other.parametersM},
       bufferM{},
-      asduM{const_cast<uint8_t*>(buffer.data()), buffer.size_bytes()},
-      payloadM{bufferM.data() + parameters.getHeaderLength(), MaxLengthOfASDU - parameters.getHeaderLength()}
+      asduM{bufferM},
+      payloadM{bufferM.data() + parametersM.getHeaderLength(), MaxLengthOfASDU - parametersM.getHeaderLength()}
     {
+        std::copy_n(other.bufferM.data(), parametersM.getHeaderLength() + other.payloadM.size(), bufferM.data());
+        payloadM.resetLength(other.payloadM.size());
+    }
+
+    ApplicationServiceDataUnitImp(const ApplicationServiceDataUnitImp&& other) noexcept
+    : parametersM{other.parametersM},
+      bufferM{},
+      asduM{bufferM},
+      payloadM{bufferM.data() + parametersM.getHeaderLength(), MaxLengthOfASDU - parametersM.getHeaderLength()}
+    {
+        std::copy_n(other.bufferM.data(), parametersM.getHeaderLength() + other.payloadM.size(), bufferM.data());
+        payloadM.resetLength(other.payloadM.size());
+    }
+
+    ApplicationServiceDataUnitImp& operator=(const ApplicationServiceDataUnitImp& other)
+    {
+        if (this != &other)
+        {
+            std::copy_n(other.bufferM.data(), parametersM.getHeaderLength() + other.payloadM.size(), bufferM.data());
+            payloadM.resetLength(other.payloadM.size());
+        }
+
+        return *this;
     }
 
     ~ApplicationServiceDataUnitImp() = default;
@@ -257,19 +293,8 @@ public:
                 startIndex += (static_cast<uint8_t>(parametersM.getLengthOfIOA()) + elementLength) * index;
             }
 
-            switch (typeM)
-            {
-                case ASDUType::CONSTRUCT: {
-                    if (startIndex + elementLength > payloadM.size() + parametersM.getHeaderLength())
-                        return std::nullopt;
-                    break;
-                }
-                case ASDUType::TEMPLATE: {
-                    if (index >= getNumberOfElements())
-                        return std::nullopt;
-                    break;
-                }
-            }
+            if (startIndex + elementLength > payloadM.size() + parametersM.getHeaderLength())
+                return std::nullopt;
 
             IStream istream{asduM.data() + startIndex, asduM.size_bytes()};
 
@@ -306,12 +331,6 @@ public:
     }
 
 private:
-    enum class ASDUType : uint8_t {
-        CONSTRUCT,
-        TEMPLATE,
-    };
-
-    const ASDUType typeM;
     const AppLayerParameters& parametersM;
     Buffer<MaxLengthOfASDU> bufferM;
     LiteBuffer asduM;
