@@ -41,11 +41,11 @@ TEST_F(InformationObjectSerializableTest, IOA)
 {
     constexpr int validIOA = 0x200;
     mock::MockInformationObjectSerializable io{IOA{validIOA}};
-    EXPECT_EQ(io.getInformationObjectAddress().address(), validIOA);
+    EXPECT_EQ(io.getInformationObjectAddress(), validIOA);
 
     constexpr int newAddress = 0x300;
     io.setInformationObjectAddress(IOA{newAddress});
-    EXPECT_EQ(io.getInformationObjectAddress().address(), newAddress);
+    EXPECT_EQ(io.getInformationObjectAddress(), newAddress);
 }
 
 TEST_F(InformationObjectSerializableTest, IOCast)

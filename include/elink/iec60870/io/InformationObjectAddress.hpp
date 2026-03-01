@@ -86,6 +86,16 @@ public:
         return address() != addr;
     }
 
+    InformationObjectAddress operator+(const int offset) const
+    {
+        return InformationObjectAddress{address() + offset, getIOAByteLength()};
+    }
+
+    InformationObjectAddress operator-(const int offset) const
+    {
+        return InformationObjectAddress{address() - offset, getIOAByteLength()};
+    }
+
     InformationObjectAddress& operator=(const int address)
     {
         setAddress(address);

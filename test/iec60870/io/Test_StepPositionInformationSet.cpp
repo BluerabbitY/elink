@@ -98,7 +98,7 @@ TEST_F(StepPositionInformationSetTest, StepPositionInformationDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(iop->getInformationObjectAddress().address(), 0x300);
+    EXPECT_EQ(iop->getInformationObjectAddress(), 0x300);
     EXPECT_EQ(pSio->getValue(), -52);
     EXPECT_FALSE(pSio->isTransient());
     EXPECT_TRUE(pSio->getQuality() & Quality::SPILL);
@@ -134,7 +134,7 @@ TEST_F(StepPositionInformationSetTest, StepPositionWithCP24Time2aDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress().address(), 0x300);
+    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
     EXPECT_EQ(io->getValue(), -52);
     EXPECT_FALSE(io->isTransient());
     EXPECT_TRUE(io->getQuality() & Quality::SPILL);

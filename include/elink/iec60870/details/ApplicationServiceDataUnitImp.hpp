@@ -246,7 +246,7 @@ public:
                 {
                     const IOA firstIOA{LiteBufferView{asduM.data() + parametersM.getHeaderLength(), static_cast<std::size_t>(parametersM.getLengthOfIOA())}};
                     /* check that new information object has correct IOA */
-                    if (io.getInformationObjectAddress().address() == (firstIOA.address() + numberOfElements))
+                    if (io.getInformationObjectAddress() == firstIOA + numberOfElements)
                     {
                         ioserialze.serialize(payloadM, true);
                         encoded = !payloadM.hasError();

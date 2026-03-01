@@ -107,7 +107,7 @@ TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress().address(), 0x300);
+    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
     EXPECT_FLOAT_EQ(io->getValue(), 0.5f);
     EXPECT_TRUE(io->getQuality() & Quality::BLOCKED);
     EXPECT_FALSE(io->getQuality() & Quality::SPILL);
@@ -142,7 +142,7 @@ TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithCP24Time2aDes
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress().address(), 0x300);
+    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
     EXPECT_FLOAT_EQ(io->getValue(), 0.5f);
     EXPECT_TRUE(io->getQuality() & Quality::BLOCKED);
     EXPECT_FALSE(io->getQuality() & Quality::SUBSTITUTED);
