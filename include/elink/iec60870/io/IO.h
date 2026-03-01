@@ -29,5 +29,7 @@
 #include "elink/iec60870/io/BitString32WithCP24Time2a.hpp"
 #include "elink/iec60870/io/MeasuredValueNormalized.hpp"
 #include "elink/iec60870/io/MeasuredValueNormalizedWithCP24Time2a.hpp"
+#include "elink/iec60870/io/MeasuredValueScaled.hpp"
+#include "elink/iec60870/io/MeasuredValueScaledWithCP24Time2a.hpp"
 
 #include "elink/iec60870/formatter/InformationObjectFormatter.hpp"
