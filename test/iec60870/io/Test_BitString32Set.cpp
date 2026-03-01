@@ -54,8 +54,8 @@ TEST_F(BitString32SetTest, IOLength)
 
 TEST_F(BitString32SetTest, CommonImpValue)
 {
-    BitString32Value value1{0x55555555};
-    BitString32Value value2{0xaaaaaaaa};
+    constexpr BitString32Value value1{0x55555555};
+    constexpr BitString32Value value2{0xaaaaaaaa};
     BitString32 io{IOA{0x200}, 0x55555555, Quality::BLOCKED};
 
     EXPECT_EQ(io.getValue(), value1);
