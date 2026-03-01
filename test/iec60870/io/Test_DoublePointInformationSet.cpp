@@ -109,7 +109,7 @@ TEST_F(DoublePointInformationSetTest, DoublePointInformationDeserialize)
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x13};
     details::IStream is{buffer, sizeof(buffer)};
 
-    const auto io = std::make_shared<DoublePointInformation>(IOA{0x200}, DValue::ON, Quality::BLOCKED);
+    const auto io = std::make_shared<DoublePointInformation>();
     const DoublePointInformation::SerializePtr ios = io;
     EXPECT_TRUE(ios->deserialize(is, false));
     EXPECT_FALSE(is.hasError());
@@ -143,7 +143,7 @@ TEST_F(DoublePointInformationSetTest, DoublePointWithCP24Time2aDeserialize)
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x13, 0xdc, 0xe6, 0xfb};
     details::IStream is{buffer, sizeof(buffer)};
 
-    const auto io = std::make_shared<DoublePointWithCP24Time2a>(IOA{0x200}, DValue::ON, Quality::BLOCKED, CP24Time2a{});
+    const auto io = std::make_shared<DoublePointWithCP24Time2a>();
     const DoublePointWithCP24Time2a::SerializePtr ios = io;
     EXPECT_TRUE(ios->deserialize(is, false));
     EXPECT_FALSE(is.hasError());

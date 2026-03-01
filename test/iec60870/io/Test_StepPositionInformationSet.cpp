@@ -107,20 +107,20 @@ TEST_F(StepPositionInformationSetTest, StepPositionInformationDeserialize)
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x4c, 0x11};
     details::IStream is{buffer, sizeof(buffer)};
 
-    const auto pSio = std::make_shared<StepPositionInformation>(IOA{0x200}, 60, true, Quality::BLOCKED);
-    const StepPositionInformation::SerializePtr iop = pSio;
-    EXPECT_TRUE(iop->deserialize(is, false));
+    const auto io = std::make_shared<StepPositionInformation>();
+    const StepPositionInformation::SerializePtr ios = io;
+    EXPECT_TRUE(ios->deserialize(is, false));
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(iop->getInformationObjectAddress(), 0x300);
-    EXPECT_EQ(pSio->getValue(), -52);
-    EXPECT_FALSE(pSio->isTransient());
-    EXPECT_TRUE(pSio->getQuality() & Quality::SPILL);
-    EXPECT_TRUE(pSio->getQuality() & Quality::BLOCKED);
-    EXPECT_FALSE(pSio->getQuality() & Quality::SUBSTITUTED);
-    EXPECT_FALSE(pSio->getQuality() & Quality::NON_TOPICAL);
-    EXPECT_FALSE(pSio->getQuality() & Quality::INVALID);
+    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(io->getValue(), -52);
+    EXPECT_FALSE(io->isTransient());
+    EXPECT_TRUE(io->getQuality() & Quality::SPILL);
+    EXPECT_TRUE(io->getQuality() & Quality::BLOCKED);
+    EXPECT_FALSE(io->getQuality() & Quality::SUBSTITUTED);
+    EXPECT_FALSE(io->getQuality() & Quality::NON_TOPICAL);
+    EXPECT_FALSE(io->getQuality() & Quality::INVALID);
 }
 
 TEST_F(StepPositionInformationSetTest, StepPositionWithCP24Time2aSerialize)
@@ -143,7 +143,7 @@ TEST_F(StepPositionInformationSetTest, StepPositionWithCP24Time2aDeserialize)
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x4c, 0x11, 0xdc, 0xe6, 0xfb};
     details::IStream is{buffer, sizeof(buffer)};
 
-    const auto io = std::make_shared<StepPositionWithCP24Time2a>(IOA{0x200}, 60, true, Quality::BLOCKED, CP24Time2a{});
+    const auto io = std::make_shared<StepPositionWithCP24Time2a>();
     const StepPositionWithCP24Time2a::SerializePtr ios = io;
     EXPECT_TRUE(ios->deserialize(is, false));
     EXPECT_FALSE(is.hasError());

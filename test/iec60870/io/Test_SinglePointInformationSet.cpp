@@ -110,7 +110,7 @@ TEST_F(SinglePointInformationSetTest, SinglePointInformationDeserialize)
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x10};
     details::IStream is{buffer, sizeof(buffer)};
 
-    const auto io = std::make_shared<SinglePointInformation>(IOA{0x200}, true, Quality::BLOCKED);
+    const auto io = std::make_shared<SinglePointInformation>();
     const SinglePointInformation::SerializePtr ios = io;
     EXPECT_TRUE(ios->deserialize(is, false));
     EXPECT_FALSE(is.hasError());
@@ -144,7 +144,7 @@ TEST_F(SinglePointInformationSetTest, SinglePointWithCP24Time2aDeserialize)
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x10, 0xdc, 0xe6, 0xfb};
     details::IStream is{buffer, sizeof(buffer)};
 
-    const auto io = std::make_shared<SinglePointWithCP24Time2a>(IOA{0x200}, true, Quality::BLOCKED, CP24Time2a{});
+    const auto io = std::make_shared<SinglePointWithCP24Time2a>();
     const SinglePointWithCP24Time2a::SerializePtr ios = io;
     EXPECT_TRUE(ios->deserialize(is, false));
     EXPECT_FALSE(is.hasError());

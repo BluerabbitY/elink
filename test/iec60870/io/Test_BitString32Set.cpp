@@ -122,7 +122,7 @@ TEST_F(BitString32SetTest, BitString32Deserialize)
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x5a, 0x5b, 0x5c, 0x5d, 0x10};
     details::IStream is{buffer, sizeof(buffer)};
 
-    const auto io = std::make_shared<BitString32>(IOA{0x300}, 0x5d5c5b5a, Quality::BLOCKED);
+    const auto io = std::make_shared<BitString32>();
     const BitString32::SerializePtr ios = io;
     EXPECT_TRUE(ios->deserialize(is, false));
     EXPECT_FALSE(is.hasError());
@@ -157,7 +157,7 @@ TEST_F(BitString32SetTest, BitString32WithCP24Time2aDeserialize)
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x5a, 0x5b, 0x5c, 0x5d, 0x10, 0xdc, 0xe6, 0xfb};
     details::IStream is{buffer, sizeof(buffer)};
 
-    const auto io = std::make_shared<BitString32WithCP24Time2a>(IOA{0x200}, 0x5d5c5b5a, Quality::BLOCKED, CP24Time2a{});
+    const auto io = std::make_shared<BitString32WithCP24Time2a>();
     const BitString32WithCP24Time2a::SerializePtr ios = io;
     EXPECT_TRUE(ios->deserialize(is, false));
     EXPECT_FALSE(is.hasError());
