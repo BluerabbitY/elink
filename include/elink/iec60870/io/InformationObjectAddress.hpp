@@ -76,6 +76,16 @@ public:
         return addressM != other.address() || getIOAByteLength() != other.getIOAByteLength();
     }
 
+    bool operator==(const int addr) const
+    {
+        return address() == addr;
+    }
+
+    bool operator!=(const int addr) const
+    {
+        return address() != addr;
+    }
+
     InformationObjectAddress& operator=(const int address)
     {
         setAddress(address);
