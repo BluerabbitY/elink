@@ -89,7 +89,7 @@ TEST_F(MeasuredValueShortSetTest, CommonImpQuality)
     EXPECT_TRUE(io.getQuality() & Quality::NON_TOPICAL);
 }
 
-TEST_F(MeasuredValueShortSetTest, MeasuredValueScaledSerialize)
+TEST_F(MeasuredValueShortSetTest, MeasuredValueShortSerialize)
 {
     uint8_t buffer[256]{};
     details::OStream os{buffer, sizeof(buffer)};
@@ -104,7 +104,7 @@ TEST_F(MeasuredValueShortSetTest, MeasuredValueScaledSerialize)
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 }
 
-TEST_F(MeasuredValueShortSetTest, MeasuredValueScaledDeserialize)
+TEST_F(MeasuredValueShortSetTest, MeasuredValueShortDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0xec, 0x51, 0x14, 0x41, 0x10};
     details::IStream is{buffer, sizeof(buffer)};
@@ -123,7 +123,7 @@ TEST_F(MeasuredValueShortSetTest, MeasuredValueScaledDeserialize)
     EXPECT_FALSE(io->getQuality() & Quality::INVALID);
 }
 
-TEST_F(MeasuredValueShortSetTest, DoublePointWithCP24Time2aSerialize)
+TEST_F(MeasuredValueShortSetTest, MeasuredValueShortWithCP24Time2aSerialize)
 {
     uint8_t buffer[256]{};
     details::OStream os{buffer, sizeof(buffer)};
@@ -138,7 +138,7 @@ TEST_F(MeasuredValueShortSetTest, DoublePointWithCP24Time2aSerialize)
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 }
 
-TEST_F(MeasuredValueShortSetTest, DoublePointWithCP24Time2aDeserialize)
+TEST_F(MeasuredValueShortSetTest, MeasuredValueShortWithCP24Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0xec, 0x51, 0x14, 0x41, 0x10, 0xdc, 0xe6, 0xfb};
     details::IStream is{buffer, sizeof(buffer)};

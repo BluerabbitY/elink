@@ -123,7 +123,7 @@ TEST_F(MeasuredValueScaledSetTest, MeasuredValueScaledDeserialize)
     EXPECT_FALSE(io->getQuality() & Quality::INVALID);
 }
 
-TEST_F(MeasuredValueScaledSetTest, DoublePointWithCP24Time2aSerialize)
+TEST_F(MeasuredValueScaledSetTest, MeasuredValueScaledWithCP24Time2aSerialize)
 {
     uint8_t buffer[256]{};
     details::OStream os{buffer, sizeof(buffer)};
@@ -138,7 +138,7 @@ TEST_F(MeasuredValueScaledSetTest, DoublePointWithCP24Time2aSerialize)
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 }
 
-TEST_F(MeasuredValueScaledSetTest, DoublePointWithCP24Time2aDeserialize)
+TEST_F(MeasuredValueScaledSetTest, MeasuredValueScaledWithCP24Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0xa7, 0x00, 0x10, 0xdc, 0xe6, 0xfb};
     details::IStream is{buffer, sizeof(buffer)};
