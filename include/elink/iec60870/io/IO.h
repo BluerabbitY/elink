@@ -33,5 +33,7 @@
 #include "elink/iec60870/io/MeasuredValueScaledWithCP24Time2a.hpp"
 #include "elink/iec60870/io/MeasuredValueShort.hpp"
 #include "elink/iec60870/io/MeasuredValueShortWithCP24Time2a.hpp"
+#include "elink/iec60870/io/IntegratedTotals.hpp"
+#include "elink/iec60870/io/IntegratedTotalsWithCP24Time2a.hpp"
 
 #include "elink/iec60870/formatter/InformationObjectFormatter.hpp"
