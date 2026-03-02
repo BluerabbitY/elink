@@ -37,7 +37,7 @@ add_executable(${TEST_PROJECT_NAME}
         ${CMAKE_CURRENT_LIST_DIR}/common/Test_RelocatedLog.cpp
         # iec60870 tests
         ## asdu
-        ${CMAKE_CURRENT_LIST_DIR}/iec60870/asdu/Test_ApplicationServiceDataUnit.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/iec60870/Test_ApplicationServiceDataUnit.cpp
         ## bcr
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/Test_BinaryCounterReading.cpp
         ## codec
