@@ -31,3 +31,4 @@
 #include "elink/iec60870/communication/link_layer/SerialFT12MessageTransceiver.hpp"
 
 #include "elink/iec60870/ApplicationServiceDataUnit.hpp"
+#include "elink/iec60870/BinaryCounterReading.hpp"

@@ -19,6 +19,7 @@
 #include "elink/iec60870/CPxxTime2a.hpp"
 #include "elink/iec60870/io/InformationObjectAddress.hpp"
 #include "elink/iec60870/details/io/BitString32Imp.hpp"
+#include "elink/iec60870/BinaryCounterReading.hpp"
 
 namespace elink::iec60870::details {
 
@@ -91,6 +92,23 @@ public:
             }
 
             writePosM += sizeof(bs32Value);
+        }
+        else
+        {
+            hasErrorM = true;
+        }
+
+        return *this;
+    }
+
+    OStream& operator<<(const BinaryCounterReading& value)
+    {
+        if (hasErrorM)
+            return *this;
+
+        if (writePosM + sizeof(uint32_t) <= sizeM)
+        {
+            *this << value.valueM << value.seqM;
         }
         else
         {
