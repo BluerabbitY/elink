@@ -35,19 +35,12 @@ public:
 
     IStream& operator>>(IOA& ioa)
     {
-        if (hasErrorM)
-            return *this;
+        int value = 0;
+        *this >> LiteBuffer{reinterpret_cast<uint8_t*>(&value), static_cast<std::size_t>(ioa.getLengthOfInformationObjectAddress())};
 
-        if (const auto size = ioa.getLengthOfInformationObjectAddress(); readPosM + size <= sizeM)
+        if (!hasError())
         {
-            int value = 0;
-            std::copy_n(bufferM + readPosM, size, reinterpret_cast<uint8_t*>(&value));
             ioa.setAddress(value);
-            readPosM += size;
-        }
-        else
-        {
-            hasErrorM = true;
         }
 
         return *this;
@@ -57,46 +50,17 @@ public:
     IStream& operator>>(T& cpxxtime2a) requires (std::is_same_v<T, CP16Time2a> || std::is_same_v<T, CP24Time2a> ||
                                                  std::is_same_v<T, CP32Time2a> || std::is_same_v<T, CP56Time2a>)
     {
-        if (hasErrorM)
-            return *this;
-
-        if (const auto size = getCPxxTime2aLength<T>(cpxxtime2a); readPosM + size <= sizeM)
-        {
-            std::copy_n(bufferM + readPosM, size, const_cast<uint8_t*>(getCPxxTime2aData<T>(cpxxtime2a)));
-            readPosM += size;
-        }
-        else
-        {
-            hasErrorM = true;
-        }
-
-        return *this;
+        return *this >> LiteBuffer{const_cast<uint8_t*>(getCPxxTime2aData<T>(cpxxtime2a)), getCPxxTime2aLength<T>(cpxxtime2a)};
     }
 
     IStream& operator>>(BitString32Value& value)
     {
-        if (hasErrorM)
-            return *this;
+        uint32_t bs32Value = 0;
+        *this >> bs32Value;
 
-        if (readPosM + sizeof(uint32_t) <= sizeM)
+        if (!hasError())
         {
-            uint32_t bs32Value = 0;
-
-            if constexpr (std::endian::native == std::endian::little)
-            {
-                std::copy_n(bufferM + readPosM, sizeof(bs32Value), reinterpret_cast<uint8_t*>(&bs32Value));
-            }
-            else
-            {
-                std::reverse_copy(bufferM + readPosM, bufferM + readPosM + sizeof(bs32Value), reinterpret_cast<uint8_t*>(&bs32Value));
-            }
-
             value = bs32Value;
-            readPosM += sizeof(bs32Value);
-        }
-        else
-        {
-            hasErrorM = true;
         }
 
         return *this;
@@ -104,19 +68,7 @@ public:
 
     IStream& operator>>(BinaryCounterReading& value)
     {
-        if (hasErrorM)
-            return *this;
-
-        if (readPosM + sizeof(uint32_t) <= sizeM)
-        {
-            *this >> value.valueM >> value.seqM;
-        }
-        else
-        {
-            hasErrorM = true;
-        }
-
-        return *this;
+        return *this >> value.valueM >> value.seqM;
     }
 };
 
