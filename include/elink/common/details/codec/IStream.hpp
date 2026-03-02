@@ -16,6 +16,7 @@
 #pragma once
 
 #include "elink/common/Type.hpp"
+#include "elink/util/Utils.hpp"
 
 #include <algorithm>
 #include <cassert>
@@ -29,7 +30,7 @@ class IStream {
 public:
     IStream(const uint8_t* buffer, const std::size_t size) : bufferM{buffer}, sizeM{size}, readPosM{0}, hasErrorM{false}
     {
-        assert(buffer);
+        ELINK_ASSERT(buffer);
     }
 
     ~IStream() = default;
