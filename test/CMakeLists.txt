@@ -59,6 +59,7 @@ add_executable(${TEST_PROJECT_NAME}
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_BitString32Set.cpp
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_MeasuredValueNormalizedSet.cpp
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_MeasuredValueScaledSet.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_MeasuredValueShortSet.cpp
 )
 
 target_link_libraries(${TEST_PROJECT_NAME} PRIVATE GTest::gtest_main)
