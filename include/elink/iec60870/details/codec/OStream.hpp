@@ -19,7 +19,6 @@
 #include "elink/iec60870/CPxxTime2a.hpp"
 #include "elink/iec60870/io/InformationObjectAddress.hpp"
 #include "elink/iec60870/details/io/BitString32Imp.hpp"
-#include "elink/iec60870/BinaryCounterReading.hpp"
 
 namespace elink::iec60870::details {
 
@@ -50,11 +49,6 @@ public:
     OStream& operator<<(const BitString32Value& value)
     {
         return *this << static_cast<uint32_t>(value.to_ulong());
-    }
-
-    OStream& operator<<(const BinaryCounterReading& value)
-    {
-        return *this << value.valueM << value.seqM;
     }
 };
 

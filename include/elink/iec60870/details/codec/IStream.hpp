@@ -19,7 +19,6 @@
 #include "elink/iec60870/CPxxTime2a.hpp"
 #include "elink/iec60870/io/InformationObjectAddress.hpp"
 #include "elink/iec60870/details/io/BitString32Imp.hpp"
-#include "elink/iec60870/BinaryCounterReading.hpp"
 
 namespace elink::iec60870::details {
 
@@ -64,11 +63,6 @@ public:
         }
 
         return *this;
-    }
-
-    IStream& operator>>(BinaryCounterReading& value)
-    {
-        return *this >> value.valueM >> value.seqM;
     }
 };
 

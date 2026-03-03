@@ -79,6 +79,11 @@ public:
 protected:
     friend class EventOfProtectionEquipment;
 
+    [[nodiscard]] constexpr std::size_t size() const
+    {
+        return sizeof(valueM);
+    }
+
 private:
     uint8_t valueM;
 };

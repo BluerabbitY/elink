@@ -21,12 +21,6 @@
 namespace elink::iec60870
 {
 
-namespace details
-{
-class OStream;
-class IStream;
-}
-
 class BinaryCounterReading
 {
 public:
@@ -111,9 +105,6 @@ public:
     }
 
 protected:
-    friend class details::OStream;
-    friend class details::IStream;
-
     friend class IntegratedTotals;
     friend class IntegratedTotalsWithCP24Time2a;
 
