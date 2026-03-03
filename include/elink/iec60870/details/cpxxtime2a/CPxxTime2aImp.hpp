@@ -69,6 +69,11 @@ public:
         }
     }
 
+    explicit CPxxTime2aImp(const uint16_t value) requires (N == CP16Time2aTag)
+    {
+        setEplapsedTimeInMs(value);
+    }
+
     ~CPxxTime2aImp() = default;
 
     CPxxTime2aImp(const CPxxTime2aImp&) = default;
