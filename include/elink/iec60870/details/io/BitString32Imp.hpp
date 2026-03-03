@@ -15,7 +15,7 @@
  ***********************************************************************************/
 #pragma once
 
-#include "InformationObjectSerializable.hpp"
+#include "elink/iec60870/details/io//InformationObjectSerializable.hpp"
 #include "elink/iec60870/io/QualityDescriptor.hpp"
 
 #include <bitset>
