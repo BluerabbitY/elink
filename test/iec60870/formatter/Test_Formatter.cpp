@@ -284,3 +284,9 @@ TEST_F(FormatterTest, EventOfProtectionEquipmentFormat)
     EventOfProtectionEquipment io{IOA{300}, event, CP16Time2a{12500}, CP24Time2a{}};
     EXPECT_EQ(std::format("{}", io), "EventOfProtectionEquipment{M_EP_TA_1: ioa=300 data=[0x0a, 0xd4, 0x30, 0x00, 0x00, 0x00]}");
 }
+
+TEST_F(FormatterTest, PackedStartEventsOfProtectionEquipmentFormat)
+{
+    PackedStartEventsOfProtectionEquipment io{IOA{300}, StartEvent::SRD, QualityP::BLOCKED, CP16Time2a{12500}, CP24Time2a{}};
+    EXPECT_EQ(std::format("{}", io), "PackedStartEventsOfProtectionEquipment{M_EP_TB_1: ioa=300 data=[0x20, 0x10, 0xd4, 0x30, 0x00, 0x00, 0x00]}");
+}

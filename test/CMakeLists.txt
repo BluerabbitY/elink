@@ -64,6 +64,7 @@ add_executable(${TEST_PROJECT_NAME}
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_MeasuredValueShortSet.cpp
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_IntegratedTotalsSet.cpp
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_EventOfProtectionEquipmentSet.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_PackedStartEventsOfProtectionEquipmentSet.cpp
 
 )
 
