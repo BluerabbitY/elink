@@ -180,40 +180,39 @@ TEST_F(FormatterTest, InformationObjectFormat)
 {
     SinglePointInformation sio{IOA{450}, true, Quality::BLOCKED};
 
-    EXPECT_EQ(std::format("{:}", sio), "SinglePointInformation{M_SP_NA_1: ioa=450 raw=[0x11]}");
+    EXPECT_EQ(std::format("{}", sio), "SinglePointInformation{M_SP_NA_1: ioa=450 data=[0x11]}");
     EXPECT_EQ(std::format("{:b}", sio), "SinglePointInformation{M_SP_NA_1: raw=[0xc2, 0x01, 0x00, 0x11]}");
-    EXPECT_EQ(std::format("{:b3}", sio), "SinglePointInformation{M_SP_NA_1: raw=[0xc2, 0x01, 0x00...]}");
-    EXPECT_EQ(std::format("{:b3x}", sio), "SinglePointInformation{M_SP_NA_1: raw=[0xc2, 0x01, 0x00...]}");
-    EXPECT_EQ(std::format("{:b3X}", sio), "SinglePointInformation{M_SP_NA_1: raw=[0xC2, 0x01, 0x00...]}");
+    EXPECT_EQ(std::format("{:3b}", sio), "SinglePointInformation{M_SP_NA_1: raw=[0xc2, 0x01, 0x00...]}");
+    EXPECT_EQ(std::format("{:3B}", sio), "SinglePointInformation{M_SP_NA_1: raw=[0xC2, 0x01, 0x00...]}");
 }
 
 TEST_F(FormatterTest, SinglePointWithCP24Time2aFormat)
 {
     SinglePointWithCP24Time2a sio{IOA{300}, true, Quality::BLOCKED, CP24Time2a{}};
-    EXPECT_EQ(std::format("{:}", sio), "SinglePointWithCP24Time2a{M_SP_TA_1: ioa=300 raw=[0x11, 0x00, 0x00, 0x00]}");
+    EXPECT_EQ(std::format("{}", sio), "SinglePointWithCP24Time2a{M_SP_TA_1: ioa=300 data=[0x11, 0x00, 0x00, 0x00]}");
 }
 
 TEST_F(FormatterTest, DoublePointInformationFormat)
 {
     DoublePointInformation dio{IOA{300}, DValue::OFF, Quality::BLOCKED};
-    EXPECT_EQ(std::format("{:}", dio), "DoublePointInformation{M_DP_NA_1: ioa=300 raw=[0x11]}");
+    EXPECT_EQ(std::format("{}", dio), "DoublePointInformation{M_DP_NA_1: ioa=300 data=[0x11]}");
 }
 
 TEST_F(FormatterTest, DoublePointWithCP24Time2aFormat)
 {
     DoublePointWithCP24Time2a dio{IOA{300}, DValue::OFF, Quality::BLOCKED, CP24Time2a{}};
-    EXPECT_EQ(std::format("{:}", dio), "DoublePointWithCP24Time2a{M_DP_TA_1: ioa=300 raw=[0x11, 0x00, 0x00, 0x00]}");
+    EXPECT_EQ(std::format("{}", dio), "DoublePointWithCP24Time2a{M_DP_TA_1: ioa=300 data=[0x11, 0x00, 0x00, 0x00]}");
 }
 
 
 TEST_F(FormatterTest, StepPositionInformationFormat)
 {
     StepPositionInformation sio{IOA{300}, 20, true, Quality::BLOCKED};
-    EXPECT_EQ(std::format("{:}", sio), "StepPositionInformation{M_ST_NA_1: ioa=300 raw=[0x94, 0x10]}");
+    EXPECT_EQ(std::format("{}", sio), "StepPositionInformation{M_ST_NA_1: ioa=300 data=[0x94, 0x10]}");
 }
 
 TEST_F(FormatterTest, StepPositionWithCP24Time2aFormat)
 {
     StepPositionWithCP24Time2a sio{IOA{300}, 20, true, Quality::BLOCKED, CP24Time2a{}};
-    EXPECT_EQ(std::format("{:}", sio), "StepPositionWithCP24Time2a{M_ST_TA_1: ioa=300 raw=[0x94, 0x10, 0x00, 0x00, 0x00]}");
+    EXPECT_EQ(std::format("{}", sio), "StepPositionWithCP24Time2a{M_ST_TA_1: ioa=300 data=[0x94, 0x10, 0x00, 0x00, 0x00]}");
 }

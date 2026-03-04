@@ -40,12 +40,6 @@ struct formatter<elink::iec60870::details::InformationObjectSerializable<inherit
         maxLen = 256;
         upper = false;
 
-        if (it != end && *it == 'b')
-        {
-            intuitive = false;
-            ++it;
-        }
-
         std::size_t value = 0;
         bool hasDigits = false;
 
@@ -58,9 +52,15 @@ struct formatter<elink::iec60870::details::InformationObjectSerializable<inherit
         if (hasDigits)
             maxLen = value;
 
-        if (it != end && (*it == 'x' || *it == 'X'))
+        if (it != end && *it == 'b')
         {
-            upper = (*it == 'X');
+            intuitive = false;
+            ++it;
+        }
+        else if (it != end && *it == 'B')
+        {
+            intuitive = false;
+            upper = true;
             ++it;
         }
 
@@ -89,7 +89,7 @@ struct formatter<elink::iec60870::details::InformationObjectSerializable<inherit
 
         if (intuitive)
         {
-            std::format_to(out, R"(: ioa={} raw=[)", io.getInformationObjectAddress());
+            std::format_to(out, R"(: ioa={} data=[)", io.getInformationObjectAddress());
         }
         else
         {
