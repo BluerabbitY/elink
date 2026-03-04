@@ -216,3 +216,72 @@ TEST_F(FormatterTest, StepPositionWithCP24Time2aFormat)
     StepPositionWithCP24Time2a sio{IOA{300}, 20, true, Quality::BLOCKED, CP24Time2a{}};
     EXPECT_EQ(std::format("{}", sio), "StepPositionWithCP24Time2a{M_ST_TA_1: ioa=300 data=[0x94, 0x10, 0x00, 0x00, 0x00]}");
 }
+
+TEST_F(FormatterTest, BitString32Format)
+{
+    BitString32 io{IOA{300}, 0x11223344, Quality::BLOCKED};
+    EXPECT_EQ(std::format("{}", io), "BitString32{M_BO_NA_1: ioa=300 data=[0x44, 0x33, 0x22, 0x11, 0x10]}");
+}
+
+TEST_F(FormatterTest, BitString32WithCP24Time2aFormat)
+{
+    BitString32WithCP24Time2a io{IOA{300}, 0x11223344, Quality::BLOCKED, CP24Time2a{}};
+    EXPECT_EQ(std::format("{}", io), "BitString32WithCP24Time2a{M_BO_TA_1: ioa=300 data=[0x44, 0x33, 0x22, 0x11, 0x10, 0x00, 0x00, 0x00]}");
+}
+
+TEST_F(FormatterTest, MeasuredValueNormalizedFormat)
+{
+    MeasuredValueNormalized io{IOA{300}, 0.5, Quality::BLOCKED};
+    EXPECT_EQ(std::format("{}", io), "MeasuredValueNormalized{M_ME_NA_1: ioa=300 data=[0x00, 0x40, 0x10]}");
+}
+
+TEST_F(FormatterTest, MeasuredValueNormalizedWithCP24Time2aFormat)
+{
+    MeasuredValueNormalizedWithCP24Time2a sio{IOA{300}, 0.5, Quality::BLOCKED, CP24Time2a{}};
+    EXPECT_EQ(std::format("{}", sio), "MeasuredValueNormalizedWithCP24Time2a{M_ME_TA_1: ioa=300 data=[0x00, 0x40, 0x10, 0x00, 0x00, 0x00]}");
+}
+
+TEST_F(FormatterTest, MeasuredValueScaledFormat)
+{
+    MeasuredValueScaled io{IOA{300}, 12799, Quality::BLOCKED};
+    EXPECT_EQ(std::format("{}", io), "MeasuredValueScaled{M_ME_NB_1: ioa=300 data=[0xff, 0x31, 0x10]}");
+}
+
+TEST_F(FormatterTest, MeasuredValueScaledWithCP24Time2aFormat)
+{
+    MeasuredValueScaledWithCP24Time2a io{IOA{300}, 12799, Quality::BLOCKED, CP24Time2a{}};
+    EXPECT_EQ(std::format("{}", io), "MeasuredValueScaledWithCP24Time2a{M_ME_TB_1: ioa=300 data=[0xff, 0x31, 0x10, 0x00, 0x00, 0x00]}");
+}
+
+TEST_F(FormatterTest, MeasuredValueShortFormat)
+{
+    MeasuredValueShort io{IOA{300}, 1.3, Quality::BLOCKED};
+    EXPECT_EQ(std::format("{}", io), "MeasuredValueShort{M_ME_NC_1: ioa=300 data=[0x66, 0x66, 0xa6, 0x3f, 0x10]}");
+}
+
+TEST_F(FormatterTest, MeasuredValueShortWithCP24Time2aFormat)
+{
+    MeasuredValueShortWithCP24Time2a io{IOA{300}, 1.3, Quality::BLOCKED, CP24Time2a{}};
+    EXPECT_EQ(std::format("{}", io), "MeasuredValueShortWithCP24Time2a{M_ME_TC_1: ioa=300 data=[0x66, 0x66, 0xa6, 0x3f, 0x10, 0x00, 0x00, 0x00]}");
+}
+
+TEST_F(FormatterTest, IntegratedTotalsFormat)
+{
+    const BinaryCounterReading bcr{12, 100, true, true, true};
+    IntegratedTotals io{IOA{300}, bcr};
+    EXPECT_EQ(std::format("{}", io), "IntegratedTotals{M_IT_NA_1: ioa=300 data=[0x0c, 0x00, 0x00, 0x00, 0xe4]}");
+}
+
+TEST_F(FormatterTest, IntegratedTotalsWithCP24Time2aFormat)
+{
+    const BinaryCounterReading bcr{12, 100, true, true, true};
+    IntegratedTotalsWithCP24Time2a io{IOA{300}, bcr, CP24Time2a{}};
+    EXPECT_EQ(std::format("{}", io), "IntegratedTotalsWithCP24Time2a{M_IT_TA_1: ioa=300 data=[0x0c, 0x00, 0x00, 0x00, 0xe4, 0x00, 0x00, 0x00]}");
+}
+
+TEST_F(FormatterTest, EventOfProtectionEquipmentFormat)
+{
+    const SingleEvent event{EventState::ON, QualityP::ELAPSED_TIME_INVALID};
+    EventOfProtectionEquipment io{IOA{300}, event, CP16Time2a{12500}, CP24Time2a{}};
+    EXPECT_EQ(std::format("{}", io), "EventOfProtectionEquipment{M_EP_TA_1: ioa=300 data=[0x0a, 0xd4, 0x30, 0x00, 0x00, 0x00]}");
+}
