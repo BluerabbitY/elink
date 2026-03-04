@@ -25,9 +25,7 @@ template <typename inherit, TypeID typeID>
 class IntegratedTotalsImp : public InformationObjectSerializable<inherit, typeID>
 {
 public:
-    IntegratedTotalsImp()
-    {
-    }
+    IntegratedTotalsImp() = default;
 
     /**
      * \brief Create a new instance of IntegratedTotals information object
@@ -45,7 +43,7 @@ public:
 
     ~IntegratedTotalsImp() = default;
 
-    const BinaryCounterReading &getBCR() const
+    [[nodiscard]] const BinaryCounterReading &getBCR() const
     {
         return bcrM;
     }
