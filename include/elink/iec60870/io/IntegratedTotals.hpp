@@ -24,7 +24,7 @@ class IntegratedTotals final : public details::IntegratedTotalsImp<IntegratedTot
 public:
     IntegratedTotals() = default;
 
-    IntegratedTotals(const IOA ioa, const BinaryCounterReading& bcr)
+    IntegratedTotals(const IOA ioa, const BinaryCounterReading bcr)
     : IntegratedTotalsImp{ioa, bcr}
     {
     }

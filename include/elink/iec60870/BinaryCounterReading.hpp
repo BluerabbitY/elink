@@ -44,6 +44,10 @@ public:
 
     ~BinaryCounterReading() = default;
 
+    BinaryCounterReading(const BinaryCounterReading&) = default;
+
+    BinaryCounterReading(BinaryCounterReading&&) = default;
+
     bool operator==(const BinaryCounterReading &other) const
     {
         return (valueM == other.valueM) && (seqM == other.seqM);

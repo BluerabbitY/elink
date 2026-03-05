@@ -26,7 +26,7 @@ public:
     StepPositionWithCP24Time2a() = default;
 
     // Valid Quality: GOOD, OVERFLOW, BLOCKED, SUBSTITUTED, NON_TOPICAL, INVALID
-    StepPositionWithCP24Time2a(const IOA ioa, const int value, const bool isTransient, const Quality quality = Quality::GOOD, const CP24Time2a& cp24time2a = CP24Time2a::now())
+    StepPositionWithCP24Time2a(const IOA ioa, const int value, const bool isTransient, const Quality quality = Quality::GOOD, const CP24Time2a cp24time2a = CP24Time2a::now())
         : StepPositionInformationImp{ioa, value, isTransient, quality}, CPxxTime2aUtil{cp24time2a}
     {
         setValue(value);

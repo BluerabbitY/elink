@@ -39,14 +39,14 @@ public:
     {
     }
 
-    explicit CPxxTime2aUtil(const Timestamp& cpxxtime2a) : cpxxtime2aM{cpxxtime2a} {};
+    explicit CPxxTime2aUtil(const Timestamp cpxxtime2a) : cpxxtime2aM{cpxxtime2a} {};
 
     [[nodiscard]] Timestamp& getTimestamp()
     {
         return cpxxtime2aM;
     }
 
-    void setTimestamp(const Timestamp& cpxxtime2a = Timestamp::now())
+    void setTimestamp(const Timestamp cpxxtime2a = Timestamp::now())
     {
         cpxxtime2aM = cpxxtime2a;
     }

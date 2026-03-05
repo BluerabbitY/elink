@@ -30,7 +30,7 @@ public:
 
     IntegratedTotalsWithCP24Time2a(const IOA ioa,
                                    const BinaryCounterReading& bcr,
-                                   const CP24Time2a& cp24time2a = CP24Time2a::now())
+                                   const CP24Time2a cp24time2a = CP24Time2a::now())
     : IntegratedTotalsImp{ioa, bcr}, CPxxTime2aUtil{cp24time2a}
     {
     }

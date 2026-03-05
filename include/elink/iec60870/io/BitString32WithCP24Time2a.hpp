@@ -28,7 +28,7 @@ class BitString32WithCP24Time2a final
 public:
     BitString32WithCP24Time2a() = default;
 
-    BitString32WithCP24Time2a(const IOA ioa, const uint32_t value, const Quality quality = Quality::GOOD, const CP24Time2a& cp24time2a = CP24Time2a::now())
+    BitString32WithCP24Time2a(const IOA ioa, const uint32_t value, const Quality quality = Quality::GOOD, const CP24Time2a cp24time2a = CP24Time2a::now())
      : BitString32Imp{ioa, value, quality}, CPxxTime2aUtil{cp24time2a}
     {
     }

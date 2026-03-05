@@ -46,6 +46,10 @@ public:
 
     ~SingleEvent() = default;
 
+    SingleEvent(const SingleEvent&) = default;
+
+    SingleEvent(SingleEvent&&) = default;
+
     bool operator==(const SingleEvent other) const
     {
         return valueM == other.valueM;

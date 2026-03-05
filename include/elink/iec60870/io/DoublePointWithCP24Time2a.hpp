@@ -26,7 +26,7 @@ public:
     DoublePointWithCP24Time2a() = default;
 
     // Valid Quality: GOOD, BLOCKED, SUBSTITUTED, NON_TOPICAL, INVALID
-    DoublePointWithCP24Time2a(const IOA ioa, const DValue value, const Quality quality = Quality::GOOD, const CP24Time2a& cp24time2a = CP24Time2a::now())
+    DoublePointWithCP24Time2a(const IOA ioa, const DValue value, const Quality quality = Quality::GOOD, const CP24Time2a cp24time2a = CP24Time2a::now())
         : DoublePointInformationImp{ioa, value, quality}, CPxxTime2aUtil{cp24time2a}
     {
     }

@@ -32,7 +32,7 @@ public:
                                            const StartEvent event,
                                            const QualityP qdp,
                                            const CP16Time2a elapsedTime,
-                                           const CP24Time2a& cp24time2a = CP24Time2a::now())
+                                           const CP24Time2a cp24time2a = CP24Time2a::now())
     : PackedStartEventsOfProtectionEquipmentImp{ioa, event, qdp, elapsedTime}, CPxxTime2aUtil{cp24time2a}
     {
     }

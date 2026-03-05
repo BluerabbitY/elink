@@ -36,7 +36,7 @@ public:
      * \param bcr binary counter reading value and state
      *
      */
-    IntegratedTotalsImp(const IOA ioa, const BinaryCounterReading& bcr)
+    IntegratedTotalsImp(const IOA ioa, const BinaryCounterReading bcr)
     : InformationObjectSerializable<inherit, typeID>{ioa}, bcrM{bcr}
     {
     }
@@ -48,7 +48,7 @@ public:
         return bcrM;
     }
 
-    void setBCR(const BinaryCounterReading& bcr)
+    void setBCR(const BinaryCounterReading bcr)
     {
         bcrM = bcr;
     }

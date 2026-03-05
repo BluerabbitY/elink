@@ -236,9 +236,7 @@ public:
         tmTime.tm_mon = getMonth() - 1;
         tmTime.tm_year = getYear(0) + 100;
 
-        const uint64_t msTimestamp = std::mktime(&tmTime) * static_cast<uint64_t>(1000) + getMillisecond();
-
-        return msTimestamp;
+        return std::mktime(&tmTime) * static_cast<uint64_t>(1000) + getMillisecond();
     }
 
     static CPxxTime2aImp now() requires (N == CP24Time2aTag || N == CP32Time2aTag || N == CP56Time2aTag)
@@ -274,7 +272,7 @@ public:
         return cpxxtime2a;
     }
 
-    bool operator==(const CPxxTime2aImp& other) const
+    bool operator==(const CPxxTime2aImp other) const
     {
         return (other.bufferM.size() == bufferM.size()) && (other.bufferM == bufferM);
     }

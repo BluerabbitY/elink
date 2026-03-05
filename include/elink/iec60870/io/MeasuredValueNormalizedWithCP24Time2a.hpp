@@ -31,7 +31,7 @@ public:
     MeasuredValueNormalizedWithCP24Time2a(const IOA ioa,
                                           const float value,
                                           const Quality quality = Quality::GOOD,
-                                          const CP24Time2a& cp24time2a = CP24Time2a::now())
+                                          const CP24Time2a cp24time2a = CP24Time2a::now())
     : MeasuredValueNormalizedImp{ioa, value, quality}, CPxxTime2aUtil{cp24time2a}
     {
     }
@@ -41,7 +41,7 @@ public:
                                           const NormalizationFactor factor,
                                           const float offset = 0.f,
                                           const Quality quality = Quality::GOOD,
-                                          const CP24Time2a& cp24time2a = CP24Time2a::now())
+                                          const CP24Time2a cp24time2a = CP24Time2a::now())
     : MeasuredValueNormalizedImp{ioa, value, factor, offset, quality}, CPxxTime2aUtil{cp24time2a}
     {
     }

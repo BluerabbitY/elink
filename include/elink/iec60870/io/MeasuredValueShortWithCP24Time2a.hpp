@@ -31,7 +31,7 @@ public:
     MeasuredValueShortWithCP24Time2a(const IOA ioa,
                                      const float value,
                                      const Quality quality = Quality::GOOD,
-                                     const CP24Time2a& cp24time2a = CP24Time2a::now())
+                                     const CP24Time2a cp24time2a = CP24Time2a::now())
     : MeasuredValueShortImp{ioa, value, quality}, CPxxTime2aUtil{cp24time2a}
     {
     }

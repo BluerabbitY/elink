@@ -26,7 +26,7 @@ public:
     SinglePointWithCP24Time2a() = default;
 
     // Valid Quality: GOOD, BLOCKED, SUBSTITUTED, NON_TOPICAL, INVALID
-    SinglePointWithCP24Time2a(const IOA ioa, const bool value, const Quality quality = Quality::GOOD, const CP24Time2a& cp24time2a = CP24Time2a::now())
+    SinglePointWithCP24Time2a(const IOA ioa, const bool value, const Quality quality = Quality::GOOD, const CP24Time2a cp24time2a = CP24Time2a::now())
         : SinglePointInformationImp{ioa, value, quality}, CPxxTime2aUtil{cp24time2a}
     {
     }
