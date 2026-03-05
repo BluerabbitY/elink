@@ -24,8 +24,9 @@ git commit -s -m "<type>: <description>"
 
 The `type` is used to specify the nature of this commit, with the following definitions:
 
-| `feat`     | A new feature                                                 |
+| **type**   | **description**                                               |
 |------------|---------------------------------------------------------------|
+| `feat`     | **A new feature**                                             |
 | `fix`      | **A bug fix**                                                 |
 | `docs`     | **Documentation only changes**                                |
 | `style`    | **Changes that do not affect the meaning of the code**        |
