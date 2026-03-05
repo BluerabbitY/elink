@@ -50,6 +50,8 @@ public:
 
     SingleEvent(SingleEvent&&) = default;
 
+    SingleEvent& operator=(const SingleEvent&) = default;
+
     bool operator==(const SingleEvent other) const
     {
         return valueM == other.valueM;
