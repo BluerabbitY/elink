@@ -37,5 +37,6 @@
 #include "elink/iec60870/io/IntegratedTotalsWithCP24Time2a.hpp"
 #include "elink/iec60870/io/EventOfProtectionEquipment.hpp"
 #include "elink/iec60870/io/PackedStartEventsOfProtectionEquipment.hpp"
+#include "elink/iec60870/io/PackedOutputCircuitInfo.hpp"
 
 #include "elink/iec60870/formatter/InformationObjectFormatter.hpp"

@@ -65,7 +65,7 @@ add_executable(${TEST_PROJECT_NAME}
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_IntegratedTotalsSet.cpp
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_EventOfProtectionEquipmentSet.cpp
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_PackedStartEventsOfProtectionEquipmentSet.cpp
-
+        ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_PackedOutputCircuitInfoSet.cpp
 )
 
 target_link_libraries(${TEST_PROJECT_NAME} PRIVATE GTest::gtest_main)
