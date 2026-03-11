@@ -296,3 +296,9 @@ TEST_F(FormatterTest, PackedOutputCircuitInfoEquipmentFormat)
     PackedOutputCircuitInfo io{IOA{300}, OutputCircuitInfo::OUTPUT_CI_CL2, QualityP::BLOCKED, CP16Time2a{12500}, CP24Time2a{}};
     EXPECT_EQ(std::format("{}", io), "PackedOutputCircuitInfo{M_EP_TC_1: ioa=300 data=[0x04, 0x10, 0xd4, 0x30, 0x00, 0x00, 0x00]}");
 }
+
+TEST_F(FormatterTest, PackedSinglePointWithSCDFormat)
+{
+    PackedSinglePointWithSCD io{IOA{300}, 16, 17, Quality::BLOCKED};
+    EXPECT_EQ(std::format("{}", io), "PackedSinglePointWithSCD{M_PS_NA_1: ioa=300 data=[0x10, 0x00, 0x11, 0x00, 0x10]}");
+}

@@ -64,6 +64,19 @@ public:
 
         return *this;
     }
+
+    IStream& operator>>(std::bitset<16>& value)
+    {
+        uint16_t bs16Value = 0;
+        *this >> bs16Value;
+
+        if (!hasError())
+        {
+            value = bs16Value;
+        }
+
+        return *this;
+    }
 };
 
 }
