@@ -29,6 +29,7 @@
  ***********************************************************************************/
 #include "elink/iec60870/io/SinglePointInformation.hpp"
 #include "elink/iec60870/io/SinglePointWithCP24Time2a.hpp"
+#include "elink/iec60870/io/SinglePointWithCP56Time2a.hpp"
 #include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
@@ -54,6 +55,9 @@ TEST_F(SinglePointInformationSetTest, TypeID)
 
     const SinglePointWithCP24Time2a iocp24;
     EXPECT_EQ(iocp24.getTypeID(), TypeID::M_SP_TA_1);
+
+    const SinglePointWithCP56Time2a iocp56;
+    EXPECT_EQ(iocp56.getTypeID(), TypeID::M_SP_TB_1);
 }
 
 TEST_F(SinglePointInformationSetTest, IOLength)
@@ -163,4 +167,52 @@ TEST_F(SinglePointInformationSetTest, SinglePointWithCP24Time2aDeserialize)
     EXPECT_EQ(cp24Time2a.getMinute(), 59);
     EXPECT_TRUE(cp24Time2a.isInvalid());
     EXPECT_TRUE(cp24Time2a.isSubstituted());
+}
+
+TEST_F(SinglePointInformationSetTest, SinglePointWithCP56Time2aSerialize)
+{
+    uint8_t buffer[256]{};
+    details::OStream os{buffer, sizeof(buffer)};
+
+    const SinglePointWithCP56Time2a::SerializePtr ios =
+        std::make_shared<SinglePointWithCP56Time2a>(IOA{0x200}, true, Quality::BLOCKED, CP56Time2a{});
+    EXPECT_TRUE(ios->serialize(os, false));
+    EXPECT_FALSE(os.hasError());
+
+    constexpr uint8_t dest[] = {0x00, 0x02, 0x00, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    EXPECT_EQ(os.size(), sizeof(dest));
+    EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
+}
+
+TEST_F(SinglePointInformationSetTest, SinglePointWithCP56Time2aDeserialize)
+{
+    constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x10, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
+    details::IStream is{buffer, sizeof(buffer)};
+
+    const auto io = std::make_shared<SinglePointWithCP56Time2a>();
+    const SinglePointWithCP56Time2a::SerializePtr ios = io;
+    EXPECT_TRUE(ios->deserialize(is, false));
+    EXPECT_FALSE(is.hasError());
+    EXPECT_EQ(is.size(), sizeof(buffer));
+
+    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_FALSE(io->getValue());
+    EXPECT_TRUE(io->getQuality() & Quality::BLOCKED);
+    EXPECT_FALSE(io->getQuality() & Quality::SUBSTITUTED);
+    EXPECT_FALSE(io->getQuality() & Quality::NON_TOPICAL);
+    EXPECT_FALSE(io->getQuality() & Quality::INVALID);
+
+    auto cp56Time2a = io->getTimestamp();
+    EXPECT_TRUE(cp56Time2a.isInvalid());
+    EXPECT_TRUE(cp56Time2a.isSummerTime());
+    EXPECT_TRUE(cp56Time2a.isSubstituted());
+    EXPECT_EQ(cp56Time2a.getMillisecond(), 266);
+    EXPECT_EQ(cp56Time2a.getSecond(), 54);
+    EXPECT_EQ(cp56Time2a.getMinute(), 17);
+    EXPECT_EQ(cp56Time2a.getHour(), 14);
+    EXPECT_EQ(cp56Time2a.getDayOfWeek(), 7);
+    EXPECT_EQ(cp56Time2a.getDayOfMonth(), 21);
+    EXPECT_EQ(cp56Time2a.getMonth(), 12);
+    EXPECT_EQ(cp56Time2a.getYear(), 2025);
+    EXPECT_EQ(cp56Time2a.toMsTimestamp(), 1766297874266);
 }

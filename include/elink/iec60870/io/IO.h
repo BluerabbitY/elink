@@ -40,5 +40,6 @@
 #include "elink/iec60870/io/PackedOutputCircuitInfo.hpp"
 #include "elink/iec60870/io/PackedSinglePointWithSCD.hpp"
 #include "elink/iec60870/io/MeasuredValueNormalizedWithoutQuality.hpp"
+#include "elink/iec60870/io/SinglePointWithCP56Time2a.hpp"
 
 #include "elink/iec60870/formatter/InformationObjectFormatter.hpp"
