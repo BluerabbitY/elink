@@ -152,6 +152,7 @@ struct formatter<elink::iec60870::details::InformationObjectSerializable<inherit
 #include "elink/iec60870/io/MeasuredValueNormalizedWithoutQuality.hpp"
 #include "elink/iec60870/io/SinglePointWithCP56Time2a.hpp"
 #include "elink/iec60870/io/DoublePointWithCP56Time2a.hpp"
+#include "elink/iec60870/io/StepPositionWithCP56Time2a.hpp"
 
 namespace std {
 
@@ -268,6 +269,11 @@ struct formatter<elink::iec60870::SinglePointWithCP56Time2a>
 template <>
 struct formatter<elink::iec60870::DoublePointWithCP56Time2a>
     : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::DoublePointWithCP56Time2a, elink::iec60870::TypeID::M_DP_TB_1>> {
+};
+
+template <>
+struct formatter<elink::iec60870::StepPositionWithCP56Time2a>
+    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::StepPositionWithCP56Time2a, elink::iec60870::TypeID::M_ST_TB_1>> {
 };
 
 }
