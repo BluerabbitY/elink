@@ -149,6 +149,7 @@ struct formatter<elink::iec60870::details::InformationObjectSerializable<inherit
 #include "elink/iec60870/io/PackedStartEventsOfProtectionEquipment.hpp"
 #include "elink/iec60870/io/PackedOutputCircuitInfo.hpp"
 #include "elink/iec60870/io/PackedSinglePointWithSCD.hpp"
+#include "elink/iec60870/io/MeasuredValueNormalizedWithoutQuality.hpp"
 
 namespace std {
 
@@ -250,6 +251,11 @@ struct formatter<elink::iec60870::PackedOutputCircuitInfo>
 template <>
 struct formatter<elink::iec60870::PackedSinglePointWithSCD>
     : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::PackedSinglePointWithSCD, elink::iec60870::TypeID::M_PS_NA_1>> {
+};
+
+template <>
+struct formatter<elink::iec60870::MeasuredValueNormalizedWithoutQuality>
+    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::MeasuredValueNormalizedWithoutQuality, elink::iec60870::TypeID::M_ME_ND_1>> {
 };
 
 }

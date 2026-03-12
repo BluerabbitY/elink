@@ -39,5 +39,6 @@
 #include "elink/iec60870/io/PackedStartEventsOfProtectionEquipment.hpp"
 #include "elink/iec60870/io/PackedOutputCircuitInfo.hpp"
 #include "elink/iec60870/io/PackedSinglePointWithSCD.hpp"
+#include "elink/iec60870/io/MeasuredValueNormalizedWithoutQuality.hpp"
 
 #include "elink/iec60870/formatter/InformationObjectFormatter.hpp"

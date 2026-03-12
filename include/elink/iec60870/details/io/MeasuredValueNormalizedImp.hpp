@@ -15,60 +15,34 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/details/io/InformationObjectSerializable.hpp"
+#include "elink/iec60870/details/io/MeasuredValueNormalizedWithoutQualityImp.hpp"
 #include "elink/iec60870/io/QualityDescriptor.hpp"
-#include "elink/iec60870/details/io/util/NormalizedValueUtil.hpp"
 
 namespace elink::iec60870::details
 {
 
 template <typename inherit, TypeID typeID>
-class MeasuredValueNormalizedImp : public InformationObjectSerializable<inherit, typeID>
+class MeasuredValueNormalizedImp : public MeasuredValueNormalizedWithoutQualityImp<inherit, typeID>
 {
 public:
     MeasuredValueNormalizedImp()
-    : valueM{0}, qualityM{Quality::GOOD}
+    : MeasuredValueNormalizedWithoutQualityImp<inherit, typeID>{}, qualityM{Quality::GOOD}
     {
     }
 
     MeasuredValueNormalizedImp(const IOA ioa, const NormalizedValue value, const Quality quality)
-    : InformationObjectSerializable<inherit, typeID>{ioa},
-      valueM{0},
+    : MeasuredValueNormalizedWithoutQualityImp<inherit, typeID>{ioa, value},
       qualityM{quality}
     {
-        setValue(value);
     }
 
     MeasuredValueNormalizedImp(const IOA ioa, const OriginalPhyValue value, const NormalizationFactor factor, const float offset, const Quality quality)
-    : InformationObjectSerializable<inherit, typeID>{ioa},
-      valueM{0},
+    : MeasuredValueNormalizedWithoutQualityImp<inherit, typeID>{ioa, value, factor, offset},
       qualityM{quality}
     {
-        setValue(value, factor, offset);
     }
 
     ~MeasuredValueNormalizedImp() = default;
-
-    [[nodiscard]] NormalizedValue getValue() const
-    {
-        return scaledToNormalized(valueM);
-    }
-
-    void setValue(const NormalizedValue value)
-    {
-        valueM = normalizedToScaled(value);
-    }
-
-    // Multiply normalized value by the scale factor to retrieve the original physical value.
-    [[nodiscard]] OriginalPhyValue getValue(const ScaledFactor factor, const float offset = 0.f) const
-    {
-        return getValue() * factor + offset;
-    }
-
-    void setValue(const OriginalPhyValue value, const NormalizationFactor factor, const float offset = 0.f)
-    {
-        setValue((value - offset) / factor);
-    }
 
     [[nodiscard]] Quality getQuality() const
     {
@@ -81,7 +55,6 @@ public:
     }
 
 protected:
-    NormalizedValueBuffer valueM;
     Quality qualityM;
 };
 

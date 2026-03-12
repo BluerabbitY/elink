@@ -29,6 +29,7 @@
  ***********************************************************************************/
 #include "elink/iec60870/io/MeasuredValueNormalized.hpp"
 #include "elink/iec60870/io/MeasuredValueNormalizedWithCP24Time2a.hpp"
+#include "elink/iec60870/io/MeasuredValueNormalizedWithoutQuality.hpp"
 #include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
@@ -169,4 +170,34 @@ TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithCP24Time2aDes
     EXPECT_EQ(cp24Time2a.getMinute(), 59);
     EXPECT_TRUE(cp24Time2a.isInvalid());
     EXPECT_TRUE(cp24Time2a.isSubstituted());
+}
+
+TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithoutQualitySerialize)
+{
+    uint8_t buffer[256]{};
+    details::OStream os{buffer, sizeof(buffer)};
+
+    const MeasuredValueNormalizedWithoutQuality::SerializePtr ios =
+        std::make_shared<MeasuredValueNormalizedWithoutQuality>(IOA{0x200}, 0.5f);
+    EXPECT_TRUE(ios->serialize(os, false));
+    EXPECT_FALSE(os.hasError());
+
+    constexpr uint8_t dest[] = {0x00, 0x02, 0x00, 0x00, 0x40};
+    EXPECT_EQ(os.size(), sizeof(dest));
+    EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
+}
+
+TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithoutQualityDeserialize)
+{
+    constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x00, 0x40};
+    details::IStream is{buffer, sizeof(buffer)};
+
+    const auto io = std::make_shared<MeasuredValueNormalizedWithoutQuality>();
+    const MeasuredValueNormalizedWithoutQuality::SerializePtr ios = io;
+    EXPECT_TRUE(ios->deserialize(is, false));
+    EXPECT_FALSE(is.hasError());
+    EXPECT_EQ(is.size(), sizeof(buffer));
+
+    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_FLOAT_EQ(io->getValue(), 0.5f);
 }

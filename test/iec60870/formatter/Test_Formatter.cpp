@@ -302,3 +302,9 @@ TEST_F(FormatterTest, PackedSinglePointWithSCDFormat)
     PackedSinglePointWithSCD io{IOA{300}, 16, 17, Quality::BLOCKED};
     EXPECT_EQ(std::format("{}", io), "PackedSinglePointWithSCD{M_PS_NA_1: ioa=300 data=[0x10, 0x00, 0x11, 0x00, 0x10]}");
 }
+
+TEST_F(FormatterTest, MeasuredValueNormalizedWithoutQualityFormat)
+{
+    MeasuredValueNormalizedWithoutQuality io{IOA{300}, 16, 10};
+    EXPECT_EQ(std::format("{}", io), "MeasuredValueNormalizedWithoutQuality{M_ME_ND_1: ioa=300 data=[0xff, 0x7f]}");
+}
