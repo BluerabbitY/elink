@@ -314,3 +314,9 @@ TEST_F(FormatterTest, SinglePointWithCP56Time2aFormat)
     SinglePointWithCP56Time2a io{IOA{300}, true, Quality::BLOCKED, CP56Time2a{}};
     EXPECT_EQ(std::format("{}", io), "SinglePointWithCP56Time2a{M_SP_TB_1: ioa=300 data=[0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]}");
 }
+
+TEST_F(FormatterTest, DoublePointWithCP56Time2a)
+{
+    DoublePointWithCP56Time2a io{IOA{300}, DValue::OFF, Quality::BLOCKED, CP56Time2a{}};
+    EXPECT_EQ(std::format("{}", io), "DoublePointWithCP56Time2a{M_DP_TB_1: ioa=300 data=[0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]}");
+}
