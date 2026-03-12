@@ -69,6 +69,10 @@ TEST_F(SinglePointInformationSetTest, IOLength)
     const SinglePointWithCP24Time2a iocp24;
     EXPECT_EQ(iocp24.size(), 7);
     EXPECT_EQ(iocp24.length(true), 4);
+
+    const SinglePointWithCP56Time2a iocp56;
+    EXPECT_EQ(iocp56.size(), 11);
+    EXPECT_EQ(iocp56.length(true), 8);
 }
 
 TEST_F(SinglePointInformationSetTest, CommomImpValue)

@@ -55,6 +55,9 @@ TEST_F(BMeasuredValueNormalizedSetTest, TypeID)
 
     const MeasuredValueNormalizedWithCP24Time2a iocp24;
     EXPECT_EQ(iocp24.getTypeID(), elink::iec60870::TypeID::M_ME_TA_1);
+
+    const MeasuredValueNormalizedWithoutQuality ionq;
+    EXPECT_EQ(ionq.getTypeID(), elink::iec60870::TypeID::M_ME_ND_1);
 }
 
 TEST_F(BMeasuredValueNormalizedSetTest, IOLength)
@@ -66,6 +69,10 @@ TEST_F(BMeasuredValueNormalizedSetTest, IOLength)
     const MeasuredValueNormalizedWithCP24Time2a iocp24;
     EXPECT_EQ(iocp24.size(), 9);
     EXPECT_EQ(iocp24.length(true), 6);
+
+    const MeasuredValueNormalizedWithoutQuality ionq;
+    EXPECT_EQ(ionq.size(), 5);
+    EXPECT_EQ(ionq.length(true), 2);
 }
 
 TEST_F(BMeasuredValueNormalizedSetTest, CommonImpValue)
