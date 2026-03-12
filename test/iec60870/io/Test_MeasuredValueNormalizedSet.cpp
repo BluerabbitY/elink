@@ -30,6 +30,7 @@
 #include "elink/iec60870/io/MeasuredValueNormalized.hpp"
 #include "elink/iec60870/io/MeasuredValueNormalizedWithCP24Time2a.hpp"
 #include "elink/iec60870/io/MeasuredValueNormalizedWithoutQuality.hpp"
+#include "elink/iec60870/io/MeasuredValueNormalizedWithCP56Time2a.hpp"
 #include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
@@ -58,6 +59,9 @@ TEST_F(BMeasuredValueNormalizedSetTest, TypeID)
 
     const MeasuredValueNormalizedWithoutQuality ionq;
     EXPECT_EQ(ionq.getTypeID(), elink::iec60870::TypeID::M_ME_ND_1);
+
+    const MeasuredValueNormalizedWithCP56Time2a iocp56;
+    EXPECT_EQ(iocp56.getTypeID(), elink::iec60870::TypeID::M_ME_TD_1);
 }
 
 TEST_F(BMeasuredValueNormalizedSetTest, IOLength)
@@ -73,6 +77,10 @@ TEST_F(BMeasuredValueNormalizedSetTest, IOLength)
     const MeasuredValueNormalizedWithoutQuality ionq;
     EXPECT_EQ(ionq.size(), 5);
     EXPECT_EQ(ionq.length(true), 2);
+
+    const MeasuredValueNormalizedWithCP24Time2a ioccp56;
+    EXPECT_EQ(iocp24.size(), 9);
+    EXPECT_EQ(iocp24.length(true), 6);
 }
 
 TEST_F(BMeasuredValueNormalizedSetTest, CommonImpValue)
@@ -207,4 +215,52 @@ TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithoutQualityDes
 
     EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
     EXPECT_FLOAT_EQ(io->getValue(), 0.5f);
+}
+
+TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithCP56Time2aSerialize)
+{
+    uint8_t buffer[256]{};
+    details::OStream os{buffer, sizeof(buffer)};
+
+    const MeasuredValueNormalizedWithCP56Time2a::SerializePtr ios =
+        std::make_shared<MeasuredValueNormalizedWithCP56Time2a>(IOA{0x200}, 0.5f, Quality::BLOCKED, CP56Time2a{});
+    EXPECT_TRUE(ios->serialize(os, false));
+    EXPECT_FALSE(os.hasError());
+
+    constexpr uint8_t dest[] = {0x00, 0x02, 0x00, 0x00, 0x40, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    EXPECT_EQ(os.size(), sizeof(dest));
+    EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
+}
+
+TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithCP56Time2aDeserialize)
+{
+    constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x00, 0x40, 0x10, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
+    details::IStream is{buffer, sizeof(buffer)};
+
+    const auto io = std::make_shared<MeasuredValueNormalizedWithCP56Time2a>();
+    const MeasuredValueNormalizedWithCP56Time2a::SerializePtr ios = io;
+    EXPECT_TRUE(ios->deserialize(is, false));
+    EXPECT_FALSE(is.hasError());
+    EXPECT_EQ(is.size(), sizeof(buffer));
+
+    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_FLOAT_EQ(io->getValue(), 0.5f);
+    EXPECT_TRUE(io->getQuality() & Quality::BLOCKED);
+    EXPECT_FALSE(io->getQuality() & Quality::SUBSTITUTED);
+    EXPECT_FALSE(io->getQuality() & Quality::NON_TOPICAL);
+    EXPECT_FALSE(io->getQuality() & Quality::INVALID);
+
+    auto cp56Time2a = io->getTimestamp();
+    EXPECT_TRUE(cp56Time2a.isInvalid());
+    EXPECT_TRUE(cp56Time2a.isSummerTime());
+    EXPECT_TRUE(cp56Time2a.isSubstituted());
+    EXPECT_EQ(cp56Time2a.getMillisecond(), 266);
+    EXPECT_EQ(cp56Time2a.getSecond(), 54);
+    EXPECT_EQ(cp56Time2a.getMinute(), 17);
+    EXPECT_EQ(cp56Time2a.getHour(), 14);
+    EXPECT_EQ(cp56Time2a.getDayOfWeek(), 7);
+    EXPECT_EQ(cp56Time2a.getDayOfMonth(), 21);
+    EXPECT_EQ(cp56Time2a.getMonth(), 12);
+    EXPECT_EQ(cp56Time2a.getYear(), 2025);
+    EXPECT_EQ(cp56Time2a.toMsTimestamp(), 1766297874266);
 }

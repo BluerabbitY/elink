@@ -332,3 +332,9 @@ TEST_F(FormatterTest, BitString32WithCP56Time2aFormat)
     BitString32WithCP56Time2a io{IOA{300}, 0x20, Quality::BLOCKED, CP56Time2a{}};
     EXPECT_EQ(std::format("{}", io), "BitString32WithCP56Time2a{M_BO_TB_1: ioa=300 data=[0x20, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]}");
 }
+
+TEST_F(FormatterTest, MeasuredValueNormalizedWithCP56Time2aFormat)
+{
+    MeasuredValueNormalizedWithCP56Time2a io{IOA{300}, 0.5, Quality::BLOCKED, CP56Time2a{}};
+    EXPECT_EQ(std::format("{}", io), "MeasuredValueNormalizedWithCP56Time2a{M_ME_TD_1: ioa=300 data=[0x00, 0x40, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]}");
+}
