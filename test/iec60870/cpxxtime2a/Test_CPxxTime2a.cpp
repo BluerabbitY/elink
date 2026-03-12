@@ -113,6 +113,13 @@ TEST_F(CPXXTime2aTest, CP56Time2a)
     cp56Time2a.setYear(2025);
     EXPECT_EQ(cp56Time2a.getYear(), 2025);
 
+    cp56Time2a.setInvalid(true);
+    EXPECT_TRUE(cp56Time2a.isInvalid());
+    cp56Time2a.setSummerTime(true);
+    EXPECT_TRUE(cp56Time2a.isSummerTime());
+    cp56Time2a.setSubstituted(true);
+    EXPECT_TRUE(cp56Time2a.isSubstituted());
+
     cp56Time2a.setMillisecond(266);
     cp56Time2a.setSecond(54);
     cp56Time2a.setMinute(17);

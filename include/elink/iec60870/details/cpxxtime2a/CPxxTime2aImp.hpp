@@ -200,7 +200,7 @@ public:
     void setDayOfMonth(int value) requires (N == CP56Time2aTag)
     {
         value = std::clamp(value, 1, 31);
-        bufferM[4] = static_cast<uint8_t>((bufferM[4] & 0xe0) + (value & 0x1f));
+        bufferM[4] = static_cast<uint8_t>((bufferM[4] & 0xe0) | (value & 0x1f));
     }
 
     [[nodiscard]] int getMonth() const requires (N == CP56Time2aTag)
@@ -211,7 +211,7 @@ public:
     void setMonth(int value) requires (N == CP56Time2aTag)
     {
         value = std::clamp(value, 1, 12);
-        bufferM[5] = static_cast<uint8_t>((bufferM[5] & 0xf0) + (value & 0x0f));
+        bufferM[5] = static_cast<uint8_t>((bufferM[5] & 0xf0) | (value & 0x0f));
     }
 
     [[nodiscard]] int getYear(const int startYear = 2000) const requires (N == CP56Time2aTag)
