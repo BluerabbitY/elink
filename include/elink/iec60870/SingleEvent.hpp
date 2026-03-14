@@ -84,6 +84,7 @@ public:
 
 protected:
     friend class EventOfProtectionEquipment;
+    friend class EventOfProtectionEquipmentWithCP56Time2a;
 
     [[nodiscard]] constexpr std::size_t size() const
     {

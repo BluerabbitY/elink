@@ -357,3 +357,10 @@ TEST_F(FormatterTest, IntegratedTotalsWithCP56Time2aFormat)
     IntegratedTotalsWithCP56Time2a io{IOA{300}, bcr, CP56Time2a{}};
     EXPECT_EQ(std::format("{}", io), "IntegratedTotalsWithCP56Time2a{M_IT_TB_1: ioa=300 data=[0x0c, 0x00, 0x00, 0x00, 0xe4, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]}");
 }
+
+TEST_F(FormatterTest, EventOfProtectionEquipmentWithCP56Time2aFormat)
+{
+    const SingleEvent event{EventState::ON, QualityP::ELAPSED_TIME_INVALID};
+    EventOfProtectionEquipmentWithCP56Time2a io{IOA{300}, event, CP16Time2a{12500}, CP56Time2a{}};
+    EXPECT_EQ(std::format("{}", io), "EventOfProtectionEquipmentWithCP56Time2a{M_EP_TD_1: ioa=300 data=[0x0a, 0xd4, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]}");
+}

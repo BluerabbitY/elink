@@ -28,6 +28,7 @@
  *
  ***********************************************************************************/
 #include "elink/iec60870/io/EventOfProtectionEquipment.hpp"
+#include "elink/iec60870/io/EventOfProtectionEquipmentWithCP56Time2a.hpp"
 #include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
@@ -50,6 +51,9 @@ TEST_F(EventOfProtectionEquipmentSetTest, TypeID)
 {
     const EventOfProtectionEquipment io;
     EXPECT_EQ(io.getTypeID(), TypeID::M_EP_TA_1);
+
+    const EventOfProtectionEquipmentWithCP56Time2a iocp56;
+    EXPECT_EQ(iocp56.getTypeID(), TypeID::M_EP_TD_1);
 }
 
 TEST_F(EventOfProtectionEquipmentSetTest, IOLength)
@@ -57,6 +61,10 @@ TEST_F(EventOfProtectionEquipmentSetTest, IOLength)
     const EventOfProtectionEquipment io;
     EXPECT_EQ(io.size(), 9);
     EXPECT_EQ(io.length(true), 6);
+
+    const EventOfProtectionEquipmentWithCP56Time2a iocp56;
+    EXPECT_EQ(iocp56.size(), 13);
+    EXPECT_EQ(iocp56.length(true), 10);
 }
 
 TEST_F(EventOfProtectionEquipmentSetTest, CommonImpEvent)
@@ -117,4 +125,56 @@ TEST_F(EventOfProtectionEquipmentSetTest, EventOfProtectionEquipmentDeserialize)
     EXPECT_EQ(cp24Time2a.getMinute(), 59);
     EXPECT_TRUE(cp24Time2a.isInvalid());
     EXPECT_TRUE(cp24Time2a.isSubstituted());
+}
+
+TEST_F(EventOfProtectionEquipmentSetTest, EventOfProtectionEquipmentWithCP56Time2aSerialize)
+{
+    uint8_t buffer[256]{};
+    details::OStream os{buffer, sizeof(buffer)};
+
+    const SingleEvent event{EventState::ON, QualityP::BLOCKED | QualityP::ELAPSED_TIME_INVALID};
+    const EventOfProtectionEquipmentWithCP56Time2a::SerializePtr ios =
+        std::make_shared<EventOfProtectionEquipmentWithCP56Time2a>(IOA{0x200}, event, CP16Time2a{12349}, CP56Time2a{});
+    EXPECT_TRUE(ios->serialize(os, false));
+    EXPECT_FALSE(os.hasError());
+
+    constexpr uint8_t dest[] = {0x00, 0x02, 0x00, 0x1a, 0x3d, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    EXPECT_EQ(os.size(), sizeof(dest));
+    EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
+}
+
+TEST_F(EventOfProtectionEquipmentSetTest, EventOfProtectionEquipmentWithCP56Time2aDeserialize)
+{
+    constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x1a, 0x3d, 0x30, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
+    details::IStream is{buffer, sizeof(buffer)};
+
+    const auto io = std::make_shared<EventOfProtectionEquipmentWithCP56Time2a>();
+    const EventOfProtectionEquipmentWithCP56Time2a::SerializePtr ios = io;
+    EXPECT_TRUE(ios->deserialize(is, false));
+    EXPECT_FALSE(is.hasError());
+    EXPECT_EQ(is.size(), sizeof(buffer));
+
+    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+
+    auto event = io->getEvent();
+    EXPECT_EQ(io->getEvent().getEventState(), EventState::ON);
+    EXPECT_TRUE(event.getQDP() & QualityP::ELAPSED_TIME_INVALID);
+    EXPECT_TRUE(event.getQDP() & QualityP::BLOCKED);
+    EXPECT_FALSE(event.getQDP() & QualityP::SUBSTITUTED);
+    EXPECT_FALSE(event.getQDP() & QualityP::NON_TOPICAL);
+    EXPECT_FALSE(event.getQDP() & QualityP::INVALID);
+
+    auto cp56Time2a = io->getTimestamp();
+    EXPECT_TRUE(cp56Time2a.isInvalid());
+    EXPECT_TRUE(cp56Time2a.isSummerTime());
+    EXPECT_TRUE(cp56Time2a.isSubstituted());
+    EXPECT_EQ(cp56Time2a.getMillisecond(), 266);
+    EXPECT_EQ(cp56Time2a.getSecond(), 54);
+    EXPECT_EQ(cp56Time2a.getMinute(), 17);
+    EXPECT_EQ(cp56Time2a.getHour(), 14);
+    EXPECT_EQ(cp56Time2a.getDayOfWeek(), 7);
+    EXPECT_EQ(cp56Time2a.getDayOfMonth(), 21);
+    EXPECT_EQ(cp56Time2a.getMonth(), 12);
+    EXPECT_EQ(cp56Time2a.getYear(), 2025);
+    EXPECT_EQ(cp56Time2a.toMsTimestamp(), 1766297874266);
 }
