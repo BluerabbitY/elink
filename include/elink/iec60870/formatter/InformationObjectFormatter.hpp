@@ -155,6 +155,7 @@ struct formatter<elink::iec60870::details::InformationObjectSerializable<inherit
 #include "elink/iec60870/io/StepPositionWithCP56Time2a.hpp"
 #include "elink/iec60870/io/BitString32WithCP56Time2a.hpp"
 #include "elink/iec60870/io/MeasuredValueNormalizedWithCP56Time2a.hpp"
+#include "elink/iec60870/io/MeasuredValueScaledWithCP56Time2a.hpp"
 
 namespace std {
 
@@ -286,6 +287,11 @@ struct formatter<elink::iec60870::BitString32WithCP56Time2a>
 template <>
 struct formatter<elink::iec60870::MeasuredValueNormalizedWithCP56Time2a>
     : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::MeasuredValueNormalizedWithCP56Time2a, elink::iec60870::TypeID::M_ME_TD_1>> {
+};
+
+template <>
+struct formatter<elink::iec60870::MeasuredValueScaledWithCP56Time2a>
+    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::MeasuredValueScaledWithCP56Time2a, elink::iec60870::TypeID::M_ME_TE_1>> {
 };
 
 }
