@@ -113,6 +113,7 @@ public:
 protected:
     friend class IntegratedTotals;
     friend class IntegratedTotalsWithCP24Time2a;
+    friend class IntegratedTotalsWithCP56Time2a;
 
     [[nodiscard]] constexpr std::size_t size() const
     {

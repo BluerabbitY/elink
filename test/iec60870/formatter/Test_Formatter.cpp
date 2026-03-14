@@ -350,3 +350,10 @@ TEST_F(FormatterTest, MeasuredValueShortWithCP56Time2aFormat)
     MeasuredValueShortWithCP56Time2a io{IOA{300}, 1.3, Quality::BLOCKED, CP56Time2a{}};
     EXPECT_EQ(std::format("{}", io), "MeasuredValueShortWithCP56Time2a{M_ME_TF_1: ioa=300 data=[0x66, 0x66, 0xa6, 0x3f, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]}");
 }
+
+TEST_F(FormatterTest, IntegratedTotalsWithCP56Time2aFormat)
+{
+    const BinaryCounterReading bcr{12, 100, true, true, true};
+    IntegratedTotalsWithCP56Time2a io{IOA{300}, bcr, CP56Time2a{}};
+    EXPECT_EQ(std::format("{}", io), "IntegratedTotalsWithCP56Time2a{M_IT_TB_1: ioa=300 data=[0x0c, 0x00, 0x00, 0x00, 0xe4, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]}");
+}

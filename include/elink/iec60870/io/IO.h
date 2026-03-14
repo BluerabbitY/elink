@@ -47,5 +47,6 @@
 #include "elink/iec60870/io/MeasuredValueNormalizedWithCP56Time2a.hpp"
 #include "elink/iec60870/io/MeasuredValueScaledWithCP56Time2a.hpp"
 #include "elink/iec60870/io/MeasuredValueShortWithCP56Time2a.hpp"
+#include "elink/iec60870/io/IntegratedTotalsWithCP56Time2a.hpp"
 
 #include "elink/iec60870/formatter/InformationObjectFormatter.hpp"
