@@ -344,3 +344,9 @@ TEST_F(FormatterTest, MeasuredValueScaledWithCP56Time2aFormat)
     MeasuredValueScaledWithCP56Time2a io{IOA{300}, 12799, Quality::BLOCKED, CP56Time2a{}};
     EXPECT_EQ(std::format("{}", io), "MeasuredValueScaledWithCP56Time2a{M_ME_TE_1: ioa=300 data=[0xff, 0x31, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]}");
 }
+
+TEST_F(FormatterTest, MeasuredValueShortWithCP56Time2aFormat)
+{
+    MeasuredValueShortWithCP56Time2a io{IOA{300}, 1.3, Quality::BLOCKED, CP56Time2a{}};
+    EXPECT_EQ(std::format("{}", io), "MeasuredValueShortWithCP56Time2a{M_ME_TF_1: ioa=300 data=[0x66, 0x66, 0xa6, 0x3f, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]}");
+}
