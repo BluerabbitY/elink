@@ -59,7 +59,7 @@ public:
      *
      * \return S/E bit, true = select, false = execute
      */
-    [[nodiscard]] bool isSelect() const
+    [[nodiscard]] SEBit isSelect() const
     {
         return valueM & 0x80;
     }
