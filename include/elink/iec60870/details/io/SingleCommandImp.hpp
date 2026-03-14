@@ -25,34 +25,20 @@ using SingleCommandValue = bool;
 namespace details {
 
 template <typename inherit, TypeID typeID>
-class SingleCommandImp : public CommandImp<inherit, typeID>
+class SingleCommandImp : public CommandImp<inherit, typeID, SingleCommandValue>
 {
 public:
     SingleCommandImp()
-    : CommandImp<inherit, typeID>{}
+    : CommandImp<inherit, typeID, SingleCommandValue>{}
     {
     }
 
     SingleCommandImp(const IOA ioa, const SEBit selectCommand, const QUValue qu, const SingleCommandValue command)
-    : CommandImp<inherit, typeID>{ioa, selectCommand, qu}
+    : CommandImp<inherit, typeID, SingleCommandValue>{ioa, selectCommand, qu, command}
     {
-        setState(command);
     }
 
     ~SingleCommandImp() = default;
-
-    /**
-     * \brief Get the state (command) value
-     */
-    [[nodiscard]] bool getState() const
-    {
-        return this->valueM & 0x01;
-    }
-
-    void setState(const bool state)
-    {
-        state ? this->valueM |= 0x01 : this->valueM &= 0xfe;
-    }
 };
 
 }

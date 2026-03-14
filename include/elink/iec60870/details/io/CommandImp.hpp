@@ -35,7 +35,7 @@ using SEBit = bool;
 namespace details
 {
 
-template <typename inherit, TypeID typeID>
+template <typename inherit, TypeID typeID, typename SatusType>
 class CommandImp : public InformationObjectSerializable<inherit, typeID>
 {
 public:
@@ -44,11 +44,12 @@ public:
     {
     }
 
-    CommandImp(const IOA ioa, const SEBit selectCommand, const QUValue qu)
+    CommandImp(const IOA ioa, const SEBit selectCommand, const QUValue qu, const SatusType command)
     : InformationObjectSerializable<inherit, typeID>{ioa}, valueM{0}
     {
         setSelect(selectCommand);
         setQU(qu);
+        setState(command);
     }
 
     ~CommandImp() = default;
@@ -81,6 +82,21 @@ public:
     void setQU(const QUValue qu)
     {
         valueM = (valueM & 0x83) | static_cast<uint8_t>(qu);
+    }
+
+    /**
+     * \brief Get the state (command) value
+     *
+     * \return \ref DoubleCommandValue
+     */
+    [[nodiscard]] SatusType getState() const
+    {
+        return static_cast<SatusType>(valueM & 0x03);
+    }
+
+    void setState(const SatusType state)
+    {
+        valueM = (valueM & 0xfc) | static_cast<uint8_t>(state);
     }
 
 protected:

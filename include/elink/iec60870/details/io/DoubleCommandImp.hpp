@@ -34,37 +34,21 @@ namespace details
 {
 
 template <typename inherit, TypeID typeID>
-class DoubleCommandImp : public CommandImp<inherit, typeID>
+class DoubleCommandImp : public CommandImp<inherit, typeID, DoubleCommandValue>
 {
 public:
     DoubleCommandImp()
-    : CommandImp<inherit, typeID>{}
+    : CommandImp<inherit, typeID, DoubleCommandValue>{}
     {
-        setState(DoubleCommandValue::OFF);
+        CommandImp<inherit, typeID, DoubleCommandValue>::setState(DoubleCommandValue::OFF);
     }
 
     DoubleCommandImp(const IOA ioa, const SEBit selectCommand, const QUValue qu, const DoubleCommandValue command)
-    : CommandImp<inherit, typeID>{ioa, selectCommand, qu}
+    : CommandImp<inherit, typeID, DoubleCommandValue>{ioa, selectCommand, qu, command}
     {
-        setState(command);
     }
 
     ~DoubleCommandImp() = default;
-
-    /**
-     * \brief Get the state (command) value
-     *
-     * \return \ref DoubleCommandValue
-     */
-    [[nodiscard]] DoubleCommandValue getState() const
-    {
-        return static_cast<DoubleCommandValue>(this->valueM & 0x03);
-    }
-
-    void setState(const DoubleCommandValue state)
-    {
-        this->valueM = (this->valueM & 0xfc) | static_cast<uint8_t>(state);
-    }
 };
 
 }
