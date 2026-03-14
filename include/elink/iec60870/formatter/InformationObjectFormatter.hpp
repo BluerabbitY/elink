@@ -160,6 +160,7 @@ struct formatter<elink::iec60870::details::InformationObjectSerializable<inherit
 #include "elink/iec60870/io/IntegratedTotalsWithCP56Time2a.hpp"
 #include "elink/iec60870/io/EventOfProtectionEquipmentWithCP56Time2a.hpp"
 #include "elink/iec60870/io/PackedStartEventsOfProtectionEquipmentWithCP56Time2a.hpp"
+#include "elink/iec60870/io/PackedOutputCircuitInfoWithCP56Time2a.hpp"
 
 namespace std {
 
@@ -316,6 +317,11 @@ struct formatter<elink::iec60870::EventOfProtectionEquipmentWithCP56Time2a>
 template <>
 struct formatter<elink::iec60870::PackedStartEventsOfProtectionEquipmentWithCP56Time2a>
     : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::PackedStartEventsOfProtectionEquipmentWithCP56Time2a, elink::iec60870::TypeID::M_EP_TE_1>> {
+};
+
+template <>
+struct formatter<elink::iec60870::PackedOutputCircuitInfoWithCP56Time2a>
+    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::PackedOutputCircuitInfoWithCP56Time2a, elink::iec60870::TypeID::M_EP_TF_1>> {
 };
 
 }

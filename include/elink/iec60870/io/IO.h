@@ -50,5 +50,6 @@
 #include "elink/iec60870/io/IntegratedTotalsWithCP56Time2a.hpp"
 #include "elink/iec60870/io/EventOfProtectionEquipmentWithCP56Time2a.hpp"
 #include "elink/iec60870/io/PackedStartEventsOfProtectionEquipmentWithCP56Time2a.hpp"
+#include "elink/iec60870/io/PackedOutputCircuitInfoWithCP56Time2a.hpp"
 
 #include "elink/iec60870/formatter/InformationObjectFormatter.hpp"
