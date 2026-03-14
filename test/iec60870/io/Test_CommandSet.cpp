@@ -28,6 +28,7 @@
  *
  ***********************************************************************************/
 #include "elink/iec60870/io/SingleCommand.hpp"
+#include "elink/iec60870/io/DoubleCommand.hpp"
 #include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
@@ -48,15 +49,22 @@ protected:
 
 TEST_F(CommandSetTest, TypeID)
 {
-    const SingleCommand io;
-    EXPECT_EQ(io.getTypeID(), TypeID::C_SC_NA_1);
+    const SingleCommand sio;
+    EXPECT_EQ(sio.getTypeID(), TypeID::C_SC_NA_1);
+
+    const DoubleCommand dio;
+    EXPECT_EQ(dio.getTypeID(), TypeID::C_DC_NA_1);
 }
 
 TEST_F(CommandSetTest, IOLength)
 {
-    const SingleCommand io;
-    EXPECT_EQ(io.size(), 4);
-    EXPECT_EQ(io.length(true), 1);
+    const SingleCommand sio;
+    EXPECT_EQ(sio.size(), 4);
+    EXPECT_EQ(sio.length(true), 1);
+
+    const SingleCommand dio;
+    EXPECT_EQ(dio.size(), 4);
+    EXPECT_EQ(dio.length(true), 1);
 }
 
 TEST_F(CommandSetTest, CommonImpSelect)
@@ -77,10 +85,15 @@ TEST_F(CommandSetTest, CommonImpQU)
 
 TEST_F(CommandSetTest, CommonImpState)
 {
-    SingleCommand io;
-    EXPECT_FALSE(io.getState());
-    io.setState(true);
-    EXPECT_TRUE(io.getState());
+    SingleCommand sio;
+    EXPECT_FALSE(sio.getState());
+    sio.setState(true);
+    EXPECT_TRUE(sio.getState());
+
+    DoubleCommand dio;
+    EXPECT_EQ(dio.getState(), DoubleCommandValue::OFF);
+    dio.setState(DoubleCommandValue::ON);
+    EXPECT_EQ(dio.getState(), DoubleCommandValue::ON);
 }
 
 TEST_F(CommandSetTest, SingleCommandSerialize)
@@ -111,6 +124,38 @@ TEST_F(CommandSetTest, SingleCommandDeserialize)
 
     EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
     EXPECT_TRUE(io->getState());
+    EXPECT_TRUE(io->isSelect());
+    EXPECT_EQ(io->getQU(), QUValue::NO_ADDITIONAL_DEFINITION);
+}
+
+TEST_F(CommandSetTest, DoubleCommandSerialize)
+{
+    uint8_t buffer[256]{};
+    details::OStream os{buffer, sizeof(buffer)};
+
+    const DoubleCommand::SerializePtr ios =
+        std::make_shared<DoubleCommand>(IOA{0x200}, true, QUValue::NO_ADDITIONAL_DEFINITION, DoubleCommandValue::OFF);
+    EXPECT_TRUE(ios->serialize(os, false));
+    EXPECT_FALSE(os.hasError());
+
+    constexpr uint8_t dest[] = {0x00, 0x02, 0x00, 0x81};
+    EXPECT_EQ(os.size(), sizeof(dest));
+    EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
+}
+
+TEST_F(CommandSetTest, DoubleCommandDeserialize)
+{
+    constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x82};
+    details::IStream is{buffer, sizeof(buffer)};
+
+    const auto io = std::make_shared<DoubleCommand>();
+    const DoubleCommand::SerializePtr ios = io;
+    EXPECT_TRUE(ios->deserialize(is, false));
+    EXPECT_FALSE(is.hasError());
+    EXPECT_EQ(is.size(), sizeof(buffer));
+
+    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(io->getState(), DoubleCommandValue::ON);
     EXPECT_TRUE(io->isSelect());
     EXPECT_EQ(io->getQU(), QUValue::NO_ADDITIONAL_DEFINITION);
 }

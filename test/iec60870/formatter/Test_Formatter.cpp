@@ -383,3 +383,9 @@ TEST_F(FormatterTest, SingleCommandFormat)
     SingleCommand io{IOA{300}, true, QUValue::NO_ADDITIONAL_DEFINITION, true};
     EXPECT_EQ(std::format("{}", io), "SingleCommand{C_SC_NA_1: ioa=300 data=[0x81]}");
 }
+
+TEST_F(FormatterTest, DoubleCommandFormat)
+{
+    DoubleCommand io{IOA{300}, true, QUValue::NO_ADDITIONAL_DEFINITION, DoubleCommandValue::ON};
+    EXPECT_EQ(std::format("{}", io), "DoubleCommand{C_DC_NA_1: ioa=300 data=[0x82]}");
+}
