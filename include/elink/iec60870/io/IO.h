@@ -52,5 +52,7 @@
 #include "elink/iec60870/io/PackedStartEventsOfProtectionEquipmentWithCP56Time2a.hpp"
 #include "elink/iec60870/io/PackedOutputCircuitInfoWithCP56Time2a.hpp"
 #include "elink/iec60870/io/SingleCommand.hpp"
+#include "elink/iec60870/io/DoubleCommand.hpp"
+#include "elink/iec60870/io/StepCommand.hpp"
 
 #include "elink/iec60870/formatter/InformationObjectFormatter.hpp"

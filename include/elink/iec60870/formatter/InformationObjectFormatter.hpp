@@ -163,6 +163,7 @@ struct formatter<elink::iec60870::details::InformationObjectSerializable<inherit
 #include "elink/iec60870/io/PackedOutputCircuitInfoWithCP56Time2a.hpp"
 #include "elink/iec60870/io/SingleCommand.hpp"
 #include "elink/iec60870/io/DoubleCommand.hpp"
+#include "elink/iec60870/io/StepCommand.hpp"
 
 namespace std {
 
@@ -334,6 +335,11 @@ struct formatter<elink::iec60870::SingleCommand>
 template <>
 struct formatter<elink::iec60870::DoubleCommand>
     : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::DoubleCommand, elink::iec60870::TypeID::C_DC_NA_1>> {
+};
+
+template <>
+struct formatter<elink::iec60870::StepCommand>
+    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::StepCommand, elink::iec60870::TypeID::C_RC_NA_1>> {
 };
 
 }

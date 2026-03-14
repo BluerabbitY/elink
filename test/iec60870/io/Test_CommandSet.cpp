@@ -1,5 +1,5 @@
 /***********************************************************************************
- * \file Test_SingleCommandSet.cpp
+ * \file Test_CommandSet.cpp
  * \author BlueRabbitY (BlueRabbitY\@protonmail.com)
  * \brief 
  * \date 2026-03-14 11:12:04
@@ -29,6 +29,7 @@
  ***********************************************************************************/
 #include "elink/iec60870/io/SingleCommand.hpp"
 #include "elink/iec60870/io/DoubleCommand.hpp"
+#include "elink/iec60870/io/StepCommand.hpp"
 #include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
@@ -54,6 +55,9 @@ TEST_F(CommandSetTest, TypeID)
 
     const DoubleCommand dio;
     EXPECT_EQ(dio.getTypeID(), TypeID::C_DC_NA_1);
+
+    const StepCommand stepio;
+    EXPECT_EQ(stepio.getTypeID(), TypeID::C_RC_NA_1);
 }
 
 TEST_F(CommandSetTest, IOLength)
@@ -65,6 +69,10 @@ TEST_F(CommandSetTest, IOLength)
     const SingleCommand dio;
     EXPECT_EQ(dio.size(), 4);
     EXPECT_EQ(dio.length(true), 1);
+
+    const StepCommand stepio;
+    EXPECT_EQ(stepio.size(), 4);
+    EXPECT_EQ(stepio.length(true), 1);
 }
 
 TEST_F(CommandSetTest, CommonImpSelect)
@@ -94,6 +102,11 @@ TEST_F(CommandSetTest, CommonImpState)
     EXPECT_EQ(dio.getState(), DoubleCommandValue::OFF);
     dio.setState(DoubleCommandValue::ON);
     EXPECT_EQ(dio.getState(), DoubleCommandValue::ON);
+
+    StepCommand stepio;
+    EXPECT_EQ(stepio.getState(), StepCommandValue::LOWER);
+    stepio.setState(StepCommandValue::HIGHER);
+    EXPECT_EQ(stepio.getState(), StepCommandValue::HIGHER);
 }
 
 TEST_F(CommandSetTest, SingleCommandSerialize)
@@ -156,6 +169,38 @@ TEST_F(CommandSetTest, DoubleCommandDeserialize)
 
     EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
     EXPECT_EQ(io->getState(), DoubleCommandValue::ON);
+    EXPECT_TRUE(io->isSelect());
+    EXPECT_EQ(io->getQU(), QUValue::NO_ADDITIONAL_DEFINITION);
+}
+
+TEST_F(CommandSetTest, StepCommandSerialize)
+{
+    uint8_t buffer[256]{};
+    details::OStream os{buffer, sizeof(buffer)};
+
+    const StepCommand::SerializePtr ios =
+        std::make_shared<StepCommand>(IOA{0x200}, true, QUValue::NO_ADDITIONAL_DEFINITION, StepCommandValue::HIGHER);
+    EXPECT_TRUE(ios->serialize(os, false));
+    EXPECT_FALSE(os.hasError());
+
+    constexpr uint8_t dest[] = {0x00, 0x02, 0x00, 0x82};
+    EXPECT_EQ(os.size(), sizeof(dest));
+    EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
+}
+
+TEST_F(CommandSetTest, StepCommandDeserialize)
+{
+    constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x82};
+    details::IStream is{buffer, sizeof(buffer)};
+
+    const auto io = std::make_shared<StepCommand>();
+    const StepCommand::SerializePtr ios = io;
+    EXPECT_TRUE(ios->deserialize(is, false));
+    EXPECT_FALSE(is.hasError());
+    EXPECT_EQ(is.size(), sizeof(buffer));
+
+    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(io->getState(), StepCommandValue::HIGHER);
     EXPECT_TRUE(io->isSelect());
     EXPECT_EQ(io->getQU(), QUValue::NO_ADDITIONAL_DEFINITION);
 }

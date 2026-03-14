@@ -389,3 +389,9 @@ TEST_F(FormatterTest, DoubleCommandFormat)
     DoubleCommand io{IOA{300}, true, QUValue::NO_ADDITIONAL_DEFINITION, DoubleCommandValue::ON};
     EXPECT_EQ(std::format("{}", io), "DoubleCommand{C_DC_NA_1: ioa=300 data=[0x82]}");
 }
+
+TEST_F(FormatterTest, StepCommandFormat)
+{
+    StepCommand io{IOA{300}, true, QUValue::NO_ADDITIONAL_DEFINITION, StepCommandValue::HIGHER};
+    EXPECT_EQ(std::format("{}", io), "StepCommand{C_RC_NA_1: ioa=300 data=[0x82]}");
+}
