@@ -377,3 +377,9 @@ TEST_F(FormatterTest, PackedOutputCircuitInfoWithCP56Time2aFormat)
     PackedOutputCircuitInfoWithCP56Time2a io{IOA{300}, OutputCircuitInfo::OUTPUT_CI_CL2, QualityP::BLOCKED, CP16Time2a{12500}, CP56Time2a{}};
     EXPECT_EQ(std::format("{}", io), "PackedOutputCircuitInfoWithCP56Time2a{M_EP_TF_1: ioa=300 data=[0x04, 0x10, 0xd4, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]}");
 }
+
+TEST_F(FormatterTest, SingleCommandFormat)
+{
+    SingleCommand io{IOA{300}, true, QUValue::NO_ADDITIONAL_DEFINITION, true};
+    EXPECT_EQ(std::format("{}", io), "SingleCommand{C_SC_NA_1: ioa=300 data=[0x81]}");
+}
