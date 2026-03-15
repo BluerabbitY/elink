@@ -164,6 +164,7 @@ struct formatter<elink::iec60870::details::InformationObjectSerializable<inherit
 #include "elink/iec60870/io/SingleCommand.hpp"
 #include "elink/iec60870/io/DoubleCommand.hpp"
 #include "elink/iec60870/io/StepCommand.hpp"
+#include "elink/iec60870/io/SetpointCommandNormalized.hpp"
 
 namespace std {
 
@@ -340,6 +341,11 @@ struct formatter<elink::iec60870::DoubleCommand>
 template <>
 struct formatter<elink::iec60870::StepCommand>
     : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::StepCommand, elink::iec60870::TypeID::C_RC_NA_1>> {
+};
+
+template <>
+struct formatter<elink::iec60870::SetpointCommandNormalized>
+    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::SetpointCommandNormalized, elink::iec60870::TypeID::C_SE_NA_1>> {
 };
 
 }

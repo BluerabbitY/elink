@@ -30,6 +30,7 @@
 #include "elink/iec60870/io/SingleCommand.hpp"
 #include "elink/iec60870/io/DoubleCommand.hpp"
 #include "elink/iec60870/io/StepCommand.hpp"
+#include "elink/iec60870/io/SetpointCommandNormalized.hpp"
 #include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
@@ -58,6 +59,9 @@ TEST_F(CommandSetTest, TypeID)
 
     const StepCommand stepio;
     EXPECT_EQ(stepio.getTypeID(), TypeID::C_RC_NA_1);
+
+    const SetpointCommandNormalized setio;
+    EXPECT_EQ(setio.getTypeID(), TypeID::C_SE_NA_1);
 }
 
 TEST_F(CommandSetTest, IOLength)
@@ -73,6 +77,10 @@ TEST_F(CommandSetTest, IOLength)
     const StepCommand stepio;
     EXPECT_EQ(stepio.size(), 4);
     EXPECT_EQ(stepio.length(true), 1);
+
+    const SetpointCommandNormalized setio;
+    EXPECT_EQ(setio.size(), 6);
+    EXPECT_EQ(setio.length(true), 3);
 }
 
 TEST_F(CommandSetTest, CommonImpSelect)
@@ -81,6 +89,11 @@ TEST_F(CommandSetTest, CommonImpSelect)
     EXPECT_FALSE(io.isSelect());
     io.setSelect(true);
     EXPECT_TRUE(io.isSelect());
+
+    SetpointCommandNormalized setio;
+    EXPECT_FALSE(setio.isSelect());
+    setio.setSelect(true);
+    EXPECT_TRUE(setio.isSelect());
 }
 
 TEST_F(CommandSetTest, CommonImpQU)
@@ -89,6 +102,16 @@ TEST_F(CommandSetTest, CommonImpQU)
     EXPECT_EQ(io.getQU(), QUValue::NO_ADDITIONAL_DEFINITION);
     io.setQU(QUValue::PERSISTENT_OUTPUT);
     EXPECT_EQ(io.getQU(), QUValue::PERSISTENT_OUTPUT);
+}
+
+TEST_F(CommandSetTest, CommonImpQL)
+{
+    SetpointCommandNormalized setio;
+    EXPECT_EQ(setio.getQL(), 0);
+    setio.setQL(10);
+    EXPECT_EQ(setio.getQL(), 10);
+    setio.setQL(128);
+    EXPECT_EQ(setio.getQL(), 127);
 }
 
 TEST_F(CommandSetTest, CommonImpState)
@@ -107,6 +130,14 @@ TEST_F(CommandSetTest, CommonImpState)
     EXPECT_EQ(stepio.getState(), StepCommandValue::LOWER);
     stepio.setState(StepCommandValue::HIGHER);
     EXPECT_EQ(stepio.getState(), StepCommandValue::HIGHER);
+}
+
+TEST_F(CommandSetTest, CommonImpValue)
+{
+    SetpointCommandNormalized setio;
+    EXPECT_FLOAT_EQ(setio.getValue(), 0.f);
+    setio.setValue(0.5);
+    EXPECT_FLOAT_EQ(setio.getValue(), 0.5);
 }
 
 TEST_F(CommandSetTest, SingleCommandSerialize)
@@ -203,4 +234,36 @@ TEST_F(CommandSetTest, StepCommandDeserialize)
     EXPECT_EQ(io->getState(), StepCommandValue::HIGHER);
     EXPECT_TRUE(io->isSelect());
     EXPECT_EQ(io->getQU(), QUValue::NO_ADDITIONAL_DEFINITION);
+}
+
+TEST_F(CommandSetTest, SetpointCommandNormalizedSerialize)
+{
+    uint8_t buffer[256]{};
+    details::OStream os{buffer, sizeof(buffer)};
+
+    const SetpointCommandNormalized::SerializePtr ios =
+        std::make_shared<SetpointCommandNormalized>(IOA{0x200}, true, 0, 0.5);
+    EXPECT_TRUE(ios->serialize(os, false));
+    EXPECT_FALSE(os.hasError());
+
+    constexpr uint8_t dest[] = {0x00, 0x02, 0x00, 0x00, 0x40, 0x80};
+    EXPECT_EQ(os.size(), sizeof(dest));
+    EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
+}
+
+TEST_F(CommandSetTest, SetpointCommandNormalizedDeserialize)
+{
+    constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x00, 0x40, 0x80};
+    details::IStream is{buffer, sizeof(buffer)};
+
+    const auto io = std::make_shared<SetpointCommandNormalized>();
+    const SetpointCommandNormalized::SerializePtr ios = io;
+    EXPECT_TRUE(ios->deserialize(is, false));
+    EXPECT_FALSE(is.hasError());
+    EXPECT_EQ(is.size(), sizeof(buffer));
+
+    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_TRUE(io->isSelect());
+    EXPECT_EQ(io->getQL(), 0);
+    EXPECT_EQ(io->getValue(), 0.5);
 }

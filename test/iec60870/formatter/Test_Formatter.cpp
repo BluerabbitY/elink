@@ -395,3 +395,9 @@ TEST_F(FormatterTest, StepCommandFormat)
     StepCommand io{IOA{300}, true, QUValue::NO_ADDITIONAL_DEFINITION, StepCommandValue::HIGHER};
     EXPECT_EQ(std::format("{}", io), "StepCommand{C_RC_NA_1: ioa=300 data=[0x82]}");
 }
+
+TEST_F(FormatterTest, SetpointCommandNormalizedFormat)
+{
+    SetpointCommandNormalized io{IOA{300}, true, 0, 0.5};
+    EXPECT_EQ(std::format("{}", io), "SetpointCommandNormalized{C_SE_NA_1: ioa=300 data=[0x00, 0x40, 0x80]}");
+}

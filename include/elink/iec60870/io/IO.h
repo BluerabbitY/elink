@@ -54,5 +54,6 @@
 #include "elink/iec60870/io/SingleCommand.hpp"
 #include "elink/iec60870/io/DoubleCommand.hpp"
 #include "elink/iec60870/io/StepCommand.hpp"
+#include "elink/iec60870/io/SetpointCommandNormalized.hpp"
 
 #include "elink/iec60870/formatter/InformationObjectFormatter.hpp"
