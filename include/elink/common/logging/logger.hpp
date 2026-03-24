@@ -33,7 +33,7 @@ public:
     template <typename... Args>
     static void print(const LogLevel level, const std::string_view file, const int line, std::format_string<Args...> fmt, Args&&... args)
     {
-        if (logHandlerS && logOutputEnabledM)
+        if (logOutputEnabledM.load(std::memory_order_acquire) && logHandlerS)
         {
             const std::size_t pos = file.find_last_of("/\\");
             logHandlerS(level, pos == std::string_view::npos ? file : file.substr(pos + 1), line, details::ThreadName::threadName(), std::format(fmt, std::forward<Args>(args)...));
@@ -42,7 +42,7 @@ public:
 
     static void print(const LogLevel level, const std::string_view file, const int line, const std::string_view msg)
     {
-        if (logHandlerS && logOutputEnabledM)
+        if (logOutputEnabledM.load(std::memory_order_acquire) && logHandlerS)
         {
             const std::size_t pos = file.find_last_of("/\\");
             logHandlerS(level, pos == std::string_view::npos ? file : file.substr(pos + 1), line, details::ThreadName::threadName(), std::string(msg));
@@ -51,7 +51,7 @@ public:
 
     static void enableLogOutput(const bool value = true)
     {
-        logOutputEnabledM = value;
+        logOutputEnabledM.store(value, std::memory_order_release);
     }
 
     static void setLogOutputHanlder(const LogHandler &hanlder)
@@ -64,7 +64,7 @@ private:
     ~Log() = default;
 
     inline static LogHandler logHandlerS{};
-    inline static bool logOutputEnabledM{true};
+    inline static std::atomic_bool logOutputEnabledM{true};
 };
 
 }
