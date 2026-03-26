@@ -59,6 +59,27 @@ Windows example:
 cmake -S . -B build -DCMAKE_PREFIX_PATH="C:/path/to/elink/install"
 ```
 
+## Maintenance
+
+### Update copyright years
+
+The repository includes `script/update-copyright-year.py` to check and update copyright
+headers for `BlueRabbitY`. By default, it scans the project root, uses the current
+system year as the target year, skips common build directories, and excludes paths
+matched by the root `.gitignore`.
+
+Common usage:
+
+```bash
+python3 script/update-copyright-year.py --dry-run
+python3 script/update-copyright-year.py
+python3 script/update-copyright-year.py --year 2026
+```
+
+- `--dry-run`: preview the files that would be updated without modifying them.
+- `--year`: specify the target ending year explicitly. If omitted, the current year
+  is used automatically.
+
 ## Notes
 
 - Exported target name: `Elink::elink`
