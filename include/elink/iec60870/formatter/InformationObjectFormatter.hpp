@@ -96,7 +96,7 @@ struct formatter<elink::iec60870::details::InformationObjectSerializable<inherit
             std::format_to(out, R"(: raw=[)");
         }
 
-        for (std::size_t i = intuitive ? io.getInformationObjectAddress().getLengthOfInformationObjectAddress() : 0; i < io.size(); ++i)
+        for (std::size_t i = intuitive ? io.getInformationObjectAddress().length() : 0; i < io.size(); ++i)
         {
             if (i < maxOutputElement)
             {

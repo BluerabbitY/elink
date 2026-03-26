@@ -56,7 +56,7 @@ TEST_F(IStreamTest, ReadIOA)
     EXPECT_EQ(ioa.address(), 0x1234);
 
     length = stream.size();
-    ioa.resetLengthOfInformationObjectAddress(elink::iec60870::IOAByteLength::Three);
+    ioa.resetLength(elink::iec60870::IOAByteLength::Three);
     stream >> ioa;
     EXPECT_FALSE(stream.hasError());
     EXPECT_EQ(stream.size(), length + static_cast<int>(elink::iec60870::IOAByteLength::Three));

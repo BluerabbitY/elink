@@ -54,12 +54,10 @@ protected:
 TEST_F(InformationObjectAddressTest, Constructor)
 {
     EXPECT_EQ(ioaDefault.address(), 0);
-    EXPECT_EQ(ioaDefault.getLengthOfInformationObjectAddress(),
-              static_cast<size_t>(elink::iec60870::IOAByteLength::Three));
+    EXPECT_EQ(ioaDefault.length(), static_cast<size_t>(elink::iec60870::IOAByteLength::Three));
 
     EXPECT_EQ(ioaParam.address(), validIOA);
-    EXPECT_EQ(ioaParam.getLengthOfInformationObjectAddress(),
-              static_cast<size_t>(elink::iec60870::IOAByteLength::Two));
+    EXPECT_EQ(ioaParam.length(), static_cast<size_t>(elink::iec60870::IOAByteLength::Two));
 }
 
 TEST_F(InformationObjectAddressTest, ConstructorFromBuffer)
@@ -68,19 +66,19 @@ TEST_F(InformationObjectAddressTest, ConstructorFromBuffer)
     const elink::LiteBuffer buffer1{ioabuffer1};
     const elink::iec60870::IOA ioa1{buffer1};
     EXPECT_EQ(ioa1.address(), 18);
-    EXPECT_EQ(ioa1.getLengthOfInformationObjectAddress(), static_cast<size_t>(elink::iec60870::IOAByteLength::One));
+    EXPECT_EQ(ioa1.length(), static_cast<size_t>(elink::iec60870::IOAByteLength::One));
 
     uint8_t ioabuffer2[] = {0xfe, 0xff};
     const elink::LiteBuffer buffer2{ioabuffer2};
     const elink::iec60870::IOA ioa2{buffer2};
     EXPECT_EQ(ioa2.address(), 65'534);
-    EXPECT_EQ(ioa2.getLengthOfInformationObjectAddress(), static_cast<size_t>(elink::iec60870::IOAByteLength::Two));
+    EXPECT_EQ(ioa2.length(), static_cast<size_t>(elink::iec60870::IOAByteLength::Two));
 
     uint8_t ioabuffer3[] = {0xfe, 0xff, 0xff};
     const elink::LiteBuffer buffer3{ioabuffer3};
     const elink::iec60870::IOA ioa3{buffer3};
     EXPECT_EQ(ioa3.address(), 16'777'214);
-    EXPECT_EQ(ioa3.getLengthOfInformationObjectAddress(), static_cast<size_t>(elink::iec60870::IOAByteLength::Three));
+    EXPECT_EQ(ioa3.length(), static_cast<size_t>(elink::iec60870::IOAByteLength::Three));
 }
 
 // test operator== and operator!=
@@ -102,10 +100,10 @@ TEST_F(InformationObjectAddressTest, OperatorAssignment)
     constexpr int invalidIOA{65536};
 
     EXPECT_FALSE(ioaParam.setAddress(invalidIOA));
-    EXPECT_EQ(ioaParam.address(), MaxLengthOfIOAInBytes(ioaParam.getLengthOfInformationObjectAddressStrategy()));
+    EXPECT_EQ(ioaParam.address(), MaxLengthOfIOAInBytes(ioaParam.getLengthStrategy()));
 
     ioaParam = invalidIOA;
-    EXPECT_EQ(ioaParam.address(), MaxLengthOfIOAInBytes(ioaParam.getLengthOfInformationObjectAddressStrategy()));
+    EXPECT_EQ(ioaParam.address(), MaxLengthOfIOAInBytes(ioaParam.getLengthStrategy()));
 
     EXPECT_TRUE(ioaParam.setAddress(validIOA));
     EXPECT_EQ(ioaParam.address(), validIOA);
@@ -138,24 +136,24 @@ TEST_F(InformationObjectAddressTest, Limits)
     constexpr int invalidIOAThreeByteHigh{16777216};
 
     elink::iec60870::InformationObjectAddress ioaOneByte{validIOA, elink::iec60870::IOAByteLength::One};
-    EXPECT_EQ(ioaOneByte.getLengthOfInformationObjectAddress(), 1);
-    EXPECT_EQ(ioaOneByte.getLengthOfInformationObjectAddressStrategy(), elink::iec60870::IOAByteLength::One);
+    EXPECT_EQ(ioaOneByte.length(), 1);
+    EXPECT_EQ(ioaOneByte.getLengthStrategy(), elink::iec60870::IOAByteLength::One);
     EXPECT_FALSE(ioaOneByte.setAddress(invalidIOALow));
     EXPECT_EQ(ioaOneByte.address(), 0);
     EXPECT_FALSE(ioaOneByte.setAddress(invalidIOAOneByteHigh));
     EXPECT_EQ(ioaOneByte.address(), MaxLengthOfIOAInBytes(elink::iec60870::IOAByteLength::One));
 
     elink::iec60870::InformationObjectAddress ioaTwoByte{validIOA, elink::iec60870::IOAByteLength::Two};
-    EXPECT_EQ(ioaTwoByte.getLengthOfInformationObjectAddress(), 2);
-    EXPECT_EQ(ioaTwoByte.getLengthOfInformationObjectAddressStrategy(), elink::iec60870::IOAByteLength::Two);
+    EXPECT_EQ(ioaTwoByte.length(), 2);
+    EXPECT_EQ(ioaTwoByte.getLengthStrategy(), elink::iec60870::IOAByteLength::Two);
     EXPECT_FALSE(ioaTwoByte.setAddress(invalidIOALow));
     EXPECT_EQ(ioaTwoByte.address(), 0);
     EXPECT_FALSE(ioaTwoByte.setAddress(invalidIOATwoByteHigh));
     EXPECT_EQ(ioaTwoByte.address(), MaxLengthOfIOAInBytes(elink::iec60870::IOAByteLength::Two));
 
     elink::iec60870::InformationObjectAddress ioaThreeByte{validIOA, elink::iec60870::IOAByteLength::Three};
-    EXPECT_EQ(ioaThreeByte.getLengthOfInformationObjectAddress(), 3);
-    EXPECT_EQ(ioaThreeByte.getLengthOfInformationObjectAddressStrategy(), elink::iec60870::IOAByteLength::Three);
+    EXPECT_EQ(ioaThreeByte.length(), 3);
+    EXPECT_EQ(ioaThreeByte.getLengthStrategy(), elink::iec60870::IOAByteLength::Three);
     EXPECT_FALSE(ioaThreeByte.setAddress(invalidIOALow));
     EXPECT_EQ(ioaThreeByte.address(), 0);
     EXPECT_FALSE(ioaThreeByte.setAddress(invalidIOAThreeByteHigh));
@@ -169,9 +167,9 @@ TEST_F(InformationObjectAddressTest, ResetLength)
 
     EXPECT_EQ(ioaDefault.address(), MaxLengthOfIOAInBytes(elink::iec60870::IOAByteLength::Three));
 
-    ioaDefault.resetLengthOfInformationObjectAddress(elink::iec60870::IOAByteLength::Two);
+    ioaDefault.resetLength(elink::iec60870::IOAByteLength::Two);
     EXPECT_EQ(ioaDefault.address(), MaxLengthOfIOAInBytes(elink::iec60870::IOAByteLength::Two));
 
-    ioaDefault.resetLengthOfInformationObjectAddress(elink::iec60870::IOAByteLength::One);
+    ioaDefault.resetLength(elink::iec60870::IOAByteLength::One);
     EXPECT_EQ(ioaDefault.address(), MaxLengthOfIOAInBytes(elink::iec60870::IOAByteLength::One));
 }

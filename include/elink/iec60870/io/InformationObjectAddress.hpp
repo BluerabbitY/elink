@@ -117,7 +117,7 @@ public:
 
     bool setAddress(const int ioa)
     {
-        addressM = (addressM & 0xff000000) | (std::clamp<int>(ioa, 0, (1 << 8 * static_cast<int>(getIOAByteLength())) - 1) & 0x00ffffff);
+        addressM = (addressM & 0xff000000) | (std::clamp<int>(ioa, 0, (1 << 8 * length()) - 1) & 0x00ffffff);
         return address() == ioa;
     }
 
@@ -126,17 +126,17 @@ public:
         return static_cast<int>(addressM & 0x00ffffff);
     }
 
-    [[nodiscard]] int getLengthOfInformationObjectAddress() const
+    [[nodiscard]] int length() const
     {
         return static_cast<int>(getIOAByteLength());
     }
 
-    [[nodiscard]] IOAByteLength getLengthOfInformationObjectAddressStrategy() const
+    [[nodiscard]] IOAByteLength getLengthStrategy() const
     {
         return getIOAByteLength();
     }
 
-    void resetLengthOfInformationObjectAddress(const IOAByteLength byteOfIOA)
+    void resetLength(const IOAByteLength byteOfIOA)
     {
         setIOAByteLength(byteOfIOA);
         setAddress(address());

@@ -35,7 +35,7 @@ public:
     IStream& operator>>(IOA& ioa)
     {
         int value = 0;
-        *this >> LiteBuffer{reinterpret_cast<uint8_t*>(&value), static_cast<std::size_t>(ioa.getLengthOfInformationObjectAddress())};
+        *this >> LiteBuffer{reinterpret_cast<uint8_t*>(&value), static_cast<std::size_t>(ioa.length())};
 
         if (!hasError())
         {

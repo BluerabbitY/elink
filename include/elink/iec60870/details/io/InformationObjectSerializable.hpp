@@ -76,7 +76,7 @@ public:
 
     [[nodiscard]] std::size_t size() const
     {
-        return ioaM.getLengthOfInformationObjectAddress() + static_cast<const inherit*>(this)->payloadLength();
+        return ioaM.length() + static_cast<const inherit*>(this)->payloadLength();
     }
 
     [[nodiscard]] std::size_t length(const bool isSequence) const
@@ -84,7 +84,7 @@ public:
         if (isSequence)
             return static_cast<const inherit*>(this)->payloadLength();
         else
-            return ioaM.getLengthOfInformationObjectAddress() + static_cast<const inherit*>(this)->payloadLength();
+            return ioaM.length() + static_cast<const inherit*>(this)->payloadLength();
     }
 
     using Ptr = std::shared_ptr<inherit>;

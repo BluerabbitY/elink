@@ -34,7 +34,7 @@ public:
 
     OStream& operator<<(const IOA ioa)
     {
-        const std::size_t size = ioa.getLengthOfInformationObjectAddress();
+        const std::size_t size = ioa.length();
         auto value = ioa.address();
         return *this << LiteBufferView{reinterpret_cast<uint8_t*>(&value), size};
     }
