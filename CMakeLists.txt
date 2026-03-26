@@ -26,7 +26,7 @@
 
 cmake_minimum_required(VERSION 4.0)
 
-project(elink)
+project(Elink VERSION "0.0.1.0" LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -34,3 +34,65 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(${CMAKE_SOURCE_DIR}/thirdparty/asio)
 
 add_subdirectory(test)
+
+################################################################################
+# Package configuration files
+include(CMakePackageConfigHelpers)
+include(GNUInstallDirs)
+
+set(ELINK_CMAKE_PACKAGE_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
+set(ELINK_CMAKE_CONFIG_DIR "${CMAKE_CURRENT_BINARY_DIR}/cmake")
+set(ELINK_CONFIG_FILE "${ELINK_CMAKE_CONFIG_DIR}/${PROJECT_NAME}Config.cmake")
+set(ELINK_CONFIG_VERSION_FILE "${ELINK_CMAKE_CONFIG_DIR}/${PROJECT_NAME}ConfigVersion.cmake")
+
+add_library(${PROJECT_NAME} INTERFACE)
+
+set_target_properties(${PROJECT_NAME} PROPERTIES EXPORT_NAME elink)
+
+target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
+
+target_include_directories(${PROJECT_NAME} INTERFACE
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/asio>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+
+# Write version file
+write_basic_package_version_file(
+        "${ELINK_CONFIG_VERSION_FILE}"
+        VERSION ${PROJECT_VERSION}
+        COMPATIBILITY SameMajorVersion)
+
+# Configure the config file using the helper (handles @PACKAGE_*@ vars correctly)
+configure_package_config_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake.in"
+        "${ELINK_CONFIG_FILE}"
+        INSTALL_DESTINATION "${ELINK_CMAKE_PACKAGE_DIR}"
+        PATH_VARS CMAKE_INSTALL_INCLUDEDIR CMAKE_INSTALL_LIBDIR)
+
+# Install config files
+install(FILES
+        "${ELINK_CONFIG_FILE}"
+        "${ELINK_CONFIG_VERSION_FILE}"
+        DESTINATION "${ELINK_CMAKE_PACKAGE_DIR}"
+        COMPONENT dev)
+
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/"
+        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+        COMPONENT dev
+        PATTERN ".DS_Store" EXCLUDE)
+
+# Install targets and export
+install(TARGETS ${PROJECT_NAME}
+        EXPORT ${PROJECT_NAME}Targets
+        INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+
+install(EXPORT ${PROJECT_NAME}Targets
+        FILE ${PROJECT_NAME}Targets.cmake
+        NAMESPACE Elink::
+        DESTINATION "${ELINK_CMAKE_PACKAGE_DIR}"
+        COMPONENT dev)
+
+# Export for build tree (optional but useful)
+export(EXPORT ${PROJECT_NAME}Targets
+        NAMESPACE Elink::
+        FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Targets.cmake")

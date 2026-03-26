@@ -1,0 +1,7 @@
+includedir=@INCLUDE_INSTALL_DIR@
+
+Name: @PROJECT_NAME@
+Description: c++ headeronly electricity protocol package
+Version: @LIB_VERSION_STRING@
+URL: https://github.com/BluerabbitY/elink
+Cflags: -I${includedir}
