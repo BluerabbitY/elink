@@ -136,7 +136,7 @@ public:
         return getIOAByteLength();
     }
 
-    void resetLength(const IOAByteLength byteOfIOA)
+    void resize(const IOAByteLength byteOfIOA)
     {
         setIOAByteLength(byteOfIOA);
         setAddress(address());

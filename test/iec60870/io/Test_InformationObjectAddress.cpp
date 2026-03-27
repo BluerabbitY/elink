@@ -167,9 +167,9 @@ TEST_F(InformationObjectAddressTest, ResetLength)
 
     EXPECT_EQ(ioaDefault.address(), MaxLengthOfIOAInBytes(elink::iec60870::IOAByteLength::Three));
 
-    ioaDefault.resetLength(elink::iec60870::IOAByteLength::Two);
+    ioaDefault.resize(elink::iec60870::IOAByteLength::Two);
     EXPECT_EQ(ioaDefault.address(), MaxLengthOfIOAInBytes(elink::iec60870::IOAByteLength::Two));
 
-    ioaDefault.resetLength(elink::iec60870::IOAByteLength::One);
+    ioaDefault.resize(elink::iec60870::IOAByteLength::One);
     EXPECT_EQ(ioaDefault.address(), MaxLengthOfIOAInBytes(elink::iec60870::IOAByteLength::One));
 }
