@@ -36,3 +36,17 @@ if(TARGET Elink::elink)
 endif()
 
 # No aliasing by consumer project name; the exported target is Elink::elink
+
+# Control compile-time logging for consumer targets in the current directory tree.
+function(elink_set_compile_time_log_redirect value)
+  if(NOT value MATCHES "^(ON|OFF|TRUE|FALSE|1|0)$")
+    message(FATAL_ERROR "elink_set_compile_time_log_redirect expects ON or OFF")
+  endif()
+
+  if(value)
+    add_compile_definitions(ELINK_COMPILE_TIME_LOG_ENABLE=1)
+  else()
+    add_compile_definitions(ELINK_COMPILE_TIME_LOG_ENABLE=0)
+  endif()
+endfunction()
+

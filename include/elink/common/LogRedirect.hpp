@@ -16,12 +16,15 @@
 #pragma once
 
 #include "elink/common/Type.hpp"
-#include "elink/config.h"
 #include "elink/common/thread/Thread.hpp"
 
 #include <string_view>
 #include <format>
 #include <functional>
+
+#ifndef ELINK_COMPILE_TIME_LOG_ENABLE
+#define ELINK_COMPILE_TIME_LOG_ENABLE 1
+#endif
 
 namespace elink
 {

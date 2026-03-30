@@ -43,6 +43,9 @@ find_package(Elink REQUIRED)
 
 add_executable(your_target main.cpp)
 target_link_libraries(your_target PRIVATE Elink::elink)
+
+# Optional: disable Elink compile-time logs for this directory and subdirectories
+elink_set_compile_time_log_redirect(OFF)
 ```
 
 ### 2) Point CMake to the Elink installation prefix
@@ -84,5 +87,6 @@ python3 script/update-copyright-year.py --year 2026
 
 - Exported target name: `Elink::elink`
 - Linking `Elink::elink` propagates the C++20 requirement (`cxx_std_20`) to consumers.
-- Elink headers depend on Asio headers. For installed-package consumption, ensure Asio include paths are available in your consumer project environment.
+- Elink headers depend on Asio headers. For installed-package consumption, ensure Asio include paths are available in
+  your consumer project environment.
 

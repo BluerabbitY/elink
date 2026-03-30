@@ -15,8 +15,6 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/config.h"
-
 #include "elink/common/LogRedirect.hpp"
 #include "elink/common/thread/Thread.hpp"
 
