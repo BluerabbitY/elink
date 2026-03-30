@@ -18,7 +18,7 @@
 #include "elink/common/Type.hpp"
 #include "elink/common/communication/Type.hpp"
 #include "elink/common/communication/Component.hpp"
-#include "elink/common/logging/logger.hpp"
+#include "elink/common/LogRedirect.hpp"
 
 namespace elink::iec60870::ft12
 {

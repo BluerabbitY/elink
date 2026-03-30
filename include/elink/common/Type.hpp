@@ -52,15 +52,6 @@ concept RawMessageHandlerConcept = requires(T handler, MessageBufferView msg, Me
 
 using RawMessageHandler = std::function<void(MessageBufferView, MessageDir)>;
 
-enum LogLevel {
-    DBG,
-    INF,
-    WRN,
-    ERR,
-    CRI,
-    FAT,
-};
-
 namespace internal
 {
 

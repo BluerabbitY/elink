@@ -27,7 +27,7 @@
  * SOFTWARE.
  *
  ***********************************************************************************/
-#include "elink/common/logging/logger.hpp"
+#include "elink/common/LogRedirect.hpp"
 
 #include <gtest/gtest.h>
 
@@ -35,7 +35,7 @@ class LogTest : public ::testing::Test {
 protected:
     void SetUp() override
     {
-        elink::Log::setLogOutputHanlder([&](const elink::LogLevel level, const std::string_view file, const int line, const std::string& threadName, const std::string& content){
+        elink::LogRedirect::setLogOutputHanlder([&](const elink::LogLevel level, const std::string_view file, const int line, const std::string& threadName, const std::string& content){
             logHandler(level, file, line, threadName, content);
         });
 
@@ -126,7 +126,7 @@ TEST_F(LogTest, Print)
 
 TEST_F(LogTest, Enabled)
 {
-    elink::Log::enableLogOutput(false);
+    elink::LogRedirect::enableLogOutput(false);
 
     DLOG("This log should not be captured");
     EXPECT_EQ(buffer.level, elink::LogLevel::DBG);

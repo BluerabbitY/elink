@@ -1,5 +1,5 @@
 /***********************************************************************************
- * \file logger.hpp
+ * \file LogRedirect.hpp
  * \author BlueRabbitY (BlueRabbitY\@protonmail.com)
  * \brief 
  * \date 2026-01-09 00:25:41
@@ -26,7 +26,16 @@
 namespace elink
 {
 
-class Log {
+enum class LogLevel : uint8_t {
+    DBG,
+    INF,
+    WRN,
+    ERR,
+    CRI,
+    FAT,
+};
+
+class LogRedirect {
 public:
     using LogHandler = std::function<void(LogLevel, std::string_view, int, const std::string&, const std::string&)>;
 
@@ -60,8 +69,8 @@ public:
     }
 
 private:
-    Log() = default;
-    ~Log() = default;
+    LogRedirect() = default;
+    ~LogRedirect() = default;
 
     inline static LogHandler logHandlerS{};
     inline static std::atomic_bool logOutputEnabledM{true};
@@ -70,7 +79,7 @@ private:
 }
 
 #if (CONFIG_LOG_OUTPUT == 1)
-#define LOG(level, fmt, ...)  do{ elink::Log::print(level, __FILE__, __LINE__, fmt __VA_OPT__(,) __VA_ARGS__); } while(false)
+#define LOG(level, fmt, ...)  do{ elink::LogRedirect::print(level, __FILE__, __LINE__, fmt __VA_OPT__(,) __VA_ARGS__); } while(false)
 #define DLOG(fmt, ...) LOG(elink::LogLevel::DBG, fmt __VA_OPT__(,) __VA_ARGS__)
 #define ILOG(fmt, ...) LOG(elink::LogLevel::INF, fmt __VA_OPT__(,) __VA_ARGS__)
 #define WLOG(fmt, ...) LOG(elink::LogLevel::WRN, fmt __VA_OPT__(,) __VA_ARGS__)
