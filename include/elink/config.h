@@ -29,6 +29,6 @@
  ***********************************************************************************/
 #pragma once
 
-#ifndef CONFIG_LOG_OUTPUT
-#define CONFIG_LOG_OUTPUT 1
+#ifndef ELINK_COMPILE_TIME_LOG_ENABLE
+#define ELINK_COMPILE_TIME_LOG_ENABLE 1
 #endif
