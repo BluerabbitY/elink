@@ -72,8 +72,7 @@ add_executable(${TEST_PROJECT_NAME}
 
 target_link_libraries(${TEST_PROJECT_NAME} PRIVATE GTest::gtest_main)
 
-enable_testing()
-add_test(${TEST_PROJECT_NAME} ${TEST_PROJECT_NAME} COMMAND ${TEST_PROJECT_NAME})
+add_test(NAME ${TEST_PROJECT_NAME} COMMAND ${TEST_PROJECT_NAME})
 
 target_compile_options(${TEST_PROJECT_NAME} PRIVATE $<IF:$<CXX_COMPILER_ID:MSVC>,/WX,-Werror>)
 
