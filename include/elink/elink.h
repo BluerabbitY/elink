@@ -16,7 +16,7 @@
 #pragma once
 
 #include "elink/common/LogRedirect.hpp"
-#include "elink/common/thread/Thread.hpp"
+#include "elink/common/Thread.hpp"
 
 #include "elink/iec60870/details/codec/IOStream.h"
 

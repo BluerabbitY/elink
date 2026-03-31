@@ -15,7 +15,7 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/common/thread/Thread.hpp"
+#include "elink/common/Thread.hpp"
 
 #include <asio/io_context.hpp>
 #include <asio/co_spawn.hpp>

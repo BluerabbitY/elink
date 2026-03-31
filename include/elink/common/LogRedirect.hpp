@@ -16,7 +16,7 @@
 #pragma once
 
 #include "elink/common/Type.hpp"
-#include "elink/common/thread/Thread.hpp"
+#include "elink/common/Thread.hpp"
 
 #include <string_view>
 #include <format>
