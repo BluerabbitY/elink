@@ -1,5 +1,5 @@
 /***********************************************************************************
- * \file Platform.hpp
+ * \file Platform.h
  * \author BlueRabbitY (BlueRabbitY\@protonmail.com)
  * \brief 
  * \date 2026-01-25 17:36:41

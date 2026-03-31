@@ -15,7 +15,7 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/common/details/Platform.hpp"
+#include "elink/common/Platform.h"
 
 #if (ELINK_PLATFORM == ELINK_WIN32)
 #include <sstream>

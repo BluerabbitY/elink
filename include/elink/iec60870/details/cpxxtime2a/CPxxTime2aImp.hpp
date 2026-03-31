@@ -1,5 +1,5 @@
 /***********************************************************************************
- * \file CPxxTime2a.hpp
+ * \file CPxxTime2aImp.hpp
  * \author BlueRabbitY (BlueRabbitY\@protonmail.com)
  * \brief 
  * \date 2026-01-22 19:46:14
@@ -15,7 +15,7 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/common/details/Platform.hpp"
+#include "elink/common/Platform.h"
 #include "elink/common/Type.hpp"
 
 #include <ctime>
