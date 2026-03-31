@@ -45,8 +45,9 @@ if (ELINK_BUILD_TESTS)
 
     set(TEST_SUFFIX "TestRunner")
     set(ELINK_GTEST_TAG "v1.17.0" CACHE STRING "Git tag/commit for googletest")
+    set(ELINK_RAPIDCHECK_TAG "master" CACHE STRING "Git tag/commit for rapidcheck")
 
-    message(STATUS "Test suite version: googletest[${ELINK_GTEST_TAG}]")
+    message(STATUS "Test suite: googletest[${ELINK_GTEST_TAG}], rapidcheck[${ELINK_RAPIDCHECK_TAG}]")
 
     set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
 
@@ -58,8 +59,16 @@ if (ELINK_BUILD_TESTS)
             googletest
             GIT_REPOSITORY https://github.com/google/googletest.git
             GIT_TAG ${ELINK_GTEST_TAG})
-
     FetchContent_MakeAvailable(googletest)
+
+    set(RC_ENABLE_GTEST ON CACHE BOOL "Enable RapidCheck GoogleTest integration" FORCE)
+
+    FetchContent_Declare(
+            rapidcheck
+            GIT_REPOSITORY https://github.com/emil-e/rapidcheck.git
+            GIT_TAG ${ELINK_RAPIDCHECK_TAG}
+    )
+    FetchContent_MakeAvailable(rapidcheck)
 
     add_subdirectory(test)
 endif()

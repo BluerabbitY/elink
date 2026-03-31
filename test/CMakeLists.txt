@@ -67,6 +67,24 @@ add_executable(${TEST_PROJECT_NAME}
 
 target_link_libraries(${TEST_PROJECT_NAME} PRIVATE GTest::gtest_main)
 
+# RapidCheck core target compatibility
+if(TARGET rapidcheck)
+    target_link_libraries(${TEST_PROJECT_NAME} PRIVATE rapidcheck)
+elseif(TARGET RapidCheck::rapidcheck)
+    target_link_libraries(${TEST_PROJECT_NAME} PRIVATE RapidCheck::rapidcheck)
+else()
+    message(FATAL_ERROR "RapidCheck core target not found")
+endif()
+
+# RapidCheck <-> GoogleTest integration target compatibility
+if(TARGET rapidcheck_gtest)
+    target_link_libraries(${TEST_PROJECT_NAME} PRIVATE rapidcheck_gtest)
+elseif(TARGET RapidCheck::rapidcheck_gtest)
+    target_link_libraries(${TEST_PROJECT_NAME} PRIVATE RapidCheck::rapidcheck_gtest)
+else()
+    message(WARNING "RapidCheck gtest integration target not found; relying on header-only integration")
+endif()
+
 add_test(NAME ${TEST_PROJECT_NAME} COMMAND ${TEST_PROJECT_NAME})
 
 target_compile_options(${TEST_PROJECT_NAME} PRIVATE $<IF:$<CXX_COMPILER_ID:MSVC>,/WX,-Werror>)
