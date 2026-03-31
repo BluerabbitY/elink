@@ -23,18 +23,46 @@
 # SOFTWARE.
 #
 ###################################################################################
-
 cmake_minimum_required(VERSION 4.0)
 
 project(Elink VERSION "0.0.1.0" LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 
+option(ELINK_BUILD_TESTS "Build and run tests for ELink library" ON)
+
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(${CMAKE_SOURCE_DIR}/thirdparty/asio)
 
-enable_testing()
-add_subdirectory(test)
+################################################################################
+# Always provide test from FetchContent to avoid system package dependency.
+# FETCHCONTENT_SOURCE_DIR_GOOGLETEST overrides.
+if (ELINK_BUILD_TESTS)
+    message(STATUS "Build and run tests")
+    include(FetchContent)
+
+    enable_testing()
+
+    set(TEST_SUFFIX "TestRunner")
+    set(ELINK_GTEST_TAG "v1.17.0" CACHE STRING "Git tag/commit for googletest")
+
+    message(STATUS "Test suite version: googletest[${ELINK_GTEST_TAG}]")
+
+    set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
+
+    if(MSVC)
+        set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    endif()
+
+    FetchContent_Declare(
+            googletest
+            GIT_REPOSITORY https://github.com/google/googletest.git
+            GIT_TAG ${ELINK_GTEST_TAG})
+
+    FetchContent_MakeAvailable(googletest)
+
+    add_subdirectory(test)
+endif()
 
 ################################################################################
 # Package configuration files

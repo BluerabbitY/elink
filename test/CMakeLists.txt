@@ -23,11 +23,6 @@
 # SOFTWARE.
 #
 ###################################################################################
-
-find_package(GTest REQUIRED)
-
-set(TEST_SUFFIX "TestRunner")
-
 set(TEST_PROJECT_NAME "Elink${TEST_SUFFIX}")
 
 add_executable(${TEST_PROJECT_NAME}
