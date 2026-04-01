@@ -18,7 +18,7 @@
 namespace elink::details
 {
 
-using NativeHandle = int;
-inline constexpr NativeHandle INVALID_HANDLE = -1;
+using PollHandle = int;
+inline constexpr PollHandle INVALID_HANDLE = -1;
 
 }

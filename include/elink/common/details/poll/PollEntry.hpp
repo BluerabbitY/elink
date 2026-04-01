@@ -24,7 +24,7 @@ namespace elink::details
 
 struct PollEntry
 {
-    NativeHandle handle;
+    PollHandle handle;
     bool ready = false;
 };
 

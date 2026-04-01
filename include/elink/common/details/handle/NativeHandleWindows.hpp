@@ -24,7 +24,7 @@
 namespace elink::details
 {
 
-using NativeHandle = SOCKET;
-inline constexpr NativeHandle INVALID_HANDLE = INVALID_SOCKET;
+using PollHandle = SOCKET;
+inline constexpr PollHandle INVALID_HANDLE = INVALID_SOCKET;
 
 }
