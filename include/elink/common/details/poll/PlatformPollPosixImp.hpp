@@ -1,8 +1,8 @@
 /***********************************************************************************
- * \file PlatformPollerImpWindows.hpp
+ * \file PlatformPollPosixImp.hpp
  * \author BlueRabbitY (BlueRabbitY\@protonmail.com)
  * \brief 
- * \date 2026-04-01 11:58:12
+ * \date 2026-04-01 11:18:42
  * 
  * \copyright Copyright (C) 2026-2026 BlueRabbitY. All rights reserved.
  *
@@ -18,45 +18,44 @@
 #include "elink/common/Result.hpp"
 #include "elink/common/details/poll/PollEntry.hpp"
 
-#if (ELINK_COMPILER == ELINK_COMPILER_MSVC)
-#pragma coment(lib, "Ws2_32.lib")
-#endif
+#include <chrono>
+#include <poll.h>
 
-namespace elink::details
+namespace elink
 {
 
-class PlatformPollerImp
+class PlatformPoll
 {
 public:
-    static Result<int> poll(PollEntrys& entries, const std::chrono::milliseconds timeout)
+    static Result<int> poll(PollEntries& entries, const std::chrono::milliseconds timeout)
     {
-        std::vector<WSAPOLLFD> fds{entries.size()};
+        std::vector<pollfd> fds{entries.size()};
 
         for (auto i = 0; i < entries.size(); i++)
         {
             fds[i].fd = entries[i].handle;
-            fds[i].events = POLLRDNORM;
+            fds[i].events = POLLIN;
             fds[i].revents = 0;
             entries[i].ready = false;
         }
 
-        const int result = ::WSAPoll(fds.data(), fds.size(), timeout.count());
+        const int result = ::poll(fds.data(), fds.size(), timeout.count());
 
-        if (result == SOCKET_ERROR)
+        if (result < 0)
         {
-            return {ErrorCode::PollFailed, 0, "WSAPoll() failed: " + std::to_string(::WSAGetLastError()), ::WSAGetLastError()};
+            return {ErrorCode::PollFailed, 0, "poll() failed: " + std::string{std::strerror(errno)}, errno};
         }
 
         if (result == 0)
         {
-            return {ErrorCode::Timeout, 0, "WSAPoll() timed out",};
+            return {ErrorCode::Timeout, 0, "poll() timed out"};
         }
 
         int ready = 0;
 
         for (auto i = 0; i < fds.size(); i++)
         {
-            if (fds[i].revents & POLLRDNORM)
+            if (fds[i].revents & POLLIN)
             {
                 entries[i].ready = true;
                 ready++;
@@ -67,8 +66,8 @@ public:
     }
 
 private:
-    PlatformPollerImp() = default;
-    ~PlatformPollerImp() = default;
+    PlatformPoll() = default;
+    ~PlatformPoll() = default;
 };
 
 }

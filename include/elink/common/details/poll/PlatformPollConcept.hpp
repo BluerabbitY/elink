@@ -1,8 +1,8 @@
 /***********************************************************************************
- * \file PollEntry.hpp
+ * \file PlatformPollConcept.hpp
  * \author BlueRabbitY (BlueRabbitY\@protonmail.com)
  * \brief 
- * \date 2026-04-01 11:45:32
+ * \date 2026-04-01 11:20:01
  * 
  * \copyright Copyright (C) 2026-2026 BlueRabbitY. All rights reserved.
  *
@@ -15,19 +15,19 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/common/NativeHandle.hpp"
+#include "elink/common/Type.hpp"
+#include "elink/common/details/poll/PollEntry.hpp"
+#include "elink/common/Result.hpp"
 
-#include <vector>
+#include <concepts>
 
-namespace elink
+namespace elink::details
 {
 
-struct PollEntry
+template<typename T>
+concept PlatformPollConcept = requires(PollEntries& entries, const std::chrono::milliseconds timeout)
 {
-    PollHandle handle;
-    bool ready = false;
+    {T::poll(entries, timeout)} -> std::convertible_to<Result<int>>;
 };
-
-using PollEntries = std::vector<PollEntry>;
 
 }
