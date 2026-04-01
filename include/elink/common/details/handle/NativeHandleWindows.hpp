@@ -1,8 +1,8 @@
 /***********************************************************************************
- * \file ErrorCode.hpp
+ * \file NativeHandleWindows.hpp
  * \author BlueRabbitY (BlueRabbitY\@protonmail.com)
  * \brief 
- * \date 2026-04-01 00:17:46
+ * \date 2026-04-01 11:12:09
  * 
  * \copyright Copyright (C) 2026-2026 BlueRabbitY. All rights reserved.
  *
@@ -15,23 +15,16 @@
  ***********************************************************************************/
 #pragma once
 
-#include <cstdint>
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 
-namespace elink
+#include <winsock2.h>
+
+namespace elink::details
 {
 
-/**
- * @brief Unified error codes for the communication library
- *
- * Error codes are categorized by type using numeric ranges:
- * - 0: Success
- */
-enum class ErrorCode : uint32_t {
-    // Success
-    Success = 0,
-    // Common
-    Timeout,
-    PollFailed,
-};
+using NativeHandle = SOCKET;
+inline constexpr NativeHandle INVALID_HANDLE = INVALID_SOCKET;
 
 }

@@ -1,8 +1,8 @@
 /***********************************************************************************
- * \file ErrorCode.hpp
+ * \file PollEntry.hpp
  * \author BlueRabbitY (BlueRabbitY\@protonmail.com)
  * \brief 
- * \date 2026-04-01 00:17:46
+ * \date 2026-04-01 11:45:32
  * 
  * \copyright Copyright (C) 2026-2026 BlueRabbitY. All rights reserved.
  *
@@ -15,23 +15,19 @@
  ***********************************************************************************/
 #pragma once
 
-#include <cstdint>
+#include "elink/common/NativeHandle.hpp"
 
-namespace elink
+#include <vector>
+
+namespace elink::details
 {
 
-/**
- * @brief Unified error codes for the communication library
- *
- * Error codes are categorized by type using numeric ranges:
- * - 0: Success
- */
-enum class ErrorCode : uint32_t {
-    // Success
-    Success = 0,
-    // Common
-    Timeout,
-    PollFailed,
+struct PollEntry
+{
+    NativeHandle handle;
+    bool ready = false;
 };
+
+using PollEntrys = std::vector<PollEntry>;
 
 }

@@ -26,9 +26,9 @@ template <typename T>
 struct Result
 {
     ErrorCode code;                ///< The error code
+    T value;                       ///< The value of the result if code == Success
     std::string message;           ///< Human-readable error message
     int32_t systemErrorCode = 0;   ///< System native error code (e.g., errno, GetLastError())
-    T value;
 
     bool isOk() const { return code == ErrorCode::Success; }
     bool isErr() const { return code != ErrorCode::Success; }

@@ -1,8 +1,8 @@
 /***********************************************************************************
- * \file ErrorCode.hpp
+ * \file NativeHandle.hpp
  * \author BlueRabbitY (BlueRabbitY\@protonmail.com)
  * \brief 
- * \date 2026-04-01 00:17:46
+ * \date 2026-04-01 11:11:22
  * 
  * \copyright Copyright (C) 2026-2026 BlueRabbitY. All rights reserved.
  *
@@ -15,23 +15,12 @@
  ***********************************************************************************/
 #pragma once
 
-#include <cstdint>
+#include "elink/common/Platform.h"
 
-namespace elink
-{
-
-/**
- * @brief Unified error codes for the communication library
- *
- * Error codes are categorized by type using numeric ranges:
- * - 0: Success
- */
-enum class ErrorCode : uint32_t {
-    // Success
-    Success = 0,
-    // Common
-    Timeout,
-    PollFailed,
-};
-
-}
+#if (ELINK_API == ELINK_API_WIN32)
+#include "elink/common/details/handle/NativeHandleWindows.hpp"
+#elif (ELINK_API == ELINK_API_POSIX)
+#include "elink/common/details/handle/NativeHandlePosix.hpp"
+#else
+#error "Unsupported platform for Handle implementation"
+#endif
