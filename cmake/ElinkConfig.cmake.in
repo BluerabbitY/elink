@@ -11,6 +11,8 @@
 ###################################################################################
 @PACKAGE_INIT@
 
+include(CMakeParseArguments)
+
 string(TOUPPER LIB_NAME_UPPER "@PROJECT_NAME@")
 string(TOLOWER LIB_NAME_LOWER "@PROJECT_NAME@")
 
@@ -50,3 +52,48 @@ function(elink_set_compile_time_log_redirect value)
   endif()
 endfunction()
 
+# Optional helper for consumers that want to switch to their own Asio package
+# after find_package(Elink).
+# Usage:
+#   elink_use_external_asio()
+#   elink_use_external_asio(PACKAGE Asio TARGET Asio::asio REPLACE_BUNDLED REQUIRED)
+function(elink_use_external_asio)
+  set(options REQUIRED REPLACE_BUNDLED)
+  set(oneValueArgs PACKAGE TARGET)
+  cmake_parse_arguments(ELINK_EXT "${options}" "${oneValueArgs}" "" ${ARGN})
+
+  if(ELINK_EXT_PACKAGE)
+    set(_pkg "${ELINK_EXT_PACKAGE}")
+  else()
+    set(_pkg "asio")
+  endif()
+
+  if(ELINK_EXT_TARGET)
+    set(_target "${ELINK_EXT_TARGET}")
+  else()
+    set(_target "asio::asio")
+  endif()
+
+  if(ELINK_EXT_REQUIRED)
+    find_package(${_pkg} CONFIG REQUIRED)
+  else()
+    find_package(${_pkg} CONFIG QUIET)
+  endif()
+
+  if(NOT TARGET "${_target}")
+    if(ELINK_EXT_REQUIRED)
+      message(FATAL_ERROR "Requested external Asio target '${_target}' is unavailable")
+    endif()
+    return()
+  endif()
+
+  if(ELINK_EXT_REPLACE_BUNDLED)
+    get_target_property(_elink_includes Elink::elink INTERFACE_INCLUDE_DIRECTORIES)
+    if(_elink_includes)
+      list(FILTER _elink_includes EXCLUDE REGEX "elink[/\\\\]dependency[/\\\\]asio$")
+      set_property(TARGET Elink::elink PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${_elink_includes}")
+    endif()
+  endif()
+
+  set_property(TARGET Elink::elink APPEND PROPERTY INTERFACE_LINK_LIBRARIES "${_target}")
+endfunction()

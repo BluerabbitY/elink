@@ -46,6 +46,9 @@ target_link_libraries(your_target PRIVATE Elink::elink)
 
 # Optional: disable Elink compile-time logs for this directory and subdirectories
 elink_set_compile_time_log_redirect(OFF)
+
+# Optional: switch to a consumer-provided Asio package
+elink_use_external_asio(PACKAGE asio TARGET asio::asio REPLACE_BUNDLED REQUIRED)
 ```
 
 ### 2) Point CMake to the Elink installation prefix
@@ -87,6 +90,6 @@ python3 script/update-copyright-year.py --year 2026
 
 - Exported target name: `Elink::elink`
 - Linking `Elink::elink` propagates the C++20 requirement (`cxx_std_20`) to consumers.
-- Elink headers depend on Asio headers. For installed-package consumption, ensure Asio include paths are available in
-  your consumer project environment.
+- Elink always installs bundled Asio headers under `include/elink/dependency/asio`, so `find_package(Elink)` works without an extra Asio package.
+- If consumers want to use their own Asio package, call `elink_use_external_asio(...)` after `find_package(Elink)`.
 

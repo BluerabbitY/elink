@@ -31,8 +31,10 @@ set(CMAKE_CXX_STANDARD 20)
 
 option(ELINK_BUILD_TESTS "Build and run tests for ELink library" ON)
 
+set(ELINK_BUNDLED_ASIO_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include/elink/dependency/asio")
+
 include_directories(${CMAKE_SOURCE_DIR}/include)
-include_directories(${CMAKE_SOURCE_DIR}/thirdparty/asio)
+include_directories(${ELINK_BUNDLED_ASIO_INCLUDE_DIR})
 
 ################################################################################
 # Always provide test from FetchContent to avoid system package dependency.
@@ -92,8 +94,10 @@ target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
 
 target_include_directories(${PROJECT_NAME} INTERFACE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/asio>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/elink/dependency/asio>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/elink/dependency/asio>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+
 
 # Write version file
 write_basic_package_version_file(
