@@ -35,7 +35,7 @@ public:
      * \param[in] value normalized value between -1 and 1
      *
      */
-    SetpointCommandNormalized(const IOA ioa, const SEBit selectCommand, const uint8_t ql, const NormalizedValue value)
+    SetpointCommandNormalized(const IOA ioa, const SEBit selectCommand, const QLValue ql, const NormalizedValue value)
     : SetpointCommandNormalizedImp{ioa, selectCommand, ql, value}
     {
         setValue(value);
@@ -49,18 +49,18 @@ protected:
     template <typename OStream>
     void serialize(OStream& stream) const
     {
-        stream << valueM << qosM;
+        stream << sValueM << valueM;
     }
 
     template <typename IStream>
     void deserialize(IStream& stream)
     {
-        stream >> valueM >> qosM;
+        stream >> sValueM >> valueM;
     }
 
     [[nodiscard]] constexpr std::size_t payloadLength() const
     {
-        return sizeof(valueM) + sizeof(qosM);
+        return sizeof(sValueM) + sizeof(valueM);
     }
 };
 

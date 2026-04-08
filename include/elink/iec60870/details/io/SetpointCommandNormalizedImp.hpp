@@ -15,18 +15,18 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/details/io/CommandWithQOSImp.hpp"
+#include "elink/iec60870/details/io/SetpointCommandImp.hpp"
 #include "elink/iec60870/details/io/util/NormalizedValueUtil.hpp"
 
 namespace elink::iec60870::details
 {
 
 template <typename inherit, TypeID typeID>
-class SetpointCommandNormalizedImp : public CommandWithQOSImp<inherit, typeID>
+class SetpointCommandNormalizedImp : public SetpointCommandImp<inherit, typeID>
 {
 public:
     SetpointCommandNormalizedImp()
-    : valueM{0}
+    : sValueM{0}
     {
     }
 
@@ -39,8 +39,8 @@ public:
      * \param[in] value normalized value between -1 and 1
      *
      */
-    SetpointCommandNormalizedImp(const IOA ioa, const SEBit selectCommand, const uint8_t ql, const NormalizedValue value)
-    : CommandWithQOSImp<inherit, typeID>{ioa, selectCommand, ql}, valueM{0}
+    SetpointCommandNormalizedImp(const IOA ioa, const SEBit selectCommand, const QLValue ql, const NormalizedValue value)
+    : SetpointCommandImp<inherit, typeID>{ioa, selectCommand, ql}, sValueM{0}
     {
         setValue(value);
     }
@@ -49,16 +49,16 @@ public:
 
     [[nodiscard]] NormalizedValue getValue() const
     {
-        return scaledToNormalized(valueM);
+        return scaledToNormalized(sValueM);
     }
 
     void setValue(const NormalizedValue value)
     {
-        valueM = normalizedToScaled(value);
+        sValueM = normalizedToScaled(value);
     }
 
 protected:
-    NormalizedValueBuffer valueM;
+    NormalizedValueBuffer sValueM;
 };
 
 }
