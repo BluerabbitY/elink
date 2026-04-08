@@ -21,7 +21,7 @@
 namespace elink::iec60870
 {
 
-class PackedOutputCircuitInfoWithCP56Time2a
+class PackedOutputCircuitInfoWithCP56Time2a final
 : public details::PackedOutputCircuitInfoImp<PackedOutputCircuitInfoWithCP56Time2a, TypeID::M_EP_TF_1>,
   public details::CPxxTime2aUtil<CP56Time2a>
 {

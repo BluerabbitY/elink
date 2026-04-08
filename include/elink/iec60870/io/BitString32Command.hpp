@@ -20,7 +20,7 @@
 namespace elink::iec60870
 {
 
-class BitString32Command : public details::BitString32WithoutQualityImp<BitString32Command, TypeID::C_BO_NA_1>
+class BitString32Command final : public details::BitString32WithoutQualityImp<BitString32Command, TypeID::C_BO_NA_1>
 {
 public:
     BitString32Command() = default;

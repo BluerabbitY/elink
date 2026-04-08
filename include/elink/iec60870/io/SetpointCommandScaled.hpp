@@ -20,7 +20,7 @@
 namespace elink::iec60870
 {
 
-class SetpointCommandScaled : public details::SetpointCommandScaledImp<SetpointCommandScaled, TypeID::C_SE_NB_1>
+class SetpointCommandScaled final : public details::SetpointCommandScaledImp<SetpointCommandScaled, TypeID::C_SE_NB_1>
 {
 public:
     SetpointCommandScaled() = default;

@@ -20,7 +20,7 @@
 namespace elink::iec60870
 {
 
-class SetpointCommandShort : public details::SetpointCommandShortImp<SetpointCommandShort, TypeID::C_SE_NC_1>
+class SetpointCommandShort final : public details::SetpointCommandShortImp<SetpointCommandShort, TypeID::C_SE_NC_1>
 {
 public:
     SetpointCommandShort() = default;
