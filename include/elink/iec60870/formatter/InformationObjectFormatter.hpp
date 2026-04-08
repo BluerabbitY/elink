@@ -166,6 +166,7 @@ struct formatter<elink::iec60870::details::InformationObjectSerializable<inherit
 #include "elink/iec60870/io/StepCommand.hpp"
 #include "elink/iec60870/io/SetpointCommandNormalized.hpp"
 #include "elink/iec60870/io/SetpointCommandScaled.hpp"
+#include "elink/iec60870/io/SetpointCommandShort.hpp"
 
 namespace std {
 
@@ -352,6 +353,11 @@ struct formatter<elink::iec60870::SetpointCommandNormalized>
 template <>
 struct formatter<elink::iec60870::SetpointCommandScaled>
     : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::SetpointCommandScaled, elink::iec60870::TypeID::C_SE_NB_1>> {
+};
+
+template <>
+struct formatter<elink::iec60870::SetpointCommandShort>
+    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::SetpointCommandShort, elink::iec60870::TypeID::C_SE_NC_1>> {
 };
 
 }

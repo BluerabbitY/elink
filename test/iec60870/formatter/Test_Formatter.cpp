@@ -407,3 +407,9 @@ TEST_F(FormatterTest, SetpointCommandScaledFormat)
     SetpointCommandScaled io{IOA{300}, true, 0, 125};
     EXPECT_EQ(std::format("{}", io), "SetpointCommandScaled{C_SE_NB_1: ioa=300 data=[0x7d, 0x00, 0x80]}");
 }
+
+TEST_F(FormatterTest, SetpointCommandShortFormat)
+{
+    SetpointCommandShort io{IOA{300}, true, 0, 50.1};
+    EXPECT_EQ(std::format("{}", io), "SetpointCommandShort{C_SE_NC_1: ioa=300 data=[0x66, 0x66, 0x48, 0x42, 0x80]}");
+}

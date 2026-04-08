@@ -32,6 +32,7 @@
 #include "elink/iec60870/io/StepCommand.hpp"
 #include "elink/iec60870/io/SetpointCommandNormalized.hpp"
 #include "elink/iec60870/io/SetpointCommandScaled.hpp"
+#include "elink/iec60870/io/SetpointCommandShort.hpp"
 #include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
@@ -66,6 +67,9 @@ TEST_F(CommandSetTest, TypeID)
 
     const SetpointCommandScaled setsio;
     EXPECT_EQ(setsio.getTypeID(), TypeID::C_SE_NB_1);
+
+    const SetpointCommandShort setshortio;
+    EXPECT_EQ(setshortio.getTypeID(), TypeID::C_SE_NC_1);
 }
 
 TEST_F(CommandSetTest, IOLength)
@@ -89,6 +93,10 @@ TEST_F(CommandSetTest, IOLength)
     const SetpointCommandScaled setsio;
     EXPECT_EQ(setsio.size(), 6);
     EXPECT_EQ(setsio.length(true), 3);
+
+    const SetpointCommandShort setshortio;
+    EXPECT_EQ(setshortio.size(), 8);
+    EXPECT_EQ(setshortio.length(true), 5);
 }
 
 TEST_F(CommandSetTest, CommonImpSelect)
@@ -146,6 +154,11 @@ TEST_F(CommandSetTest, CommonImpValue)
     EXPECT_EQ(setsio.getValue(), 0);
     setsio.setValue(125);
     EXPECT_EQ(setsio.getValue(), 125);
+
+    SetpointCommandShort setshortio;
+    EXPECT_FLOAT_EQ(setshortio.getValue(), 0.f);
+    setshortio.setValue(0.5);
+    EXPECT_FLOAT_EQ(setshortio.getValue(), 0.5);
 }
 
 TEST_F(CommandSetTest, SingleCommandSerialize)
@@ -306,4 +319,36 @@ TEST_F(CommandSetTest, SetpointCommandScaledDeserialize)
     EXPECT_TRUE(io->isSelect());
     EXPECT_EQ(io->getQL(), 0);
     EXPECT_EQ(io->getValue(), 100);
+}
+
+TEST_F(CommandSetTest, SetpointCommandShortSerialize)
+{
+    uint8_t buffer[256]{};
+    details::OStream os{buffer, sizeof(buffer)};
+
+    const SetpointCommandShort::SerializePtr ios =
+        std::make_shared<SetpointCommandShort>(IOA{0x200}, true, 0, 50.1);
+    EXPECT_TRUE(ios->serialize(os, false));
+    EXPECT_FALSE(os.hasError());
+
+    constexpr uint8_t dest[] = {0x00, 0x02, 0x00, 0x66, 0x66, 0x48, 0x42, 0x80};
+    EXPECT_EQ(os.size(), sizeof(dest));
+    EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
+}
+
+TEST_F(CommandSetTest, SetpointCommandShortDeserialize)
+{
+    constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x66, 0x66, 0x48, 0x42, 0x80};
+    details::IStream is{buffer, sizeof(buffer)};
+
+    const auto io = std::make_shared<SetpointCommandShort>();
+    const SetpointCommandShort::SerializePtr ios = io;
+    EXPECT_TRUE(ios->deserialize(is, false));
+    EXPECT_FALSE(is.hasError());
+    EXPECT_EQ(is.size(), sizeof(buffer));
+
+    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_TRUE(io->isSelect());
+    EXPECT_EQ(io->getQL(), 0);
+    EXPECT_FLOAT_EQ(io->getValue(), 50.1f);
 }
