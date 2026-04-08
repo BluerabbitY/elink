@@ -419,3 +419,9 @@ TEST_F(FormatterTest, BitString32CommandFormat)
     BitString32Command io{IOA{300}, 0x11223344};
     EXPECT_EQ(std::format("{}", io), "BitString32Command{C_BO_NA_1: ioa=300 data=[0x44, 0x33, 0x22, 0x11]}");
 }
+
+TEST_F(FormatterTest, SingleCommandWithCP56Time2aFormat)
+{
+    SingleCommandWithCP56Time2a io{IOA{300}, true, QUValue::NO_ADDITIONAL_DEFINITION, true, CP56Time2a{}};
+    EXPECT_EQ(std::format("{}", io), "SingleCommandWithCP56Time2a{C_SC_TA_1: ioa=300 data=[0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]}");
+}
