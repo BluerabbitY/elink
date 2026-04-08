@@ -169,6 +169,7 @@ struct formatter<elink::iec60870::details::InformationObjectSerializable<inherit
 #include "elink/iec60870/io/SetpointCommandShort.hpp"
 #include "elink/iec60870/io/BitString32Command.hpp"
 #include "elink/iec60870/io/SingleCommandWithCP56Time2a.hpp"
+#include "elink/iec60870/io/DoubleCommandWithCP56Time2a.hpp"
 
 namespace std {
 
@@ -370,6 +371,11 @@ struct formatter<elink::iec60870::BitString32Command>
 template <>
 struct formatter<elink::iec60870::SingleCommandWithCP56Time2a>
     : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::SingleCommandWithCP56Time2a, elink::iec60870::TypeID::C_SC_TA_1>> {
+};
+
+template <>
+struct formatter<elink::iec60870::DoubleCommandWithCP56Time2a>
+    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::DoubleCommandWithCP56Time2a, elink::iec60870::TypeID::C_DC_TA_1>> {
 };
 
 }
