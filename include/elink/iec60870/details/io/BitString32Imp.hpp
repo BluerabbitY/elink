@@ -15,52 +15,26 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/details/io/InformationObjectSerializable.hpp"
+#include "elink/iec60870/details/io/BitString32WithoutQualityImp.hpp"
 #include "elink/iec60870/io/QualityDescriptor.hpp"
 
-#include <bitset>
-
-namespace elink::iec60870
+namespace elink::iec60870::details
 {
-
-using BitString32Value = std::bitset<32>;
-
-namespace details {
 
 template <typename inherit, TypeID typeID>
-class BitString32Imp : public InformationObjectSerializable<inherit, typeID>
+class BitString32Imp : public BitString32WithoutQualityImp<inherit, typeID>
 {
 public:
-    BitString32Imp() : valueM{0x00000000}, qualityM{Quality::GOOD}
+    BitString32Imp() : BitString32WithoutQualityImp<inherit, typeID>{}, qualityM{Quality::GOOD}
     {
     }
 
     BitString32Imp(const IOA ioa, const uint32_t value, const Quality quality)
-     : InformationObjectSerializable<inherit, typeID>{ioa}, valueM{value}, qualityM{quality}
+     : BitString32WithoutQualityImp<inherit, typeID>{ioa, value}, qualityM{quality}
     {
     }
 
     ~BitString32Imp() = default;
-
-    [[nodiscard]] const BitString32Value &getValue() const
-    {
-        return valueM;
-    }
-
-    void setValue(const BitString32Value& value)
-    {
-        valueM = value;
-    }
-
-    [[nodiscard]] bool getValue(const std::size_t pos) const
-    {
-        return valueM.test(std::clamp<size_t>(pos, 0, 31));
-    }
-
-    void setValue(const std::size_t pos, const bool value)
-    {
-        valueM.set(std::clamp<size_t>(pos, 0, 31), value);
-    }
 
     [[nodiscard]] Quality getQuality() const
     {
@@ -73,9 +47,7 @@ public:
     }
 
 protected:
-    BitString32Value valueM;
     QualityDescriptor qualityM;
 };
 
-}
 }
