@@ -29,8 +29,6 @@ public:
     StepPositionWithCP56Time2a(const IOA ioa, const int value, const bool isTransient, const Quality quality = Quality::GOOD, const CP56Time2a cp56time2a = CP56Time2a::now())
         : StepPositionInformationImp{ioa, value, isTransient, quality}, CPxxTime2aUtil{cp56time2a}
     {
-        setValue(value);
-        setTransient(isTransient);
     }
 
     ~StepPositionWithCP56Time2a() = default;
