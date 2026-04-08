@@ -15,7 +15,7 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/details/io/CommandImp.hpp"
+#include "elink/iec60870/details/io/StatusCommandImp.hpp"
 
 namespace elink::iec60870
 {
@@ -25,16 +25,16 @@ using SingleCommandValue = bool;
 namespace details {
 
 template <typename inherit, TypeID typeID>
-class SingleCommandImp : public CommandImp<inherit, typeID, SingleCommandValue>
+class SingleCommandImp : public StatusCommandImp<inherit, typeID, SingleCommandValue>
 {
 public:
     SingleCommandImp()
-    : CommandImp<inherit, typeID, SingleCommandValue>{}
+    : StatusCommandImp<inherit, typeID, SingleCommandValue>{}
     {
     }
 
     SingleCommandImp(const IOA ioa, const SEBit selectCommand, const QUValue qu, const SingleCommandValue command)
-    : CommandImp<inherit, typeID, SingleCommandValue>{ioa, selectCommand, qu, command}
+    : StatusCommandImp<inherit, typeID, SingleCommandValue>{ioa, selectCommand, qu, command}
     {
     }
 

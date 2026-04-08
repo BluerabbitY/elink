@@ -15,7 +15,7 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/details/io/CommandImp.hpp"
+#include "elink/iec60870/details/io/StatusCommandImp.hpp"
 
 namespace elink::iec60870
 {
@@ -34,17 +34,17 @@ namespace details
 {
 
 template <typename inherit, TypeID typeID>
-class StepCommandImp : public CommandImp<inherit, typeID, StepCommandValue>
+class StepCommandImp : public StatusCommandImp<inherit, typeID, StepCommandValue>
 {
 public:
     StepCommandImp()
-    : CommandImp<inherit, typeID, StepCommandValue>{}
+    : StatusCommandImp<inherit, typeID, StepCommandValue>{}
     {
-        CommandImp<inherit, typeID, StepCommandValue>::setState(StepCommandValue::LOWER);
+        this->setState(StepCommandValue::LOWER);
     }
 
     StepCommandImp(const IOA ioa, SEBit selectCommand, QUValue qu, StepCommandValue command)
-    : CommandImp<inherit, typeID, StepCommandValue>{ioa, selectCommand, qu, command}
+    : StatusCommandImp<inherit, typeID, StepCommandValue>{ioa, selectCommand, qu, command}
     {
     }
 

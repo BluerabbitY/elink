@@ -20,22 +20,12 @@
 namespace elink::iec60870
 {
 
-// clang-format off
-enum class QUValue : uint8_t
-{
-    NO_ADDITIONAL_DEFINITION = 0x00,
-    SHORT_PULSE              = 0x04,
-    LONG_PULSE               = 0x08,
-    PERSISTENT_OUTPUT        = 0x0c,
-};
-// clang-format on
-
 using SEBit = bool;
 
 namespace details
 {
 
-template <typename inherit, TypeID typeID, typename SatusType>
+template <typename inherit, TypeID typeID>
 class CommandImp : public InformationObjectSerializable<inherit, typeID>
 {
 public:
@@ -44,12 +34,10 @@ public:
     {
     }
 
-    CommandImp(const IOA ioa, const SEBit selectCommand, const QUValue qu, const SatusType command)
+    CommandImp(const IOA ioa, const SEBit selectCommand)
     : InformationObjectSerializable<inherit, typeID>{ioa}, valueM{0}
     {
         setSelect(selectCommand);
-        setQU(qu);
-        setState(command);
     }
 
     ~CommandImp() = default;
@@ -67,36 +55,6 @@ public:
     void setSelect(const SEBit select)
     {
         select ? valueM |= 0x80 : valueM &= 0x7f;
-    }
-
-    /**
-     * \brief Get the qualifier of command QU value
-     *
-     * \return the \ref QUValue
-     */
-    [[nodiscard]] QUValue getQU() const
-    {
-        return static_cast<QUValue>(valueM & 0x7c);
-    }
-
-    void setQU(const QUValue qu)
-    {
-        valueM = (valueM & 0x83) | static_cast<uint8_t>(qu);
-    }
-
-    /**
-     * \brief Get the state (command) value
-     *
-     * \return \ref DoubleCommandValue
-     */
-    [[nodiscard]] SatusType getState() const
-    {
-        return static_cast<SatusType>(valueM & 0x03);
-    }
-
-    void setState(const SatusType state)
-    {
-        valueM = (valueM & 0xfc) | static_cast<uint8_t>(state);
     }
 
 protected:
