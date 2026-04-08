@@ -413,3 +413,9 @@ TEST_F(FormatterTest, SetpointCommandShortFormat)
     SetpointCommandShort io{IOA{300}, true, 0, 50.1};
     EXPECT_EQ(std::format("{}", io), "SetpointCommandShort{C_SE_NC_1: ioa=300 data=[0x66, 0x66, 0x48, 0x42, 0x80]}");
 }
+
+TEST_F(FormatterTest, BitString32CommandFormat)
+{
+    BitString32Command io{IOA{300}, 0x11223344};
+    EXPECT_EQ(std::format("{}", io), "BitString32Command{C_BO_NA_1: ioa=300 data=[0x44, 0x33, 0x22, 0x11]}");
+}

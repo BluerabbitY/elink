@@ -57,5 +57,6 @@
 #include "elink/iec60870/io/SetpointCommandNormalized.hpp"
 #include "elink/iec60870/io/SetpointCommandScaled.hpp"
 #include "elink/iec60870/io/SetpointCommandShort.hpp"
+#include "elink/iec60870/io/BitString32Command.hpp"
 
 #include "elink/iec60870/formatter/InformationObjectFormatter.hpp"
