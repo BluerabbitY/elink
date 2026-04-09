@@ -431,3 +431,9 @@ TEST_F(FormatterTest, DoubleCommandWithCP56Time2aFormat)
     DoubleCommandWithCP56Time2a io{IOA{300}, true, QUValue::NO_ADDITIONAL_DEFINITION, DoubleCommandValue::ON, CP56Time2a{}};
     EXPECT_EQ(std::format("{}", io), "DoubleCommandWithCP56Time2a{C_DC_TA_1: ioa=300 data=[0x82, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]}");
 }
+
+TEST_F(FormatterTest, StepCommandWithCP56Time2aFormat)
+{
+    StepCommandWithCP56Time2a io{IOA{300}, true, QUValue::NO_ADDITIONAL_DEFINITION, StepCommandValue::HIGHER, CP56Time2a{}};
+    EXPECT_EQ(std::format("{}", io), "StepCommandWithCP56Time2a{C_RC_TA_1: ioa=300 data=[0x82, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]}");
+}

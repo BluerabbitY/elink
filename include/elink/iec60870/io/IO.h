@@ -60,5 +60,6 @@
 #include "elink/iec60870/io/BitString32Command.hpp"
 #include "elink/iec60870/io/SingleCommandWithCP56Time2a.hpp"
 #include "elink/iec60870/io/DoubleCommandWithCP56Time2a.hpp"
+#include "elink/iec60870/io/StepCommandWithCP56Time2a.hpp"
 
 #include "elink/iec60870/formatter/InformationObjectFormatter.hpp"
