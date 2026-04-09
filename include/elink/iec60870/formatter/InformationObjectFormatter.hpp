@@ -174,214 +174,55 @@ struct formatter<elink::iec60870::details::InformationObjectSerializable<inherit
 
 namespace std {
 
-template <>
-struct formatter<elink::iec60870::SinglePointInformation>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::SinglePointInformation, elink::iec60870::TypeID::M_SP_NA_1>> {
-};
+#define ELINK_IO_FORMATTER(ioType)                                                                                  \
+    template <>                                                                                                     \
+    struct formatter<elink::iec60870::ioType>                                                                       \
+        : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::ioType,                \
+                                                                             elink::iec60870::ioType::IDENT_T>> {}
 
-template <>
-struct formatter<elink::iec60870::SinglePointWithCP24Time2a>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::SinglePointWithCP24Time2a, elink::iec60870::TypeID::M_SP_TA_1>> {
-};
+ELINK_IO_FORMATTER(SinglePointInformation);
+ELINK_IO_FORMATTER(SinglePointWithCP24Time2a);
+ELINK_IO_FORMATTER(DoublePointInformation);
+ELINK_IO_FORMATTER(DoublePointWithCP24Time2a);
+ELINK_IO_FORMATTER(StepPositionInformation);
+ELINK_IO_FORMATTER(StepPositionWithCP24Time2a);
+ELINK_IO_FORMATTER(BitString32);
+ELINK_IO_FORMATTER(BitString32WithCP24Time2a);
+ELINK_IO_FORMATTER(MeasuredValueNormalized);
+ELINK_IO_FORMATTER(MeasuredValueNormalizedWithCP24Time2a);
+ELINK_IO_FORMATTER(MeasuredValueScaled);
+ELINK_IO_FORMATTER(MeasuredValueScaledWithCP24Time2a);
+ELINK_IO_FORMATTER(MeasuredValueShort);
+ELINK_IO_FORMATTER(MeasuredValueShortWithCP24Time2a);
+ELINK_IO_FORMATTER(IntegratedTotals);
+ELINK_IO_FORMATTER(IntegratedTotalsWithCP24Time2a);
+ELINK_IO_FORMATTER(EventOfProtectionEquipment);
+ELINK_IO_FORMATTER(PackedStartEventsOfProtectionEquipment);
+ELINK_IO_FORMATTER(PackedOutputCircuitInfo);
+ELINK_IO_FORMATTER(PackedSinglePointWithSCD);
+ELINK_IO_FORMATTER(MeasuredValueNormalizedWithoutQuality);
+ELINK_IO_FORMATTER(SinglePointWithCP56Time2a);
+ELINK_IO_FORMATTER(DoublePointWithCP56Time2a);
+ELINK_IO_FORMATTER(StepPositionWithCP56Time2a);
+ELINK_IO_FORMATTER(BitString32WithCP56Time2a);
+ELINK_IO_FORMATTER(MeasuredValueNormalizedWithCP56Time2a);
+ELINK_IO_FORMATTER(MeasuredValueScaledWithCP56Time2a);
+ELINK_IO_FORMATTER(MeasuredValueShortWithCP56Time2a);
+ELINK_IO_FORMATTER(IntegratedTotalsWithCP56Time2a);
+ELINK_IO_FORMATTER(EventOfProtectionEquipmentWithCP56Time2a);
+ELINK_IO_FORMATTER(PackedStartEventsOfProtectionEquipmentWithCP56Time2a);
+ELINK_IO_FORMATTER(PackedOutputCircuitInfoWithCP56Time2a);
+ELINK_IO_FORMATTER(SingleCommand);
+ELINK_IO_FORMATTER(DoubleCommand);
+ELINK_IO_FORMATTER(StepCommand);
+ELINK_IO_FORMATTER(SetpointCommandNormalized);
+ELINK_IO_FORMATTER(SetpointCommandScaled);
+ELINK_IO_FORMATTER(SetpointCommandShort);
+ELINK_IO_FORMATTER(BitString32Command);
+ELINK_IO_FORMATTER(SingleCommandWithCP56Time2a);
+ELINK_IO_FORMATTER(DoubleCommandWithCP56Time2a);
+ELINK_IO_FORMATTER(StepCommandWithCP56Time2a);
 
-template <>
-struct formatter<elink::iec60870::DoublePointInformation>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::DoublePointInformation, elink::iec60870::TypeID::M_DP_NA_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::DoublePointWithCP24Time2a>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::DoublePointWithCP24Time2a, elink::iec60870::TypeID::M_DP_TA_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::StepPositionInformation>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::StepPositionInformation, elink::iec60870::TypeID::M_ST_NA_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::StepPositionWithCP24Time2a>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::StepPositionWithCP24Time2a, elink::iec60870::TypeID::M_ST_TA_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::BitString32>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::BitString32, elink::iec60870::TypeID::M_BO_NA_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::BitString32WithCP24Time2a>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::BitString32WithCP24Time2a, elink::iec60870::TypeID::M_BO_TA_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::MeasuredValueNormalized>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::MeasuredValueNormalized, elink::iec60870::TypeID::M_ME_NA_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::MeasuredValueNormalizedWithCP24Time2a>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::MeasuredValueNormalizedWithCP24Time2a, elink::iec60870::TypeID::M_ME_TA_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::MeasuredValueScaled>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::MeasuredValueScaled, elink::iec60870::TypeID::M_ME_NB_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::MeasuredValueScaledWithCP24Time2a>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::MeasuredValueScaledWithCP24Time2a, elink::iec60870::TypeID::M_ME_TB_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::MeasuredValueShort>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::MeasuredValueShort, elink::iec60870::TypeID::M_ME_NC_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::MeasuredValueShortWithCP24Time2a>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::MeasuredValueShortWithCP24Time2a, elink::iec60870::TypeID::M_ME_TC_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::IntegratedTotals>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::IntegratedTotals, elink::iec60870::TypeID::M_IT_NA_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::IntegratedTotalsWithCP24Time2a>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::IntegratedTotalsWithCP24Time2a, elink::iec60870::TypeID::M_IT_TA_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::EventOfProtectionEquipment>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::EventOfProtectionEquipment, elink::iec60870::TypeID::M_EP_TA_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::PackedStartEventsOfProtectionEquipment>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::PackedStartEventsOfProtectionEquipment, elink::iec60870::TypeID::M_EP_TB_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::PackedOutputCircuitInfo>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::PackedOutputCircuitInfo, elink::iec60870::TypeID::M_EP_TC_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::PackedSinglePointWithSCD>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::PackedSinglePointWithSCD, elink::iec60870::TypeID::M_PS_NA_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::MeasuredValueNormalizedWithoutQuality>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::MeasuredValueNormalizedWithoutQuality, elink::iec60870::TypeID::M_ME_ND_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::SinglePointWithCP56Time2a>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::SinglePointWithCP56Time2a, elink::iec60870::TypeID::M_SP_TB_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::DoublePointWithCP56Time2a>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::DoublePointWithCP56Time2a, elink::iec60870::TypeID::M_DP_TB_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::StepPositionWithCP56Time2a>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::StepPositionWithCP56Time2a, elink::iec60870::TypeID::M_ST_TB_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::BitString32WithCP56Time2a>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::BitString32WithCP56Time2a, elink::iec60870::TypeID::M_BO_TB_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::MeasuredValueNormalizedWithCP56Time2a>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::MeasuredValueNormalizedWithCP56Time2a, elink::iec60870::TypeID::M_ME_TD_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::MeasuredValueScaledWithCP56Time2a>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::MeasuredValueScaledWithCP56Time2a, elink::iec60870::TypeID::M_ME_TE_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::MeasuredValueShortWithCP56Time2a>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::MeasuredValueShortWithCP56Time2a, elink::iec60870::TypeID::M_ME_TF_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::IntegratedTotalsWithCP56Time2a>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::IntegratedTotalsWithCP56Time2a, elink::iec60870::TypeID::M_IT_TB_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::EventOfProtectionEquipmentWithCP56Time2a>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::EventOfProtectionEquipmentWithCP56Time2a, elink::iec60870::TypeID::M_EP_TD_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::PackedStartEventsOfProtectionEquipmentWithCP56Time2a>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::PackedStartEventsOfProtectionEquipmentWithCP56Time2a, elink::iec60870::TypeID::M_EP_TE_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::PackedOutputCircuitInfoWithCP56Time2a>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::PackedOutputCircuitInfoWithCP56Time2a, elink::iec60870::TypeID::M_EP_TF_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::SingleCommand>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::SingleCommand, elink::iec60870::TypeID::C_SC_NA_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::DoubleCommand>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::DoubleCommand, elink::iec60870::TypeID::C_DC_NA_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::StepCommand>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::StepCommand, elink::iec60870::TypeID::C_RC_NA_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::SetpointCommandNormalized>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::SetpointCommandNormalized, elink::iec60870::TypeID::C_SE_NA_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::SetpointCommandScaled>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::SetpointCommandScaled, elink::iec60870::TypeID::C_SE_NB_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::SetpointCommandShort>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::SetpointCommandShort, elink::iec60870::TypeID::C_SE_NC_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::BitString32Command>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::BitString32Command, elink::iec60870::TypeID::C_BO_NA_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::SingleCommandWithCP56Time2a>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::SingleCommandWithCP56Time2a, elink::iec60870::TypeID::C_SC_TA_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::DoubleCommandWithCP56Time2a>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::DoubleCommandWithCP56Time2a, elink::iec60870::TypeID::C_DC_TA_1>> {
-};
-
-template <>
-struct formatter<elink::iec60870::StepCommandWithCP56Time2a>
-    : formatter<elink::iec60870::details::InformationObjectSerializable<elink::iec60870::StepCommandWithCP56Time2a, elink::iec60870::TypeID::C_RC_TA_1>> {
-};
+#undef ELINK_DEFINE_IO_FORMATTER
 
 }
