@@ -172,6 +172,7 @@ struct formatter<elink::iec60870::details::InformationObjectSerializable<inherit
 #include "elink/iec60870/io/DoubleCommandWithCP56Time2a.hpp"
 #include "elink/iec60870/io/StepCommandWithCP56Time2a.hpp"
 #include "elink/iec60870/io/SetpointCommandNormalizedWithCP56Time2a.hpp"
+#include "elink/iec60870/io/SetpointCommandScaledWithCP56Time2a.hpp"
 
 namespace std {
 
@@ -224,6 +225,7 @@ ELINK_IO_FORMATTER(SingleCommandWithCP56Time2a);
 ELINK_IO_FORMATTER(DoubleCommandWithCP56Time2a);
 ELINK_IO_FORMATTER(StepCommandWithCP56Time2a);
 ELINK_IO_FORMATTER(SetpointCommandNormalizedWithCP56Time2a);
+ELINK_IO_FORMATTER(SetpointCommandScaledWithCP56Time2a);
 
 #undef ELINK_DEFINE_IO_FORMATTER
 
