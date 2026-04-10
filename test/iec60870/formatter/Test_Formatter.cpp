@@ -455,3 +455,9 @@ TEST_F(FormatterTest, SetpointCommandShortWithCP56Time2aFormat)
     SetpointCommandShortWithCP56Time2a io{IOA{300}, true, 0, 50.1, CP56Time2a{}};
     EXPECT_EQ(std::format("{}", io), "SetpointCommandShortWithCP56Time2a{C_SE_TC_1: ioa=300 data=[0x66, 0x66, 0x48, 0x42, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]}");
 }
+
+TEST_F(FormatterTest, BitString32CommandWithCP56Time2aFormat)
+{
+    BitString32CommandWithCP56Time2a io{IOA{300}, 0x11223344, CP56Time2a{}};
+    EXPECT_EQ(std::format("{}", io), "BitString32CommandWithCP56Time2a{C_BO_TA_1: ioa=300 data=[0x44, 0x33, 0x22, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]}");
+}
