@@ -449,3 +449,9 @@ TEST_F(FormatterTest, SetpointCommandScaledWithCP56Time2aFormat)
     SetpointCommandScaledWithCP56Time2a io{IOA{300}, true, 0, 125, CP56Time2a{}};
     EXPECT_EQ(std::format("{}", io), "SetpointCommandScaledWithCP56Time2a{C_SE_TB_1: ioa=300 data=[0x7d, 0x00, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]}");
 }
+
+TEST_F(FormatterTest, SetpointCommandShortWithCP56Time2aFormat)
+{
+    SetpointCommandShortWithCP56Time2a io{IOA{300}, true, 0, 50.1, CP56Time2a{}};
+    EXPECT_EQ(std::format("{}", io), "SetpointCommandShortWithCP56Time2a{C_SE_TC_1: ioa=300 data=[0x66, 0x66, 0x48, 0x42, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]}");
+}
