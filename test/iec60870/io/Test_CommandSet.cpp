@@ -36,6 +36,7 @@
 #include "elink/iec60870/io/SingleCommandWithCP56Time2a.hpp"
 #include "elink/iec60870/io/DoubleCommandWithCP56Time2a.hpp"
 #include "elink/iec60870/io/StepCommandWithCP56Time2a.hpp"
+#include "elink/iec60870/io/SetpointCommandNormalizedWithCP56Time2a.hpp"
 #include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
@@ -82,6 +83,9 @@ TEST_F(CommandSetTest, TypeID)
 
     const StepCommandWithCP56Time2a stepiocp56;
     EXPECT_EQ(stepiocp56.getTypeID(), TypeID::C_RC_TA_1);
+
+    const SetpointCommandNormalizedWithCP56Time2a setiocp56;
+    EXPECT_EQ(setiocp56.getTypeID(), TypeID::C_SE_TA_1);
 }
 
 TEST_F(CommandSetTest, IOLength)
@@ -121,6 +125,10 @@ TEST_F(CommandSetTest, IOLength)
     const StepCommandWithCP56Time2a stepiocp56;
     EXPECT_EQ(stepiocp56.size(), 11);
     EXPECT_EQ(stepiocp56.length(true), 8);
+
+    const SetpointCommandNormalizedWithCP56Time2a setiocp56;
+    EXPECT_EQ(setiocp56.size(), 13);
+    EXPECT_EQ(setiocp56.length(true), 10);
 }
 
 TEST_F(CommandSetTest, CommonImpSelect)
@@ -499,6 +507,52 @@ TEST_F(CommandSetTest, StepCommandWithCP56Time2aDeserialize)
     EXPECT_EQ(io->getState(), StepCommandValue::HIGHER);
     EXPECT_TRUE(io->isSelect());
     EXPECT_EQ(io->getQU(), QUValue::NO_ADDITIONAL_DEFINITION);
+
+    auto cp56Time2a = io->getTimestamp();
+    EXPECT_TRUE(cp56Time2a.isInvalid());
+    EXPECT_TRUE(cp56Time2a.isSummerTime());
+    EXPECT_TRUE(cp56Time2a.isSubstituted());
+    EXPECT_EQ(cp56Time2a.getMillisecond(), 266);
+    EXPECT_EQ(cp56Time2a.getSecond(), 54);
+    EXPECT_EQ(cp56Time2a.getMinute(), 17);
+    EXPECT_EQ(cp56Time2a.getHour(), 14);
+    EXPECT_EQ(cp56Time2a.getDayOfWeek(), 7);
+    EXPECT_EQ(cp56Time2a.getDayOfMonth(), 21);
+    EXPECT_EQ(cp56Time2a.getMonth(), 12);
+    EXPECT_EQ(cp56Time2a.getYear(), 2025);
+    EXPECT_EQ(cp56Time2a.toMsTimestamp(), 1766297874266);
+}
+
+TEST_F(CommandSetTest, SetpointCommandNormalizedWithCP56Time2aSerialize)
+{
+    uint8_t buffer[256]{};
+    details::OStream os{buffer, sizeof(buffer)};
+
+    const SetpointCommandNormalizedWithCP56Time2a::SerializePtr ios =
+        std::make_shared<SetpointCommandNormalizedWithCP56Time2a>(IOA{0x200}, true, 0, 0.5, CP56Time2a{});
+    EXPECT_TRUE(ios->serialize(os, false));
+    EXPECT_FALSE(os.hasError());
+
+    constexpr uint8_t dest[] = {0x00, 0x02, 0x00, 0x00, 0x40, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    EXPECT_EQ(os.size(), sizeof(dest));
+    EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
+}
+
+TEST_F(CommandSetTest, SetpointCommandNormalizedWithCP56Time2aDeserialize)
+{
+    constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x00, 0x40, 0x80, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
+    details::IStream is{buffer, sizeof(buffer)};
+
+    const auto io = std::make_shared<SetpointCommandNormalizedWithCP56Time2a>();
+    const SetpointCommandNormalizedWithCP56Time2a::SerializePtr ios = io;
+    EXPECT_TRUE(ios->deserialize(is, false));
+    EXPECT_FALSE(is.hasError());
+    EXPECT_EQ(is.size(), sizeof(buffer));
+
+    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_TRUE(io->isSelect());
+    EXPECT_EQ(io->getQL(), 0);
+    EXPECT_FLOAT_EQ(io->getValue(), 0.5);
 
     auto cp56Time2a = io->getTimestamp();
     EXPECT_TRUE(cp56Time2a.isInvalid());
