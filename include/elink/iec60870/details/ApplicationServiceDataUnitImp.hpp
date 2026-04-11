@@ -30,6 +30,11 @@ T createASDUFromBuffer(const AppLayerParameters& parameters, const LiteBufferVie
     return {parameters, buffer};
 }
 
+template <class T>
+concept HasSetInformationObjectAddressFunc = requires(T&& obj, IOA ioa) {
+    { std::forward<T>(obj).setInformationObjectAddress(ioa) } -> std::same_as<void>;
+};
+
 template <std::size_t MaxLengthOfASDU>
 class ApplicationServiceDataUnitImp final
 {
@@ -287,7 +292,15 @@ public:
             {
                 startIndex += static_cast<uint8_t>(parametersM.getLengthOfIOA()) + elementLength * index;
                 const IOA firstIOA{LiteBufferView{asduM.data() + parametersM.getHeaderLength(), static_cast<std::size_t>(parametersM.getLengthOfIOA())}};
-                io->setInformationObjectAddress(IOA{firstIOA.address() + index, parametersM.getLengthOfIOA()});
+
+                if constexpr (HasSetInformationObjectAddressFunc<IOType>)
+                {
+                    io->setInformationObjectAddress(IOA{firstIOA.address() + index, parametersM.getLengthOfIOA()});
+                }
+                else
+                {
+                    io->resetIOALengthStrategy(parametersM.getLengthOfIOA());
+                }
             }
             else
             {
