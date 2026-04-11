@@ -461,3 +461,9 @@ TEST_F(FormatterTest, BitString32CommandWithCP56Time2aFormat)
     BitString32CommandWithCP56Time2a io{IOA{300}, 0x11223344, CP56Time2a{}};
     EXPECT_EQ(std::format("{}", io), "BitString32CommandWithCP56Time2a{C_BO_TA_1: ioa=300 data=[0x44, 0x33, 0x22, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]}");
 }
+
+TEST_F(FormatterTest, EndOfInitializationFormat)
+{
+    EndOfInitialization io{COI::LOCAL_MANUAL_RESET};
+    EXPECT_EQ(std::format("{}", io), "EndOfInitialization{M_EI_NA_1: ioa=0 data=[0x01]}");
+}
