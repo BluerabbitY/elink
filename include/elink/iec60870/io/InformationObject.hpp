@@ -45,6 +45,11 @@ public:
         ioaM = ioa;
     }
 
+    void resetIOALengthStrategy(const IOAByteLength strategy)
+    {
+        ioaM.resize(strategy);
+    }
+
     [[nodiscard]] constexpr TypeID getTypeID() const
     {
         return typeIDM;
