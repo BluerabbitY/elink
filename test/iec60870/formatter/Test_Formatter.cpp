@@ -467,3 +467,9 @@ TEST_F(FormatterTest, EndOfInitializationFormat)
     EndOfInitialization io{COI::LOCAL_MANUAL_RESET};
     EXPECT_EQ(std::format("{}", io), "EndOfInitialization{M_EI_NA_1: ioa=0 data=[0x01]}");
 }
+
+TEST_F(FormatterTest, InterrogationCommandFormat)
+{
+    InterrogationCommand io{QOI::STATION};
+    EXPECT_EQ(std::format("{}", io), "InterrogationCommand{C_IC_NA_1: ioa=0 data=[0x14]}");
+}

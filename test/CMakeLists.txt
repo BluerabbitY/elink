@@ -64,6 +64,7 @@ add_executable(${TEST_PROJECT_NAME}
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_PackedSinglePointWithSCD.cpp
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_CommandSet.cpp
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_EndOfInitialization.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/iec60870/io/Test_InterrogationCommand.cpp
 )
 
 target_link_libraries(${TEST_PROJECT_NAME} PRIVATE GTest::gtest_main)
