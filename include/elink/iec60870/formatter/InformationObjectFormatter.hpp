@@ -181,6 +181,7 @@ struct formatter<elink::iec60870::details::InformationObjectSerializable<inherit
 #include "elink/iec60870/io/ReadCommand.hpp"
 #include "elink/iec60870/io/ClockSynchronizationCommand.hpp"
 #include "elink/iec60870/io/TestCommand.hpp"
+#include "elink/iec60870/io/ResetProcessCommand.hpp"
 
 namespace std {
 
@@ -242,6 +243,7 @@ ELINK_IO_FORMATTER(CounterInterrogationCommand);
 ELINK_IO_FORMATTER(ReadCommand);
 ELINK_IO_FORMATTER(ClockSynchronizationCommand);
 ELINK_IO_FORMATTER(TestCommand);
+ELINK_IO_FORMATTER(ResetProcessCommand);
 
 #undef ELINK_DEFINE_IO_FORMATTER
 

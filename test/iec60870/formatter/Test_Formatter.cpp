@@ -496,3 +496,9 @@ TEST_F(FormatterTest, TestCommandFormat)
     TestCommand io{true};
     EXPECT_EQ(std::format("{}", io), "TestCommand{C_TS_NA_1: ioa=0 data=[0xaa, 0x55]}");
 }
+
+TEST_F(FormatterTest, ResetProcessCommandFormat)
+{
+    ResetProcessCommand io;
+    EXPECT_EQ(std::format("{}", io), "ResetProcessCommand{C_RP_NA_1: ioa=0 data=[0x00]}");
+}

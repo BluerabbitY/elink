@@ -71,5 +71,6 @@
 #include "elink/iec60870/io/ReadCommand.hpp"
 #include "elink/iec60870/io/ClockSynchronizationCommand.hpp"
 #include "elink/iec60870/io/TestCommand.hpp"
+#include "elink/iec60870/io/ResetProcessCommand.hpp"
 
 #include "elink/iec60870/formatter/InformationObjectFormatter.hpp"
