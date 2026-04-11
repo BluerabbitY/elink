@@ -25,9 +25,12 @@ class ReadCommand final : public details::ReadCommandImp<ReadCommand, TypeID::C_
 public:
     ReadCommand() = default;
 
-    ~ReadCommand() = default;
+    explicit ReadCommand(const IOA ioa)
+    : ReadCommandImp{ioa}
+    {
+    }
 
-    void setAddress(IOA) = delete;
+    ~ReadCommand() = default;
 
 protected:
     ELINK_IO_OBJECT;

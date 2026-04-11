@@ -21,10 +21,14 @@ namespace elink::iec60870::details
 {
 
 template <typename inherit, TypeID typeID>
-class ReadCommandImp : public InformationObjectSerializable<inherit, typeID>
-{
+class ReadCommandImp : public InformationObjectSerializable<inherit, typeID> {
 public:
     ReadCommandImp() = default;
+
+    explicit ReadCommandImp(const IOA ioa)
+    : InformationObjectSerializable<inherit, typeID>{ioa}
+    {
+    }
 
     ~ReadCommandImp() = default;
 };
