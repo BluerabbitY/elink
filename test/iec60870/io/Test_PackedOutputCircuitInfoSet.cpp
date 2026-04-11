@@ -125,7 +125,7 @@ TEST_F(PackedOutputCircuitInfoSetTest, PackedOutputCircuitInfoDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_EQ(io->getOCI(), OutputCircuitInfo::OUTPUT_CI_CL3);
     EXPECT_EQ(io->getOperatingTime().getEplapsedTimeInMs(), 1278);
     EXPECT_FALSE(io->getQuality() & QualityP::ELAPSED_TIME_INVALID);
@@ -168,7 +168,7 @@ TEST_F(PackedOutputCircuitInfoSetTest, PackedOutputCircuitInfoWithCP56Time2aDese
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_EQ(io->getOCI(), OutputCircuitInfo::OUTPUT_CI_CL3);
     EXPECT_EQ(io->getOperatingTime().getEplapsedTimeInMs(), 1278);
     EXPECT_FALSE(io->getQuality() & QualityP::ELAPSED_TIME_INVALID);

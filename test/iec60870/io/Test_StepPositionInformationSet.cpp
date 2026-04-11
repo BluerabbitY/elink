@@ -121,7 +121,7 @@ TEST_F(StepPositionInformationSetTest, StepPositionInformationDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_EQ(io->getValue(), -52);
     EXPECT_FALSE(io->isTransient());
     EXPECT_TRUE(io->getQuality() & Quality::SPILL);
@@ -157,7 +157,7 @@ TEST_F(StepPositionInformationSetTest, StepPositionWithCP24Time2aDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_EQ(io->getValue(), -52);
     EXPECT_FALSE(io->isTransient());
     EXPECT_TRUE(io->getQuality() & Quality::SPILL);
@@ -200,7 +200,7 @@ TEST_F(StepPositionInformationSetTest, StepPositionWithCP56Time2aDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_EQ(io->getValue(), -52);
     EXPECT_FALSE(io->isTransient());
     EXPECT_TRUE(io->getQuality() & Quality::SPILL);

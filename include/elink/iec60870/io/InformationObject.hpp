@@ -35,17 +35,17 @@ protected:
 public:
     ~InformationObject() = default;
 
-    [[nodiscard]] IOA getInformationObjectAddress() const
+    [[nodiscard]] IOA getAddress() const
     {
         return ioaM;
     }
 
-    void setInformationObjectAddress(const IOA ioa)
+    void setAddress(const IOA ioa)
     {
         ioaM = ioa;
     }
 
-    void resetIOALengthStrategy(const IOAByteLength strategy)
+    void resetAddressLengthStrategy(const IOAByteLength strategy)
     {
         ioaM.resize(strategy);
     }

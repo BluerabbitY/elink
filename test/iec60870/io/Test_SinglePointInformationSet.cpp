@@ -124,7 +124,7 @@ TEST_F(SinglePointInformationSetTest, SinglePointInformationDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_FALSE(io->getValue());
     EXPECT_TRUE(io->getQuality() & Quality::BLOCKED);
     EXPECT_FALSE(io->getQuality() & Quality::SUBSTITUTED);
@@ -158,7 +158,7 @@ TEST_F(SinglePointInformationSetTest, SinglePointWithCP24Time2aDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_FALSE(io->getValue());
     EXPECT_TRUE(io->getQuality() & Quality::BLOCKED);
     EXPECT_FALSE(io->getQuality() & Quality::SUBSTITUTED);
@@ -199,7 +199,7 @@ TEST_F(SinglePointInformationSetTest, SinglePointWithCP56Time2aDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_FALSE(io->getValue());
     EXPECT_TRUE(io->getQuality() & Quality::BLOCKED);
     EXPECT_FALSE(io->getQuality() & Quality::SUBSTITUTED);

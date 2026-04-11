@@ -123,7 +123,7 @@ TEST_F(MeasuredValueShortSetTest, MeasuredValueShortDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_FLOAT_EQ(io->getValue(), 9.27);
     EXPECT_TRUE(io->getQuality() & Quality::BLOCKED);
     EXPECT_FALSE(io->getQuality() & Quality::SUBSTITUTED);
@@ -157,7 +157,7 @@ TEST_F(MeasuredValueShortSetTest, MeasuredValueShortWithCP24Time2aDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_FLOAT_EQ(io->getValue(), 9.27);
     EXPECT_TRUE(io->getQuality() & Quality::BLOCKED);
     EXPECT_FALSE(io->getQuality() & Quality::SUBSTITUTED);
@@ -198,7 +198,7 @@ TEST_F(MeasuredValueShortSetTest, MeasuredValueShortWithCP56Time2aDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_FLOAT_EQ(io->getValue(), 9.27);
     EXPECT_TRUE(io->getQuality() & Quality::BLOCKED);
     EXPECT_FALSE(io->getQuality() & Quality::SUBSTITUTED);

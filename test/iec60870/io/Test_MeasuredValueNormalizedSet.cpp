@@ -86,12 +86,12 @@ TEST_F(BMeasuredValueNormalizedSetTest, IOLength)
 TEST_F(BMeasuredValueNormalizedSetTest, CommonImpValue)
 {
     const MeasuredValueNormalized io1{IOA{0x300}, 0.5f, Quality::BLOCKED};
-    EXPECT_EQ(io1.getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(io1.getAddress(), 0x300);
     EXPECT_FLOAT_EQ(io1.getValue(), 0.5f);
     EXPECT_EQ(io1.getQuality(), Quality::BLOCKED);
 
     const MeasuredValueNormalized io2{IOA{0x300}, 98, 100, 50, Quality::NON_TOPICAL};
-    EXPECT_EQ(io2.getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(io2.getAddress(), 0x300);
     EXPECT_TRUE(io2.getValue() - 0.48f < 0.002f);
     EXPECT_TRUE(io2.getValue(100, 50) - 98.f < 0.002f);
     EXPECT_EQ(io2.getQuality(), Quality::NON_TOPICAL);
@@ -137,7 +137,7 @@ TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_FLOAT_EQ(io->getValue(), 0.5f);
     EXPECT_TRUE(io->getQuality() & Quality::BLOCKED);
     EXPECT_FALSE(io->getQuality() & Quality::SPILL);
@@ -172,7 +172,7 @@ TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithCP24Time2aDes
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_FLOAT_EQ(io->getValue(), 0.5f);
     EXPECT_TRUE(io->getQuality() & Quality::BLOCKED);
     EXPECT_FALSE(io->getQuality() & Quality::SUBSTITUTED);
@@ -213,7 +213,7 @@ TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithoutQualityDes
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_FLOAT_EQ(io->getValue(), 0.5f);
 }
 
@@ -243,7 +243,7 @@ TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithCP56Time2aDes
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_FLOAT_EQ(io->getValue(), 0.5f);
     EXPECT_TRUE(io->getQuality() & Quality::BLOCKED);
     EXPECT_FALSE(io->getQuality() & Quality::SUBSTITUTED);

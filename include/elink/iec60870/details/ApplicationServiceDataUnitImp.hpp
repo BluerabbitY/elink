@@ -31,8 +31,8 @@ T createASDUFromBuffer(const AppLayerParameters& parameters, const LiteBufferVie
 }
 
 template <class T>
-concept HasSetInformationObjectAddressFunc = requires(T&& obj, IOA ioa) {
-    { std::forward<T>(obj).setInformationObjectAddress(ioa) } -> std::same_as<void>;
+concept HassetAddressFunc = requires(T&& obj, IOA ioa) {
+    { std::forward<T>(obj).setAddress(ioa) } -> std::same_as<void>;
 };
 
 template <std::size_t MaxLengthOfASDU>
@@ -252,7 +252,7 @@ public:
                 {
                     const IOA firstIOA{LiteBufferView{asduM.data() + parametersM.getHeaderLength(), static_cast<std::size_t>(parametersM.getLengthOfIOA())}};
                     /* check that new information object has correct IOA */
-                    if (io.getInformationObjectAddress() == firstIOA + numberOfElements)
+                    if (io.getAddress() == firstIOA + numberOfElements)
                     {
                         ioserialze.serialize(payloadM, true);
                         encoded = !payloadM.hasError();
@@ -293,13 +293,13 @@ public:
                 startIndex += static_cast<uint8_t>(parametersM.getLengthOfIOA()) + elementLength * index;
                 const IOA firstIOA{LiteBufferView{asduM.data() + parametersM.getHeaderLength(), static_cast<std::size_t>(parametersM.getLengthOfIOA())}};
 
-                if constexpr (HasSetInformationObjectAddressFunc<IOType>)
+                if constexpr (HassetAddressFunc<IOType>)
                 {
-                    io->setInformationObjectAddress(IOA{firstIOA.address() + index, parametersM.getLengthOfIOA()});
+                    io->setAddress(IOA{firstIOA.address() + index, parametersM.getLengthOfIOA()});
                 }
                 else
                 {
-                    io->resetIOALengthStrategy(parametersM.getLengthOfIOA());
+                    io->resetAddressLengthStrategy(parametersM.getLengthOfIOA());
                 }
             }
             else

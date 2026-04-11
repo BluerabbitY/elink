@@ -111,7 +111,7 @@ TEST_F(PackedSinglePointWithSCDSetTest, DoublePointInformationDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_EQ(io->getSCD(), scd);
     EXPECT_TRUE(io->getQuality() & Quality::BLOCKED);
     EXPECT_FALSE(io->getQuality() & Quality::SUBSTITUTED);

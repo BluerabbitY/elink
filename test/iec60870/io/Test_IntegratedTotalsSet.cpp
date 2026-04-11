@@ -113,7 +113,7 @@ TEST_F(IntegratedTotalsSetTest, IntegratedTotalsDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_EQ(io->getBCR(), bcr);
 }
 
@@ -145,7 +145,7 @@ TEST_F(IntegratedTotalsSetTest, IntegratedTotalsWithCP24Time2aDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_EQ(io->getBCR(), bcr);
 
     auto cp24Time2a = io->getTimestamp();
@@ -184,7 +184,7 @@ TEST_F(IntegratedTotalsSetTest, IntegratedTotalsWithCP56Time2aDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_EQ(io->getBCR(), bcr);
 
     auto cp56Time2a = io->getTimestamp();

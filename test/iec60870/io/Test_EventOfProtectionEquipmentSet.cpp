@@ -109,7 +109,7 @@ TEST_F(EventOfProtectionEquipmentSetTest, EventOfProtectionEquipmentDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
 
     auto event = io->getEvent();
     EXPECT_EQ(io->getEvent().getEventState(), EventState::ON);
@@ -154,7 +154,7 @@ TEST_F(EventOfProtectionEquipmentSetTest, EventOfProtectionEquipmentWithCP56Time
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
 
     auto event = io->getEvent();
     EXPECT_EQ(io->getEvent().getEventState(), EventState::ON);

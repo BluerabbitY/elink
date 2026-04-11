@@ -32,7 +32,7 @@ public:
 
     ~EndOfInitialization() = default;
 
-    void setInformationObjectAddress(IOA) = delete;
+    void setAddress(IOA) = delete;
 
 protected:
     ELINK_IO_OBJECT;

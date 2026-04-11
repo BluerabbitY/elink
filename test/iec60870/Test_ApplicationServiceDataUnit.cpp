@@ -213,7 +213,7 @@ TEST_F(ApplicationServiceDataUnitTest, AddInformationObject)
     auto validsio = asdu.getElement<SinglePointInformation>(2);
     EXPECT_TRUE(validsio.has_value());
 
-    EXPECT_EQ(validsio->getInformationObjectAddress(), 0x202);
+    EXPECT_EQ(validsio->getAddress(), 0x202);
     EXPECT_EQ(validsio->getValue(), true);
     EXPECT_EQ(validsio->getQuality(), Quality::INVALID);
 }

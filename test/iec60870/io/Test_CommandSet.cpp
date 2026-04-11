@@ -235,7 +235,7 @@ TEST_F(CommandSetTest, SingleCommandDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_TRUE(io->getState());
     EXPECT_TRUE(io->isSelect());
     EXPECT_EQ(io->getQU(), QUValue::NO_ADDITIONAL_DEFINITION);
@@ -267,7 +267,7 @@ TEST_F(CommandSetTest, DoubleCommandDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_EQ(io->getState(), DoubleCommandValue::ON);
     EXPECT_TRUE(io->isSelect());
     EXPECT_EQ(io->getQU(), QUValue::NO_ADDITIONAL_DEFINITION);
@@ -299,7 +299,7 @@ TEST_F(CommandSetTest, StepCommandDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_EQ(io->getState(), StepCommandValue::HIGHER);
     EXPECT_TRUE(io->isSelect());
     EXPECT_EQ(io->getQU(), QUValue::NO_ADDITIONAL_DEFINITION);
@@ -331,7 +331,7 @@ TEST_F(CommandSetTest, SetpointCommandNormalizedDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_TRUE(io->isSelect());
     EXPECT_EQ(io->getQL(), 0);
     EXPECT_FLOAT_EQ(io->getValue(), 0.5);
@@ -363,7 +363,7 @@ TEST_F(CommandSetTest, SetpointCommandScaledDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_TRUE(io->isSelect());
     EXPECT_EQ(io->getQL(), 0);
     EXPECT_EQ(io->getValue(), 100);
@@ -395,7 +395,7 @@ TEST_F(CommandSetTest, SetpointCommandShortDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_TRUE(io->isSelect());
     EXPECT_EQ(io->getQL(), 0);
     EXPECT_FLOAT_EQ(io->getValue(), 50.1f);
@@ -427,7 +427,7 @@ TEST_F(CommandSetTest, SingleCommandWithCP56Time2aDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_TRUE(io->getState());
     EXPECT_TRUE(io->isSelect());
     EXPECT_EQ(io->getQU(), QUValue::NO_ADDITIONAL_DEFINITION);
@@ -473,7 +473,7 @@ TEST_F(CommandSetTest, DoubleCommandWithCP56Time2aDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_EQ(io->getState(), DoubleCommandValue::ON);
     EXPECT_TRUE(io->isSelect());
     EXPECT_EQ(io->getQU(), QUValue::NO_ADDITIONAL_DEFINITION);
@@ -519,7 +519,7 @@ TEST_F(CommandSetTest, StepCommandWithCP56Time2aDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_EQ(io->getState(), StepCommandValue::HIGHER);
     EXPECT_TRUE(io->isSelect());
     EXPECT_EQ(io->getQU(), QUValue::NO_ADDITIONAL_DEFINITION);
@@ -565,7 +565,7 @@ TEST_F(CommandSetTest, SetpointCommandNormalizedWithCP56Time2aDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_TRUE(io->isSelect());
     EXPECT_EQ(io->getQL(), 0);
     EXPECT_FLOAT_EQ(io->getValue(), 0.5);
@@ -611,7 +611,7 @@ TEST_F(CommandSetTest, SetpointCommandScaledWithCP56Time2aDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_TRUE(io->isSelect());
     EXPECT_EQ(io->getQL(), 0);
     EXPECT_EQ(io->getValue(), 100);
@@ -657,7 +657,7 @@ TEST_F(CommandSetTest, SetpointCommandShortWithCP56Time2aDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_TRUE(io->isSelect());
     EXPECT_EQ(io->getQL(), 0);
     EXPECT_FLOAT_EQ(io->getValue(), 50.1f);

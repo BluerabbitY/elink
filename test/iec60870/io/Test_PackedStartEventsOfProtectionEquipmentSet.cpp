@@ -126,7 +126,7 @@ TEST_F(PackedStartEventsOfProtectionEquipmentSetTest, PackedStartEventsOfProtect
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_EQ(io->getEvent(), StartEvent::SRD);
     EXPECT_EQ(io->getElapsedTime().getEplapsedTimeInMs(), 1278);
     EXPECT_FALSE(io->getQuality() & QualityP::ELAPSED_TIME_INVALID);
@@ -169,7 +169,7 @@ TEST_F(PackedStartEventsOfProtectionEquipmentSetTest, PackedStartEventsOfProtect
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x300);
+    EXPECT_EQ(ios->getAddress(), 0x300);
     EXPECT_EQ(io->getEvent(), StartEvent::SRD);
     EXPECT_EQ(io->getElapsedTime().getEplapsedTimeInMs(), 1278);
     EXPECT_FALSE(io->getQuality() & QualityP::ELAPSED_TIME_INVALID);

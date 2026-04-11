@@ -94,6 +94,6 @@ TEST_F(EndOfInitializationTest, EndOfInitializationDeserialize)
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
 
-    EXPECT_EQ(ios->getInformationObjectAddress(), 0x00);
+    EXPECT_EQ(ios->getAddress(), 0x00);
     EXPECT_EQ(io->getCOI(), COI::REMOTE_RESET);
 }
