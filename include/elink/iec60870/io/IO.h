@@ -68,5 +68,6 @@
 #include "elink/iec60870/io/EndOfInitialization.hpp"
 #include "elink/iec60870/io/InterrogationCommand.hpp"
 #include "elink/iec60870/io/CounterInterrogationCommand.hpp"
+#include "elink/iec60870/io/ReadCommand.hpp"
 
 #include "elink/iec60870/formatter/InformationObjectFormatter.hpp"

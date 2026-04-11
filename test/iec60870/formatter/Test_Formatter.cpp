@@ -479,3 +479,9 @@ TEST_F(FormatterTest, CounterInterrogationCommandFormat)
     CounterInterrogationCommand io{QualifierOfCIC{QCCRequest::GROUP_1, QCCFreeze::READ}};
     EXPECT_EQ(std::format("{}", io), "CounterInterrogationCommand{C_CI_NA_1: ioa=0 data=[0x01]}");
 }
+
+TEST_F(FormatterTest, ReadCommandFormat)
+{
+    ReadCommand io;
+    EXPECT_EQ(std::format("{}", io), "ReadCommand{C_RD_NA_1: ioa=0 data=[]}");
+}
