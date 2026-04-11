@@ -490,3 +490,9 @@ TEST_F(FormatterTest, ClockSynchronizationCommandFormat)
     ClockSynchronizationCommand io{CP56Time2a{}};
     EXPECT_EQ(std::format("{}", io), "ClockSynchronizationCommand{C_CS_NA_1: ioa=0 data=[0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]}");
 }
+
+TEST_F(FormatterTest, TestCommandFormat)
+{
+    TestCommand io{true};
+    EXPECT_EQ(std::format("{}", io), "TestCommand{C_TS_NA_1: ioa=0 data=[0xaa, 0x55]}");
+}
