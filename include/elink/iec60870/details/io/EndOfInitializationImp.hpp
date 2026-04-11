@@ -67,6 +67,5 @@ protected:
     CauseOfInitialization coiM;
 };
 
-
 }
 }

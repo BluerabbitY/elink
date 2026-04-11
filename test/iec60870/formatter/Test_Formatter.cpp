@@ -485,3 +485,9 @@ TEST_F(FormatterTest, ReadCommandFormat)
     ReadCommand io;
     EXPECT_EQ(std::format("{}", io), "ReadCommand{C_RD_NA_1: ioa=0 data=[]}");
 }
+
+TEST_F(FormatterTest, ClockSynchronizationCommandFormat)
+{
+    ClockSynchronizationCommand io{CP56Time2a{}};
+    EXPECT_EQ(std::format("{}", io), "ClockSynchronizationCommand{C_CS_NA_1: ioa=0 data=[0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]}");
+}
