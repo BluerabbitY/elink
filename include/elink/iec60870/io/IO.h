@@ -67,5 +67,6 @@
 #include "elink/iec60870/io/BitString32CommandWithCP56Time2a.hpp"
 #include "elink/iec60870/io/EndOfInitialization.hpp"
 #include "elink/iec60870/io/InterrogationCommand.hpp"
+#include "elink/iec60870/io/CounterInterrogationCommand.hpp"
 
 #include "elink/iec60870/formatter/InformationObjectFormatter.hpp"
