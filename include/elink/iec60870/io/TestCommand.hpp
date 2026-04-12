@@ -24,15 +24,27 @@ class TestCommand final : public details::TestCommandImp<TestCommand, TypeID::C_
 {
 public:
     explicit TestCommand(const bool isValid = true)
-    : TestCommandImp{isValid}
     {
+        setIsValid(isValid);
     }
 
     ~TestCommand() = default;
 
     void setAddress(IOA) = delete;
 
+    [[nodiscard]] bool isValid() const
+    {
+        return valueM == FixedTestBitPattern;
+    }
+
+    void setIsValid(const bool isValid)
+    {
+        valueM = isValid ?  FixedTestBitPattern : 0x0000;
+    }
+
 protected:
+    static constexpr uint16_t FixedTestBitPattern = 0x55aa;
+
     ELINK_IO_OBJECT;
 
     template <typename OStream>

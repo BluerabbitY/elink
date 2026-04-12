@@ -29,25 +29,12 @@ public:
     {
     }
 
-    explicit TestCommandImp(const bool isValid)
-    : valueM{0}
+    explicit TestCommandImp(const uint16_t value)
+    : valueM{value}
     {
-        setIsValid(isValid);
     }
 
     ~TestCommandImp() = default;
-
-    static constexpr uint16_t FixedTestBitPattern = 0x55aa;
-
-    [[nodiscard]] bool isValid() const
-    {
-        return valueM == FixedTestBitPattern;
-    }
-
-    void setIsValid(const bool isValid)
-    {
-        valueM = isValid ?  FixedTestBitPattern : 0x0000;
-    }
 
 protected:
     uint16_t valueM;
