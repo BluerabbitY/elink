@@ -502,3 +502,10 @@ TEST_F(FormatterTest, ResetProcessCommandFormat)
     ResetProcessCommand io;
     EXPECT_EQ(std::format("{}", io), "ResetProcessCommand{C_RP_NA_1: ioa=0 data=[0x00]}");
 }
+
+
+TEST_F(FormatterTest, DelayAcquisitionCommandFormat)
+{
+    DelayAcquisitionCommand io;
+    EXPECT_EQ(std::format("{}", io), "DelayAcquisitionCommand{C_CD_NA_1: ioa=0 data=[0x00, 0x00]}");
+}
