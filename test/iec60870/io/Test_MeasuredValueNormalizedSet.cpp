@@ -31,6 +31,7 @@
 #include "elink/iec60870/io/MeasuredValueNormalizedWithCP24Time2a.hpp"
 #include "elink/iec60870/io/MeasuredValueNormalizedWithoutQuality.hpp"
 #include "elink/iec60870/io/MeasuredValueNormalizedWithCP56Time2a.hpp"
+#include "elink/iec60870/io/ParameterNormalizedValue.hpp"
 #include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
@@ -62,6 +63,9 @@ TEST_F(BMeasuredValueNormalizedSetTest, TypeID)
 
     const MeasuredValueNormalizedWithCP56Time2a iocp56;
     EXPECT_EQ(iocp56.getTypeID(), elink::iec60870::TypeID::M_ME_TD_1);
+
+    const ParameterNormalizedValue pnio;
+    EXPECT_EQ(pnio.getTypeID(), elink::iec60870::TypeID::P_ME_NA_1);
 }
 
 TEST_F(BMeasuredValueNormalizedSetTest, IOLength)
@@ -78,9 +82,13 @@ TEST_F(BMeasuredValueNormalizedSetTest, IOLength)
     EXPECT_EQ(ionq.size(), 5);
     EXPECT_EQ(ionq.length(true), 2);
 
-    const MeasuredValueNormalizedWithCP24Time2a ioccp56;
-    EXPECT_EQ(iocp24.size(), 9);
-    EXPECT_EQ(iocp24.length(true), 6);
+    const MeasuredValueNormalizedWithCP56Time2a ioccp56;
+    EXPECT_EQ(ioccp56.size(), 13);
+    EXPECT_EQ(ioccp56.length(true), 10);
+
+    const ParameterNormalizedValue pnio;
+    EXPECT_EQ(pnio.size(), 6);
+    EXPECT_EQ(pnio.length(true), 3);
 }
 
 TEST_F(BMeasuredValueNormalizedSetTest, CommonImpValue)
@@ -263,4 +271,35 @@ TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithCP56Time2aDes
     EXPECT_EQ(cp56Time2a.getMonth(), 12);
     EXPECT_EQ(cp56Time2a.getYear(), 2025);
     EXPECT_EQ(cp56Time2a.toMsTimestamp(), 1766297874266);
+}
+
+TEST_F(BMeasuredValueNormalizedSetTest, ParameterNormalizedValueSerialize)
+{
+    uint8_t buffer[256]{};
+    details::OStream os{buffer, sizeof(buffer)};
+
+    const ParameterNormalizedValue::SerializePtr ios =
+        std::make_shared<ParameterNormalizedValue>(IOA{0x200}, 0.5f, QPM::SMOOTHING_FACTOR);
+    EXPECT_TRUE(ios->serialize(os, false));
+    EXPECT_FALSE(os.hasError());
+
+    constexpr uint8_t dest[] = {0x00, 0x02, 0x00, 0x00, 0x40, 0x02};
+    EXPECT_EQ(os.size(), sizeof(dest));
+    EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
+}
+
+TEST_F(BMeasuredValueNormalizedSetTest, ParameterNormalizedValueDeserialize)
+{
+    constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x00, 0x40, 0x03};
+    details::IStream is{buffer, sizeof(buffer)};
+
+    const auto io = std::make_shared<ParameterNormalizedValue>();
+    const ParameterNormalizedValue::SerializePtr ios = io;
+    EXPECT_TRUE(ios->deserialize(is, false));
+    EXPECT_FALSE(is.hasError());
+    EXPECT_EQ(is.size(), sizeof(buffer));
+
+    EXPECT_EQ(ios->getAddress(), 0x300);
+    EXPECT_FLOAT_EQ(io->getValue(), 0.5f);
+    EXPECT_EQ(io->getQPM(), QPM::LOW_LIMIT_FOR_TRANSMISSION);
 }

@@ -515,3 +515,9 @@ TEST_F(FormatterTest, TestCommandWithCP56Time2aFormat)
     TestCommandWithCP56Time2a io{12345, CP56Time2a{}};
     EXPECT_EQ(std::format("{}", io), "TestCommandWithCP56Time2a{C_TS_TA_1: ioa=0 data=[0x39, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]}");
 }
+
+TEST_F(FormatterTest, ParameterNormalizedValueFormat)
+{
+    ParameterNormalizedValue io{IOA{300}, 0.8, QPM::LOW_LIMIT_FOR_TRANSMISSION};
+    EXPECT_EQ(std::format("{}", io), "ParameterNormalizedValue{P_ME_NA_1: ioa=300 data=[0x66, 0x66, 0x03]}");
+}
