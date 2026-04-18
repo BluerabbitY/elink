@@ -28,6 +28,7 @@
  *
  ***********************************************************************************/
 #include "elink/iec60870/io/TestCommand.hpp"
+#include "elink/iec60870/io/TestCommandWithCP56Time2a.hpp"
 #include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
@@ -50,6 +51,9 @@ TEST_F(TestCommandTest, TypeID)
 {
     const TestCommand io;
     EXPECT_EQ(io.getTypeID(), TypeID::C_TS_NA_1);
+
+    const TestCommandWithCP56Time2a iocp56;
+    EXPECT_EQ(iocp56.getTypeID(), TypeID::C_TS_TA_1);
 }
 
 TEST_F(TestCommandTest, IOLength)
@@ -57,6 +61,10 @@ TEST_F(TestCommandTest, IOLength)
     const TestCommand io;
     EXPECT_EQ(io.size(), 5);
     EXPECT_EQ(io.length(true), 2);
+
+    const TestCommandWithCP56Time2a iocp56;
+    EXPECT_EQ(iocp56.size(), 12);
+    EXPECT_EQ(iocp56.length(true), 9);
 }
 
 TEST_F(TestCommandTest, CommonImpValue)
@@ -66,9 +74,14 @@ TEST_F(TestCommandTest, CommonImpValue)
     EXPECT_TRUE(io.isValid());
     io.setIsValid(false);
     EXPECT_FALSE(io.isValid());
+
+    TestCommandWithCP56Time2a iocp56;
+    EXPECT_EQ(iocp56.getCounter(), 0);
+    iocp56.setCounter(12345);
+    EXPECT_EQ(iocp56.getCounter(), 12345);
 }
 
-TEST_F(TestCommandTest, EndOfInitializationSerialize)
+TEST_F(TestCommandTest, TestCommandSerialize)
 {
     uint8_t buffer[256]{};
     details::OStream os{buffer, sizeof(buffer)};
@@ -82,7 +95,7 @@ TEST_F(TestCommandTest, EndOfInitializationSerialize)
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 }
 
-TEST_F(TestCommandTest, EndOfInitializationDeserialize)
+TEST_F(TestCommandTest, TestCommandDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x00, 0x00, 0xaa, 0x55};
     details::IStream is{buffer, sizeof(buffer)};
@@ -95,4 +108,47 @@ TEST_F(TestCommandTest, EndOfInitializationDeserialize)
 
     EXPECT_EQ(ios->getAddress(), 0x00);
     EXPECT_TRUE(io->isValid());
+}
+
+TEST_F(TestCommandTest, TestCommandWithCP56Time2aSerialize)
+{
+    uint8_t buffer[256]{};
+    details::OStream os{buffer, sizeof(buffer)};
+
+    const TestCommandWithCP56Time2a::SerializePtr ios = std::make_shared<TestCommandWithCP56Time2a>(0x55aa, CP56Time2a{});
+    EXPECT_TRUE(ios->serialize(os, false));
+    EXPECT_FALSE(os.hasError());
+
+    constexpr uint8_t dest[] = {0x00, 0x00, 0x00, 0xaa, 0x55, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    EXPECT_EQ(os.size(), sizeof(dest));
+    EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
+}
+
+TEST_F(TestCommandTest, TestCommandWithCP56Time2aDeserialize)
+{
+    constexpr uint8_t buffer[] = {0x00, 0x00, 0x00, 0xaa, 0x55, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
+    details::IStream is{buffer, sizeof(buffer)};
+
+    const auto io = std::make_shared<TestCommandWithCP56Time2a>(false);
+    const TestCommandWithCP56Time2a::SerializePtr ios = io;
+    EXPECT_TRUE(ios->deserialize(is, false));
+    EXPECT_FALSE(is.hasError());
+    EXPECT_EQ(is.size(), sizeof(buffer));
+
+    EXPECT_EQ(ios->getAddress(), 0x00);
+    EXPECT_EQ(io->getCounter(), 0x55aa);
+
+    auto cp56Time2a = io->getTimestamp();
+    EXPECT_TRUE(cp56Time2a.isInvalid());
+    EXPECT_TRUE(cp56Time2a.isSummerTime());
+    EXPECT_TRUE(cp56Time2a.isSubstituted());
+    EXPECT_EQ(cp56Time2a.getMillisecond(), 266);
+    EXPECT_EQ(cp56Time2a.getSecond(), 54);
+    EXPECT_EQ(cp56Time2a.getMinute(), 17);
+    EXPECT_EQ(cp56Time2a.getHour(), 14);
+    EXPECT_EQ(cp56Time2a.getDayOfWeek(), 7);
+    EXPECT_EQ(cp56Time2a.getDayOfMonth(), 21);
+    EXPECT_EQ(cp56Time2a.getMonth(), 12);
+    EXPECT_EQ(cp56Time2a.getYear(), 2025);
+    EXPECT_EQ(cp56Time2a.toMsTimestamp(), 1766297874266);
 }

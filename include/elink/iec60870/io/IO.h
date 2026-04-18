@@ -73,5 +73,6 @@
 #include "elink/iec60870/io/TestCommand.hpp"
 #include "elink/iec60870/io/ResetProcessCommand.hpp"
 #include "elink/iec60870/io/DelayAcquisitionCommand.hpp"
+#include "elink/iec60870/io/TestCommandWithCP56Time2a.hpp"
 
 #include "elink/iec60870/formatter/InformationObjectFormatter.hpp"
