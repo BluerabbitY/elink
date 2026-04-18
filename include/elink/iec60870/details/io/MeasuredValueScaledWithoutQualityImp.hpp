@@ -15,40 +15,40 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/details/io/MeasuredValueScaledWithoutQualityImp.hpp"
-#include "elink/iec60870/io/QualityDescriptor.hpp"
+#include "elink/iec60870/details/io/InformationObjectSerializable.hpp"
+#include "elink/iec60870/details/io/util/NormalizedValueUtil.hpp"
 
 namespace elink::iec60870::details
 {
 
 template <typename inherit, TypeID typeID>
-class MeasuredValueScaledImp : public MeasuredValueScaledWithoutQualityImp<inherit, typeID>
+class MeasuredValueScaledWithoutQualityImp : public InformationObjectSerializable<inherit, typeID>
 {
 public:
-    MeasuredValueScaledImp()
-        : qualityM{Quality::GOOD}
+    MeasuredValueScaledWithoutQualityImp()
+        : valueM{0}
     {
     }
 
-    MeasuredValueScaledImp(const IOA ioa, const ScaledValue value, const Quality quality)
-    : MeasuredValueScaledWithoutQualityImp<inherit, typeID>{ioa, value}, qualityM{quality}
+    MeasuredValueScaledWithoutQualityImp(const IOA ioa, const ScaledValue value)
+    : InformationObjectSerializable<inherit, typeID>{ioa}, valueM{value}
     {
     }
 
-    ~MeasuredValueScaledImp() = default;
+    ~MeasuredValueScaledWithoutQualityImp() = default;
 
-    [[nodiscard]] Quality getQuality() const
+    [[nodiscard]] ScaledValue getValue() const
     {
-        return qualityM;
+        return valueM;
     }
 
-    void setQuality(const Quality quality)
+    void setValue(const ScaledValue value)
     {
-        qualityM = quality;
+        valueM = value;
     }
 
 protected:
-    Quality qualityM;
+    ScaledValue valueM;
 };
 
 }
