@@ -18,6 +18,7 @@
 #include "elink/iec60870/io/InformationObject.hpp"
 #include "elink/iec60870/io/InformationObjectTypeID.h"
 #include "elink/iec60870/AppLayerParameters.hpp"
+#include "elink/util/Utils.hpp"
 
 #include <memory>
 
@@ -99,7 +100,13 @@ public:
 }
 
 #ifndef ELINK_IO_OBJECT
-#define ELINK_IO_OBJECT friend class InformationObjectSerializable
+#define ELINK_IO_OBJECT                                                                                          \
+    protected:                                                                                                   \
+    friend class InformationObjectSerializable;                                                                  \
+    void checkFinalKeyword() {                                                                                   \
+        using pureThis = std::remove_cvref_t<decltype(*this)>;                                                   \
+        ELINK_STATIC_ASSERT(std::is_final_v<pureThis>, "Information object should include the <final> keyword"); \
+    }
 #else
 #error "ELINK_IO_OBJECT already defined"
 #endif

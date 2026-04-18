@@ -20,7 +20,7 @@
 namespace elink::iec60870
 {
 
-class ResetProcessCommand : public details::ResetProcessCommandImp<ResetProcessCommand, TypeID::C_RP_NA_1>
+class ResetProcessCommand final : public details::ResetProcessCommandImp<ResetProcessCommand, TypeID::C_RP_NA_1>
 {
 public:
     ResetProcessCommand() = default;
