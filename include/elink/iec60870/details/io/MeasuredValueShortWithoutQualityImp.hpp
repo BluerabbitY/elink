@@ -1,5 +1,5 @@
 /***********************************************************************************
- * \file MeasuredValueShortImp.hpp
+ * \file MeasuredValueShortWithoutQualityImp.hpp
  * \author BlueRabbitY (BlueRabbitY\@protonmail.com)
  * \brief 
  * \date 2026-03-02 19:04:27
@@ -15,39 +15,38 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/details/io/MeasuredValueShortWithoutQualityImp.hpp"
-#include "elink/iec60870/io/QualityDescriptor.hpp"
+#include "InformationObjectSerializable.hpp"
 
 namespace elink::iec60870::details
 {
 
 template <typename inherit, TypeID typeID>
-class MeasuredValueShortImp : public MeasuredValueShortWithoutQualityImp<inherit, typeID> {
+class MeasuredValueShortWithoutQualityImp : public InformationObjectSerializable<inherit, typeID> {
 public:
-    MeasuredValueShortImp()
-    : qualityM{Quality::GOOD}
+    MeasuredValueShortWithoutQualityImp()
+    : valueM{}
     {
     }
 
-    MeasuredValueShortImp(const IOA ioa, const float value, const Quality quality)
-    : MeasuredValueShortWithoutQualityImp<inherit, typeID>{ioa, value}, qualityM{quality}
+    MeasuredValueShortWithoutQualityImp(const IOA ioa, const float value)
+    : InformationObjectSerializable<inherit, typeID>{ioa}, valueM{value}
     {
     }
 
-    ~MeasuredValueShortImp() = default;
+    ~MeasuredValueShortWithoutQualityImp() = default;
 
-    [[nodiscard]] Quality getQuality() const
+    [[nodiscard]] float getValue() const
     {
-        return qualityM;
+        return valueM;
     }
 
-    void setQuality(const Quality quality)
+    void setValue(const float value)
     {
-        qualityM = quality;
+        valueM = value;
     }
 
 protected:
-    Quality qualityM;
+    float valueM;
 };
 
 }
