@@ -77,5 +77,6 @@
 #include "elink/iec60870/io/ParameterNormalizedValue.hpp"
 #include "elink/iec60870/io/ParameterScaledValue.hpp"
 #include "elink/iec60870/io/ParameterFloatValue.hpp"
+#include "elink/iec60870/io/ParameterActivation.hpp"
 
 #include "elink/iec60870/formatter/InformationObjectFormatter.hpp"
