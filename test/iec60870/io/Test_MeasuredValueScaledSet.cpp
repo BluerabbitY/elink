@@ -30,6 +30,7 @@
 #include "elink/iec60870/io/MeasuredValueScaled.hpp"
 #include "elink/iec60870/io/MeasuredValueScaledWithCP24Time2a.hpp"
 #include "elink/iec60870/io/MeasuredValueScaledWithCP56Time2a.hpp"
+#include "elink/iec60870/io/ParameterScaledValue.hpp"
 #include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
@@ -58,6 +59,9 @@ TEST_F(MeasuredValueScaledSetTest, TypeID)
 
     const MeasuredValueScaledWithCP56Time2a iocp56;
     EXPECT_EQ(iocp56.getTypeID(), TypeID::M_ME_TE_1);
+
+    const ParameterScaledValue psvio;
+    EXPECT_EQ(psvio.getTypeID(), TypeID::P_ME_NB_1);
 }
 
 TEST_F(MeasuredValueScaledSetTest, IOLength)
@@ -73,6 +77,10 @@ TEST_F(MeasuredValueScaledSetTest, IOLength)
     const MeasuredValueScaledWithCP56Time2a iocp56;
     EXPECT_EQ(iocp56.size(), 13);
     EXPECT_EQ(iocp56.length(true), 10);
+
+    const ParameterScaledValue psvio;
+    EXPECT_EQ(psvio.size(), 6);
+    EXPECT_EQ(psvio.length(true), 3);
 }
 
 TEST_F(MeasuredValueScaledSetTest, CommonImpValue)
@@ -218,4 +226,35 @@ TEST_F(MeasuredValueScaledSetTest, MeasuredValueScaledWithCP56Time2aDeserialize)
     EXPECT_EQ(cp56Time2a.getMonth(), 12);
     EXPECT_EQ(cp56Time2a.getYear(), 2025);
     EXPECT_EQ(cp56Time2a.toMsTimestamp(), 1766297874266);
+}
+
+TEST_F(MeasuredValueScaledSetTest, ParameterScaledValueSerialize)
+{
+    uint8_t buffer[256]{};
+    details::OStream os{buffer, sizeof(buffer)};
+
+    const ParameterScaledValue::SerializePtr ios =
+        std::make_shared<ParameterScaledValue>(IOA{0x200}, 16667, QPM::HIGH_LIMIT_FOR_TRANSMISSION);
+    EXPECT_TRUE(ios->serialize(os, false));
+    EXPECT_FALSE(os.hasError());
+
+    constexpr uint8_t dest[] = {0x00, 0x02, 0x00, 0x1b, 0x41, 0x04};
+    EXPECT_EQ(os.size(), sizeof(dest));
+    EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
+}
+
+TEST_F(MeasuredValueScaledSetTest, ParameterScaledValueDeserialize)
+{
+    constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x1b, 0x41, 0x02};
+    details::IStream is{buffer, sizeof(buffer)};
+
+    const auto io = std::make_shared<ParameterScaledValue>();
+    const ParameterScaledValue::SerializePtr ios = io;
+    EXPECT_TRUE(ios->deserialize(is, false));
+    EXPECT_FALSE(is.hasError());
+    EXPECT_EQ(is.size(), sizeof(buffer));
+
+    EXPECT_EQ(ios->getAddress(), 0x300);
+    EXPECT_EQ(io->getValue(), 16667);
+    EXPECT_EQ(io->getQPM(), QPM::SMOOTHING_FACTOR);
 }
