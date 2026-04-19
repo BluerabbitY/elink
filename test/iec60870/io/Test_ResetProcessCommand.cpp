@@ -68,7 +68,7 @@ TEST_F(ResetProcessCommandTest, CommonImpValue)
     EXPECT_EQ(io.getQRP(), QRP::GENERAL_RESET);
 }
 
-TEST_F(ResetProcessCommandTest, EndOfInitializationSerialize)
+TEST_F(ResetProcessCommandTest, ResetProcessCommandSerialize)
 {
     uint8_t buffer[256]{};
     details::OStream os{buffer, sizeof(buffer)};
@@ -82,7 +82,7 @@ TEST_F(ResetProcessCommandTest, EndOfInitializationSerialize)
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 }
 
-TEST_F(ResetProcessCommandTest, EndOfInitializationDeserialize)
+TEST_F(ResetProcessCommandTest, ResetProcessCommandDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x00, 0x00, 0x02};
     details::IStream is{buffer, sizeof(buffer)};

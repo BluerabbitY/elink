@@ -59,7 +59,7 @@ TEST_F(ReadCommandTest, IOLength)
     EXPECT_EQ(io.length(true), 0);
 }
 
-TEST_F(ReadCommandTest, EndOfInitializationSerialize)
+TEST_F(ReadCommandTest, ReadCommandSerialize)
 {
     uint8_t buffer[256]{};
     details::OStream os{buffer, sizeof(buffer)};
@@ -73,7 +73,7 @@ TEST_F(ReadCommandTest, EndOfInitializationSerialize)
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 }
 
-TEST_F(ReadCommandTest, EndOfInitializationDeserialize)
+TEST_F(ReadCommandTest, ReadCommandDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x00, 0x00};
     details::IStream is{buffer, sizeof(buffer)};
@@ -83,4 +83,6 @@ TEST_F(ReadCommandTest, EndOfInitializationDeserialize)
     EXPECT_TRUE(ios->deserialize(is, false));
     EXPECT_FALSE(is.hasError());
     EXPECT_EQ(is.size(), sizeof(buffer));
+
+    EXPECT_EQ(ios->getAddress(), 0x00);
 }

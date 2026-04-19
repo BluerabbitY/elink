@@ -70,7 +70,7 @@ TEST_F(CounterInterrogationCommandTest, CommonImpValue)
     EXPECT_EQ(io.getQCC().getQCCFreeze(), QCCFreeze::FREEZE_WITHOUT_RESET);
 }
 
-TEST_F(CounterInterrogationCommandTest, EndOfInitializationSerialize)
+TEST_F(CounterInterrogationCommandTest, CounterInterrogationCommandSerialize)
 {
     uint8_t buffer[256]{};
     details::OStream os{buffer, sizeof(buffer)};
@@ -85,7 +85,7 @@ TEST_F(CounterInterrogationCommandTest, EndOfInitializationSerialize)
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 }
 
-TEST_F(CounterInterrogationCommandTest, EndOfInitializationDeserialize)
+TEST_F(CounterInterrogationCommandTest, CounterInterrogationCommandDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x00, 0x00, 0x43};
     details::IStream is{buffer, sizeof(buffer)};

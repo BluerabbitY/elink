@@ -68,7 +68,7 @@ TEST_F(InterrogationCommandTest, CommonImpValue)
     EXPECT_EQ(io.getQOI(), QOI::GROUP_09);
 }
 
-TEST_F(InterrogationCommandTest, EndOfInitializationSerialize)
+TEST_F(InterrogationCommandTest, InterrogationCommandSerialize)
 {
     uint8_t buffer[256]{};
     details::OStream os{buffer, sizeof(buffer)};
@@ -83,7 +83,7 @@ TEST_F(InterrogationCommandTest, EndOfInitializationSerialize)
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 }
 
-TEST_F(InterrogationCommandTest, EndOfInitializationDeserialize)
+TEST_F(InterrogationCommandTest, InterrogationCommandDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x00, 0x00, 0x1d};
     details::IStream is{buffer, sizeof(buffer)};
