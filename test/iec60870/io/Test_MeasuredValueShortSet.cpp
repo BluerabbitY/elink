@@ -30,6 +30,7 @@
 #include "elink/iec60870/io/MeasuredValueShort.hpp"
 #include "elink/iec60870/io/MeasuredValueShortWithCP24Time2a.hpp"
 #include "elink/iec60870/io/MeasuredValueShortWithCP56Time2a.hpp"
+#include "elink/iec60870/io/ParameterFloatValue.hpp"
 #include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
@@ -58,6 +59,9 @@ TEST_F(MeasuredValueShortSetTest, TypeID)
 
     const MeasuredValueShortWithCP56Time2a iocp56;
     EXPECT_EQ(iocp56.getTypeID(), TypeID::M_ME_TF_1);
+
+    const ParameterFloatValue pfvio;
+    EXPECT_EQ(pfvio.getTypeID(), TypeID::P_ME_NC_1);
 }
 
 TEST_F(MeasuredValueShortSetTest, IOLength)
@@ -73,6 +77,10 @@ TEST_F(MeasuredValueShortSetTest, IOLength)
     const MeasuredValueShortWithCP56Time2a iocp56;
     EXPECT_EQ(iocp56.size(), 15);
     EXPECT_EQ(iocp56.length(true), 12);
+
+    const ParameterFloatValue pfvio;
+    EXPECT_EQ(pfvio.size(), 8);
+    EXPECT_EQ(pfvio.length(true), 5);
 }
 
 TEST_F(MeasuredValueShortSetTest, CommonImpValue)
@@ -218,4 +226,35 @@ TEST_F(MeasuredValueShortSetTest, MeasuredValueShortWithCP56Time2aDeserialize)
     EXPECT_EQ(cp56Time2a.getMonth(), 12);
     EXPECT_EQ(cp56Time2a.getYear(), 2025);
     EXPECT_EQ(cp56Time2a.toMsTimestamp(), 1766297874266);
+}
+
+TEST_F(MeasuredValueShortSetTest, ParameterFloatValueSerialize)
+{
+    uint8_t buffer[256]{};
+    details::OStream os{buffer, sizeof(buffer)};
+
+    const ParameterFloatValue::SerializePtr ios =
+        std::make_shared<ParameterFloatValue>(IOA{0x200}, 9.27, QPM::SMOOTHING_FACTOR);
+    EXPECT_TRUE(ios->serialize(os, false));
+    EXPECT_FALSE(os.hasError());
+
+    constexpr uint8_t dest[] = {0x00, 0x02, 0x00, 0xec, 0x51, 0x14, 0x41, 0x02};
+    EXPECT_EQ(os.size(), sizeof(dest));
+    EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
+}
+
+TEST_F(MeasuredValueShortSetTest, ParameterFloatValueDeserialize)
+{
+    constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0xec, 0x51, 0x14, 0x41, 0x03};
+    details::IStream is{buffer, sizeof(buffer)};
+
+    const auto io = std::make_shared<ParameterFloatValue>();
+    const ParameterFloatValue::SerializePtr ios = io;
+    EXPECT_TRUE(ios->deserialize(is, false));
+    EXPECT_FALSE(is.hasError());
+    EXPECT_EQ(is.size(), sizeof(buffer));
+
+    EXPECT_EQ(ios->getAddress(), 0x300);
+    EXPECT_FLOAT_EQ(io->getValue(), 9.27);
+    EXPECT_EQ(io->getQPM(), QPM::LOW_LIMIT_FOR_TRANSMISSION);
 }

@@ -527,3 +527,9 @@ TEST_F(FormatterTest, ParameterScaledValueFormat)
     ParameterScaledValue io{IOA{300}, 1234, QPM::LOW_LIMIT_FOR_TRANSMISSION};
     EXPECT_EQ(std::format("{}", io), "ParameterScaledValue{P_ME_NB_1: ioa=300 data=[0xd2, 0x04, 0x03]}");
 }
+
+TEST_F(FormatterTest, ParameterFloatValueFormat)
+{
+    ParameterFloatValue io{IOA{300}, 1234, QPM::LOW_LIMIT_FOR_TRANSMISSION};
+    EXPECT_EQ(std::format("{}", io), "ParameterFloatValue{P_ME_NC_1: ioa=300 data=[0x00, 0x40, 0x9a, 0x44, 0x03]}");
+}

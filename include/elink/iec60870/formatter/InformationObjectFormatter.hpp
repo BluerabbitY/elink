@@ -186,6 +186,7 @@ struct formatter<elink::iec60870::details::InformationObjectSerializable<inherit
 #include "elink/iec60870/io/TestCommandWithCP56Time2a.hpp"
 #include "elink/iec60870/io/ParameterNormalizedValue.hpp"
 #include "elink/iec60870/io/ParameterScaledValue.hpp"
+#include "elink/iec60870/io/ParameterFloatValue.hpp"
 
 namespace std {
 
@@ -252,6 +253,7 @@ ELINK_IO_FORMATTER(DelayAcquisitionCommand);
 ELINK_IO_FORMATTER(TestCommandWithCP56Time2a);
 ELINK_IO_FORMATTER(ParameterNormalizedValue);
 ELINK_IO_FORMATTER(ParameterScaledValue);
+ELINK_IO_FORMATTER(ParameterFloatValue);
 
 #undef ELINK_DEFINE_IO_FORMATTER
 
