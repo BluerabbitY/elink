@@ -16,22 +16,9 @@
 #pragma once
 
 #include "elink/iec60870/details/io/MeasuredValueNormalizedWithoutQualityImp.hpp"
+#include "elink/iec60870/io/QualifierOfParameterMV.hpp"
 
-namespace elink::iec60870
-{
-
-enum class QualifierOfParameterMV : uint8_t
-{
-    NOT_USED = 0,
-    THRESHOLD_VALUE = 1,
-    SMOOTHING_FACTOR = 2,
-    LOW_LIMIT_FOR_TRANSMISSION = 3,
-    HIGH_LIMIT_FOR_TRANSMISSION = 4,
-};
-
-using QPM = QualifierOfParameterMV;
-
-namespace details
+namespace elink::iec60870::details
 {
 
 template <typename inherit, TypeID typeID>
@@ -69,5 +56,4 @@ protected:
     QualifierOfParameterMV qpmM;
 };
 
-}
 }
