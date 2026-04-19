@@ -15,18 +15,21 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/details/io/ParameterScaledValueImp.hpp"
+#include "elink/iec60870/details/io/MeasuredValueScaledWithoutQualityImp.hpp"
+#include "elink/iec60870/details/io/util/QualifierOfParameterMVUtil.hpp"
 
 namespace elink::iec60870
 {
 
-class ParameterScaledValue final : public details::ParameterScaledValueImp<ParameterScaledValue, TypeID::P_ME_NB_1>
+class ParameterScaledValue final
+: public details::MeasuredValueScaledWithoutQualityImp<ParameterScaledValue, TypeID::P_ME_NB_1>
+, public details::QualifierOfParameterMVUtil
 {
 public:
     ParameterScaledValue() = default;
 
     ParameterScaledValue(const IOA ioa, const ScaledValue value, const QualifierOfParameterMV qpm)
-    : ParameterScaledValueImp{ioa, value, qpm}
+    : MeasuredValueScaledWithoutQualityImp{ioa, value}, QualifierOfParameterMVUtil{qpm}
     {
     }
 

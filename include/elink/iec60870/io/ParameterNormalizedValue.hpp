@@ -15,24 +15,26 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/details/io/ParameterNormalizedValueImp.hpp"
+#include "elink/iec60870/details/io/MeasuredValueNormalizedWithoutQualityImp.hpp"
+#include "elink/iec60870/details/io/util/QualifierOfParameterMVUtil.hpp"
 
 namespace elink::iec60870
 {
 
 class ParameterNormalizedValue final
-: public details::ParameterNormalizedValueImp<ParameterNormalizedValue, TypeID::P_ME_NA_1>
+: public details::MeasuredValueNormalizedWithoutQualityImp<ParameterNormalizedValue, TypeID::P_ME_NA_1>
+, public details::QualifierOfParameterMVUtil
 {
 public:
     ParameterNormalizedValue() = default;
 
     ParameterNormalizedValue(const IOA ioa, const NormalizedValue value, const QualifierOfParameterMV qpm)
-    : ParameterNormalizedValueImp{ioa, value, qpm}
+    : MeasuredValueNormalizedWithoutQualityImp{ioa, value}, QualifierOfParameterMVUtil{qpm}
     {
     }
 
     ParameterNormalizedValue(const IOA ioa, const OriginalPhyValue value, const NormalizationFactor factor, const float offset, const QualifierOfParameterMV qpm)
-    : ParameterNormalizedValueImp{ioa, value, factor, offset, qpm}
+    : MeasuredValueNormalizedWithoutQualityImp{ioa, value, factor, offset}, QualifierOfParameterMVUtil{qpm}
     {
     }
 

@@ -119,6 +119,14 @@ TEST_F(BMeasuredValueNormalizedSetTest, CommonImpQuality)
     EXPECT_TRUE(io.getQuality() & Quality::SPILL);
 }
 
+TEST_F(BMeasuredValueNormalizedSetTest, CommonImpQPM)
+{
+    ParameterNormalizedValue io;
+    EXPECT_EQ(io.getQPM(), QPM::NOT_USED);
+    io.setQPM(QPM::THRESHOLD_VALUE);
+    EXPECT_EQ(io.getQPM(), QPM::THRESHOLD_VALUE);
+}
+
 TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedSerialize)
 {
     uint8_t buffer[256]{};

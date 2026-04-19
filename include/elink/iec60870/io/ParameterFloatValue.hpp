@@ -15,18 +15,21 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/details/io/ParameterFloatValueImp.hpp"
+#include "elink/iec60870/details/io/MeasuredValueShortWithoutQualityImp.hpp"
+#include "elink/iec60870/details/io/util/QualifierOfParameterMVUtil.hpp"
 
 namespace elink::iec60870
 {
 
-class ParameterFloatValue final : public details::ParameterFloatValueImp<ParameterFloatValue, TypeID::P_ME_NC_1>
+class ParameterFloatValue final
+: public details::MeasuredValueShortWithoutQualityImp<ParameterFloatValue, TypeID::P_ME_NC_1>
+, public details::QualifierOfParameterMVUtil
 {
 public:
     ParameterFloatValue() = default;
 
     ParameterFloatValue(const IOA ioa, const float value, const QualifierOfParameterMV qpm)
-    : ParameterFloatValueImp{ioa, value, qpm}
+    : MeasuredValueShortWithoutQualityImp{ioa, value}, QualifierOfParameterMVUtil{qpm}
     {
     }
 

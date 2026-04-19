@@ -1,8 +1,8 @@
 /***********************************************************************************
- * \file ParameterScaledValueImp.hpp
+ * \file QualifierOfParameterMVUtil.hpp
  * \author BlueRabbitY (BlueRabbitY\@protonmail.com)
  * \brief 
- * \date 2026-04-19 10:47:01
+ * \date 2026-04-19 13:06:02
  * 
  * \copyright Copyright (C) 2026-2026 BlueRabbitY. All rights reserved.
  *
@@ -15,27 +15,25 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/details/io/MeasuredValueScaledWithoutQualityImp.hpp"
 #include "elink/iec60870/io/QualifierOfParameterMV.hpp"
 
 namespace elink::iec60870::details
 {
 
-template <typename inherit, TypeID typeID>
-class ParameterScaledValueImp : public MeasuredValueScaledWithoutQualityImp<inherit, typeID>
+class QualifierOfParameterMVUtil
 {
 public:
-    ParameterScaledValueImp()
+    QualifierOfParameterMVUtil()
     : qpmM{QPM::NOT_USED}
     {
     }
 
-    ParameterScaledValueImp(const IOA ioa, const ScaledValue value, const QualifierOfParameterMV qpm)
-    : MeasuredValueScaledWithoutQualityImp<inherit, typeID>{ioa, value}, qpmM{qpm}
+    explicit QualifierOfParameterMVUtil(const QualifierOfParameterMV qpm)
+    : qpmM{qpm}
     {
     }
 
-    ~ParameterScaledValueImp() = default;
+    ~QualifierOfParameterMVUtil() = default;
 
     void setQPM(const QualifierOfParameterMV qpm)
     {
@@ -50,5 +48,7 @@ public:
 protected:
     QualifierOfParameterMV qpmM;
 };
+
+using QPMUtil = QualifierOfParameterMVUtil;
 
 }
