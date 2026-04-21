@@ -110,8 +110,8 @@ TEST_F(OStreamTest, WriteCPxxtime2a)
 
 TEST_F(OStreamTest, WriteBitString32Value)
 {
-    uint8_t buffer[] = {};
     constexpr uint8_t dest[] = {0x55, 0x55, 0x55, 0x55};
+    uint8_t buffer[sizeof(dest)] = {};
 
     elink::iec60870::details::OStream stream{buffer, sizeof(dest)};
     const elink::iec60870::BitString32Value bs32Value{"01010101010101010101010101010101"};

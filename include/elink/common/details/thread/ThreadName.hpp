@@ -27,6 +27,7 @@
 #endif
 
 #include <sstream>
+#include <thread>
 
 namespace elink::details
 {

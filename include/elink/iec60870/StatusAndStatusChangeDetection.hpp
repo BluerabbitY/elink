@@ -16,6 +16,7 @@
 #pragma once
 
 #include <bitset>
+#include <cstdint>
 
 namespace elink::iec60870
 {
@@ -92,7 +93,7 @@ public:
 protected:
     friend class PackedSinglePointWithSCD;
 
-    [[nodiscard]] std::size_t size() const
+    [[nodiscard]] constexpr std::size_t size() const
     {
         return (stM.size() + cdM.size()) / 8;
     }
