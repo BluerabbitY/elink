@@ -48,6 +48,29 @@ protected:
     }
 };
 
+TEST_F(IntegratedTotalsSetTest, BinaryCounterReadingConstructor)
+{
+    const BinaryCounterReading bcr{32768, 1, true, false, true};
+
+    EXPECT_EQ(bcr.getValue(), 32768);
+    EXPECT_EQ(bcr.getSequenceNumber(), 1);
+    EXPECT_TRUE(bcr.hasCarry());
+    EXPECT_FALSE(bcr.isAdjusted());
+    EXPECT_TRUE(bcr.isInvalid());
+}
+
+TEST_F(IntegratedTotalsSetTest, BinaryCounterReadingSetValue)
+{
+    BinaryCounterReading bcr{32768, 1, true, false, true};
+
+    bcr.setValue(32778);
+    EXPECT_EQ(bcr.getValue(), 32778);
+    EXPECT_EQ(bcr.getSequenceNumber(), 1);
+    EXPECT_TRUE(bcr.hasCarry());
+    EXPECT_FALSE(bcr.isAdjusted());
+    EXPECT_TRUE(bcr.isInvalid());
+}
+
 TEST_F(IntegratedTotalsSetTest, TypeID)
 {
     const IntegratedTotals io;
