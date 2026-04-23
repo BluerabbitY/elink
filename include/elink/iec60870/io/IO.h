@@ -78,5 +78,13 @@
 #include "elink/iec60870/io/ParameterScaledValue.hpp"
 #include "elink/iec60870/io/ParameterFloatValue.hpp"
 #include "elink/iec60870/io/ParameterActivation.hpp"
+#include "elink/iec60870/io/FileReady.hpp"
+#include "elink/iec60870/io/SectionReady.hpp"
+#include "elink/iec60870/io/FileCallOrSelect.hpp"
+#include "elink/iec60870/io/FileLastSegmentOrSection.hpp"
+#include "elink/iec60870/io/FileACK.hpp"
+#include "elink/iec60870/io/FileSegment.hpp"
+#include "elink/iec60870/io/FileDirectory.hpp"
+#include "elink/iec60870/io/QueryLog.hpp"
 
 #include "elink/iec60870/formatter/InformationObjectFormatter.hpp"

@@ -188,6 +188,14 @@ struct formatter<elink::iec60870::details::InformationObjectSerializable<inherit
 #include "elink/iec60870/io/ParameterScaledValue.hpp"
 #include "elink/iec60870/io/ParameterFloatValue.hpp"
 #include "elink/iec60870/io/ParameterActivation.hpp"
+#include "elink/iec60870/io/FileReady.hpp"
+#include "elink/iec60870/io/SectionReady.hpp"
+#include "elink/iec60870/io/FileCallOrSelect.hpp"
+#include "elink/iec60870/io/FileLastSegmentOrSection.hpp"
+#include "elink/iec60870/io/FileACK.hpp"
+#include "elink/iec60870/io/FileSegment.hpp"
+#include "elink/iec60870/io/FileDirectory.hpp"
+#include "elink/iec60870/io/QueryLog.hpp"
 
 namespace std {
 
@@ -256,6 +264,14 @@ ELINK_IO_FORMATTER(ParameterNormalizedValue);
 ELINK_IO_FORMATTER(ParameterScaledValue);
 ELINK_IO_FORMATTER(ParameterFloatValue);
 ELINK_IO_FORMATTER(ParameterActivation);
+ELINK_IO_FORMATTER(FileReady);
+ELINK_IO_FORMATTER(SectionReady);
+ELINK_IO_FORMATTER(FileCallOrSelect);
+ELINK_IO_FORMATTER(FileLastSegmentOrSection);
+ELINK_IO_FORMATTER(FileACK);
+ELINK_IO_FORMATTER(FileSegment);
+ELINK_IO_FORMATTER(FileDirectory);
+ELINK_IO_FORMATTER(QueryLog);
 
 #undef ELINK_DEFINE_IO_FORMATTER
 
