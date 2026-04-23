@@ -34,7 +34,6 @@ add_executable(${TEST_PROJECT_NAME}
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/Test_ApplicationServiceDataUnit.cpp
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/Test_BinaryCounterReading.cpp
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/Test_StatusAndStatusChangeDetection.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/iec60870/Test_SingleEvent.cpp
         ## codec
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/codec/Test_OStream.cpp
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/codec/Test_IStream.cpp

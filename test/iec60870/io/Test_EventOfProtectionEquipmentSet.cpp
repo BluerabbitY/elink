@@ -47,6 +47,56 @@ protected:
     }
 };
 
+
+TEST_F(EventOfProtectionEquipmentSetTest, SingleEventDefaultConstructor)
+{
+    const SingleEvent se;
+    EXPECT_EQ(se.getEventState(), EventState::INDETERMINATE_0);
+    EXPECT_EQ(se.getQDP(), QualityP::GOOD);
+}
+
+TEST_F(EventOfProtectionEquipmentSetTest, SingleEventParameterConstructor)
+{
+    const SingleEvent se{EventState::ON, QualityP::BLOCKED | QualityP::ELAPSED_TIME_INVALID};
+    EXPECT_EQ(se.getEventState(), EventState::ON);
+    EXPECT_TRUE(se.getQDP() & QualityP::BLOCKED);
+    EXPECT_TRUE(se.getQDP() & QualityP::ELAPSED_TIME_INVALID);
+    EXPECT_FALSE(se.getQDP() & QualityP::SUBSTITUTED);
+}
+
+TEST_F(EventOfProtectionEquipmentSetTest, SingleEventSetEventStatePreservesQDP)
+{
+    SingleEvent se{EventState::INDETERMINATE_3, QualityP::INVALID};
+
+    se.setEventState(EventState::OFF);
+    EXPECT_EQ(se.getEventState(), EventState::OFF);
+    EXPECT_TRUE(se.getQDP() & QualityP::INVALID);
+}
+
+TEST_F(EventOfProtectionEquipmentSetTest, SingleEventSetQDPPreservesEventState)
+{
+    SingleEvent se{EventState::OFF, QualityP::GOOD};
+    se.setQDP(QualityP::BLOCKED | QualityP::ELAPSED_TIME_INVALID);
+    EXPECT_EQ(se.getEventState(), EventState::OFF);
+    EXPECT_TRUE(se.getQDP() & QualityP::BLOCKED);
+    EXPECT_TRUE(se.getQDP() & QualityP::ELAPSED_TIME_INVALID);
+}
+
+TEST_F(EventOfProtectionEquipmentSetTest, SingleEventEqualityAndCopy)
+{
+    const SingleEvent se1{EventState::ON, QualityP::BLOCKED};
+    const SingleEvent se2{EventState::ON, QualityP::BLOCKED};
+    const SingleEvent se3{EventState::OFF, QualityP::BLOCKED};
+
+    EXPECT_TRUE(se1 == se2);
+    EXPECT_FALSE(se1 != se2);
+    EXPECT_FALSE(se1 == se3);
+    EXPECT_TRUE(se1 != se3);
+
+    const SingleEvent copy = se1;
+    EXPECT_TRUE(copy == se1);
+}
+
 TEST_F(EventOfProtectionEquipmentSetTest, TypeID)
 {
     const EventOfProtectionEquipment io;
