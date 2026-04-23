@@ -1,10 +1,10 @@
 /***********************************************************************************
- * \file elink.h
+ * \file Common.hpp
  * \author BlueRabbitY (BlueRabbitY\@protonmail.com)
  * \brief 
- * \date 2025-11-26 00:27:22
+ * \date 2026-04-24 00:43:14
  * 
- * \copyright Copyright (C) 2025-2026 BlueRabbitY. All rights reserved.
+ * \copyright Copyright (C) 2026-2026 BlueRabbitY. All rights reserved.
  *
  * SPDX-License-Identifier: MPL-2.0
  *
@@ -15,5 +15,5 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/Common.hpp"
-#include "elink/iec60870/IEC60870.hpp"
+#include "elink/common/LogRedirect.hpp"
+#include "elink/common/Thread.hpp"
