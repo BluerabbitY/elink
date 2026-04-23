@@ -15,11 +15,97 @@
  ***********************************************************************************/
 #pragma once
 
-#include "elink/iec60870/details/io//InformationObjectSerializable.hpp"
-#include "elink/iec60870/StatusAndStatusChangeDetection.hpp"
+#include "elink/iec60870/details/io/InformationObjectSerializable.hpp"
 #include "elink/iec60870/io/QualityDescriptor.hpp"
 
-namespace elink::iec60870::details
+#include <bitset>
+
+namespace elink::iec60870
+{
+
+class StatusAndStatusChangeDetection {
+public:
+    StatusAndStatusChangeDetection() = default;
+
+    StatusAndStatusChangeDetection(const uint16_t st, const uint16_t cd)
+    : stM{st}, cdM{cd}
+    {
+    }
+
+    ~StatusAndStatusChangeDetection() = default;
+
+    bool operator==(const StatusAndStatusChangeDetection& other) const
+    {
+        return stM == other.stM && cdM == other.cdM;
+    }
+
+    bool operator!=(const StatusAndStatusChangeDetection& other) const
+    {
+        return stM != other.stM || cdM != other.cdM;
+    }
+
+    [[nodiscard]] uint16_t getST() const
+    {
+        return stM.to_ulong();
+    }
+
+    void setST(const uint16_t value)
+    {
+        stM = value;
+    }
+
+    [[nodiscard]] uint16_t getCD() const
+    {
+        return cdM.to_ulong();
+    }
+
+    void setCDn(const uint16_t value)
+    {
+        cdM = value;
+    }
+
+    [[nodiscard]] bool getST(const int index) const
+    {
+        if (index >=0 && index < stM.size())
+            return stM.test(index);
+        else
+            return false;
+    }
+
+    void setST(const int index, const bool status)
+    {
+        if (index >=0 && index < stM.size())
+            stM.set(index, status);
+    }
+
+    [[nodiscard]] bool getCD(const int index) const
+    {
+        if (index >=0 && index < cdM.size())
+            return cdM.test(index);
+        else
+            return false;
+    }
+
+    void setCD(const int index, const bool status)
+    {
+        if (index >=0 && index < cdM.size())
+            cdM.set(index, status);
+    }
+
+protected:
+    friend class PackedSinglePointWithSCD;
+
+    [[nodiscard]] constexpr std::size_t size() const
+    {
+        return (stM.size() + cdM.size()) / 8;
+    }
+
+private:
+    std::bitset<16> stM;
+    std::bitset<16> cdM;
+};
+
+namespace details
 {
 
 template <typename inherit, TypeID typeID>
@@ -68,4 +154,5 @@ protected:
     Quality qualityM;
 };
 
+}
 }

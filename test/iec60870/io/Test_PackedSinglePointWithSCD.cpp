@@ -46,6 +46,94 @@ protected:
     }
 };
 
+TEST_F(PackedSinglePointWithSCDSetTest, StatusAndStatusChangeDetectionValueConstructor)
+{
+    const StatusAndStatusChangeDetection scd{0x1234, 0x4321};
+
+    EXPECT_EQ(scd.getST(), 0x1234);
+    EXPECT_EQ(scd.getCD(), 0x4321);
+
+    EXPECT_FALSE(scd.getST(17));
+    EXPECT_FALSE(scd.getCD(17));
+}
+
+TEST_F(PackedSinglePointWithSCDSetTest, StatusAndStatusChangeDetectionDefaultConstructor)
+{
+    const StatusAndStatusChangeDetection scd;
+
+    EXPECT_EQ(scd.getST(), 0u);
+    EXPECT_EQ(scd.getCD(), 0u);
+
+    for (int i = -1; i <= 17; ++i)
+    {
+        if (i >= 0 && i < 16)
+        {
+            EXPECT_FALSE(scd.getST(i));
+            EXPECT_FALSE(scd.getCD(i));
+        }
+        else
+        {
+            // out of range queries must return false
+            EXPECT_FALSE(scd.getST(i));
+            EXPECT_FALSE(scd.getCD(i));
+        }
+    }
+}
+
+TEST_F(PackedSinglePointWithSCDSetTest, StatusAndStatusChangeDetectionSetAndGetWholeValues)
+{
+    StatusAndStatusChangeDetection scd;
+
+    scd.setST(0xffff);
+    scd.setCDn(0x00ff);
+
+    EXPECT_EQ(scd.getST(), 0xffff);
+    EXPECT_EQ(scd.getCD(), 0x00ff);
+}
+
+TEST_F(PackedSinglePointWithSCDSetTest, StatusAndStatusChangeDetectionBitIndexSetGet)
+{
+    StatusAndStatusChangeDetection scd;
+
+    scd.setST(0, true);
+    scd.setST(15, true);
+    EXPECT_TRUE(scd.getST(0));
+    EXPECT_TRUE(scd.getST(15));
+
+    scd.setST(0, false);
+    EXPECT_FALSE(scd.getST(0));
+
+    scd.setCD(3, true);
+    scd.setCD(7, true);
+    EXPECT_TRUE(scd.getCD(3));
+    EXPECT_TRUE(scd.getCD(7));
+
+    const uint16_t stVal = scd.getST();
+    const uint16_t cdVal = scd.getCD();
+    EXPECT_EQ((stVal & (1u << 15)), (1u << 15));
+    EXPECT_EQ((stVal & 1u), 0u);
+    EXPECT_EQ((cdVal & (1u << 3)), (1u << 3));
+    EXPECT_EQ((cdVal & (1u << 7)), (1u << 7));
+}
+
+TEST_F(PackedSinglePointWithSCDSetTest, StatusAndStatusChangeDetectionOutOfRangeIndex)
+{
+    StatusAndStatusChangeDetection scd;
+
+    scd.setST(-1, true);
+    scd.setST(16, true);
+    EXPECT_FALSE(scd.getST(-1));
+    EXPECT_FALSE(scd.getST(16));
+
+    scd.setCD(-5, true);
+    scd.setCD(100, true);
+    EXPECT_FALSE(scd.getCD(-5));
+    EXPECT_FALSE(scd.getCD(100));
+
+    EXPECT_EQ(scd.getST(), 0u);
+    EXPECT_EQ(scd.getCD(), 0u);
+}
+
 TEST_F(PackedSinglePointWithSCDSetTest, TypeID)
 {
     const PackedSinglePointWithSCD io;
