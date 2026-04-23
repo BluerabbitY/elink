@@ -23,7 +23,7 @@
 # SOFTWARE.
 #
 ###################################################################################
-set(TEST_PROJECT_NAME "Elink${TEST_SUFFIX}")
+set(TEST_PROJECT_NAME "Elink${GOOGLE_TEST_SUFFIX}")
 
 add_executable(${TEST_PROJECT_NAME}
         # common tests

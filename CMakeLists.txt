@@ -46,6 +46,7 @@ if (ELINK_BUILD_TESTS)
     enable_testing()
 
     set(TEST_SUFFIX "TestRunner")
+    set(GOOGLE_TEST_SUFFIX "G${TEST_SUFFIX}")
     set(ELINK_GTEST_TAG "v1.17.0" CACHE STRING "Git tag/commit for googletest")
     set(ELINK_RAPIDCHECK_TAG "master" CACHE STRING "Git tag/commit for rapidcheck")
 
