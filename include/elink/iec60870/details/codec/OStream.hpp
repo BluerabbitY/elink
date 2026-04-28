@@ -31,13 +31,6 @@ public:
 
     using elink::details::OStream<OStream>::operator<<;
 
-    OStream& operator<<(const IOA ioa)
-    {
-        const std::size_t size = ioa.length();
-        auto value = ioa.address();
-        return *this << LiteBufferView{reinterpret_cast<uint8_t*>(&value), size};
-    }
-
     OStream& operator<<(const BitString32Value& value)
     {
         return *this << static_cast<uint32_t>(value.to_ulong());

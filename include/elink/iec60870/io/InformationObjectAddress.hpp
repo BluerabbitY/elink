@@ -17,6 +17,8 @@
 
 #include "elink/iec60870/AppLayerParameters.hpp"
 #include "elink/common/Type.hpp"
+#include "elink/common/details/codec/IStream.hpp"
+#include "elink/common/details/codec/OStream.hpp"
 
 #include <algorithm>
 
@@ -140,6 +142,29 @@ public:
     {
         setIOAByteLength(byteOfIOA);
         setAddress(address());
+    }
+
+    template <typename inherit>
+    friend details::OStream<inherit>& operator<<(details::OStream<inherit>& stream, const InformationObjectAddress& ioa)
+    {
+        const std::size_t size = ioa.length();
+        auto value = ioa.address();
+        stream << LiteBufferView{reinterpret_cast<uint8_t*>(&value), size};
+        return stream;
+    }
+
+    template <typename inherit>
+    friend details::IStream<inherit>& operator>>(details::IStream<inherit>& stream, InformationObjectAddress& ioa)
+    {
+        int value = 0;
+        stream >> LiteBuffer{reinterpret_cast<uint8_t*>(&value), static_cast<std::size_t>(ioa.length())};
+
+        if (!stream.hasError())
+        {
+            ioa.setAddress(value);
+        }
+
+        return stream;
     }
 
 private:

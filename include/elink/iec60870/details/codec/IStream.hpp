@@ -31,19 +31,6 @@ public:
 
     using elink::details::IStream<IStream>::operator>>;
 
-    IStream& operator>>(IOA& ioa)
-    {
-        int value = 0;
-        *this >> LiteBuffer{reinterpret_cast<uint8_t*>(&value), static_cast<std::size_t>(ioa.length())};
-
-        if (!hasError())
-        {
-            ioa.setAddress(value);
-        }
-
-        return *this;
-    }
-
     IStream& operator>>(BitString32Value& value)
     {
         uint32_t bs32Value = 0;
