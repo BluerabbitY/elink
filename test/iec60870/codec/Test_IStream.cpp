@@ -28,6 +28,7 @@
  *
  ***********************************************************************************/
 #include "elink/iec60870/details/codec/IStream.hpp"
+#include "elink/iec60870/CPxxTime2a.hpp"
 
 #include <gtest/gtest.h>
 #include <cstring>

@@ -16,7 +16,6 @@
 #pragma once
 
 #include "elink/common/details/codec/IStream.hpp"
-#include "elink/iec60870/CPxxTime2a.hpp"
 #include "elink/iec60870/io/InformationObjectAddress.hpp"
 #include "elink/iec60870/details/io/BitString32Imp.hpp"
 
@@ -43,13 +42,6 @@ public:
         }
 
         return *this;
-    }
-
-    template <typename T>
-    IStream& operator>>(T& cpxxtime2a) requires (std::is_same_v<T, CP16Time2a> || std::is_same_v<T, CP24Time2a> ||
-                                                 std::is_same_v<T, CP32Time2a> || std::is_same_v<T, CP56Time2a>)
-    {
-        return *this >> LiteBuffer{const_cast<uint8_t*>(getCPxxTime2aData<T>(cpxxtime2a)), getCPxxTime2aLength<T>(cpxxtime2a)};
     }
 
     IStream& operator>>(BitString32Value& value)

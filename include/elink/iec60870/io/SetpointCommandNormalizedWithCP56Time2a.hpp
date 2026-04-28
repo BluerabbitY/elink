@@ -57,7 +57,7 @@ protected:
 
     [[nodiscard]] constexpr std::size_t payloadLength() const
     {
-        return sizeof(sValueM) + sizeof(valueM) + details::getCPxxTime2aLength(cpxxtime2aM);
+        return sizeof(sValueM) + sizeof(valueM) + sizeof(cpxxtime2aM);
     }
 };
 

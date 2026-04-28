@@ -16,7 +16,6 @@
 #pragma once
 
 #include "elink/common/details/codec/OStream.hpp"
-#include "elink/iec60870/CPxxTime2a.hpp"
 #include "elink/iec60870/io/InformationObjectAddress.hpp"
 #include "elink/iec60870/details/io/BitString32Imp.hpp"
 
@@ -37,13 +36,6 @@ public:
         const std::size_t size = ioa.length();
         auto value = ioa.address();
         return *this << LiteBufferView{reinterpret_cast<uint8_t*>(&value), size};
-    }
-
-    template <typename T>
-    OStream& operator<<(const T& cpxxtime2a) requires (std::is_same_v<T, CP16Time2a> || std::is_same_v<T, CP24Time2a> ||
-                                                       std::is_same_v<T, CP32Time2a> || std::is_same_v<T, CP56Time2a>)
-    {
-        return *this << LiteBufferView{getCPxxTime2aData<T>(cpxxtime2a), getCPxxTime2aLength<T>(cpxxtime2a)};
     }
 
     OStream& operator<<(const BitString32Value& value)

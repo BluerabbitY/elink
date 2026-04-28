@@ -44,7 +44,7 @@ protected:
 
     [[nodiscard]] constexpr std::size_t payloadLength() const
     {
-        return sizeof(nofM) + getCPxxTime2aLength(rangeStartTimeM) + getCPxxTime2aLength(rangeStopTimeM);
+        return sizeof(nofM) + sizeof(rangeStartTimeM) + sizeof(rangeStopTimeM);
     }
 };
 

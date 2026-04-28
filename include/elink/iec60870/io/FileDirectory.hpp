@@ -49,7 +49,7 @@ protected:
 
     [[nodiscard]] constexpr std::size_t payloadLength() const
     {
-        return sizeof(nofM) + sizeof(lengthOfFileM) + sizeof(sofM) + getCPxxTime2aLength(creationTimeM);
+        return sizeof(nofM) + sizeof(lengthOfFileM) + sizeof(sofM) + sizeof(creationTimeM);
     }
 };
 

@@ -17,6 +17,8 @@
 
 #include "elink/common/Platform.h"
 #include "elink/common/Type.hpp"
+#include "elink/common/details/codec/IStream.hpp"
+#include "elink/common/details/codec/OStream.hpp"
 
 #include <ctime>
 #include <chrono>
@@ -28,18 +30,6 @@ constexpr uint8_t CP16Time2aTag = 2;
 constexpr uint8_t CP24Time2aTag = 3;
 constexpr uint8_t CP32Time2aTag = 4;
 constexpr uint8_t CP56Time2aTag = 7;
-
-template <typename T>
-const uint8_t* getCPxxTime2aData(const T& cpxxtime2a)
-{
-    return cpxxtime2a.bufferM.data();
-}
-
-template <typename T>
-constexpr std::size_t getCPxxTime2aLength(const T& cpxxtime2a)
-{
-    return cpxxtime2a.bufferM.size();
-}
 
 template <std::size_t N>
 class CPxxTime2aImp {
@@ -277,12 +267,19 @@ public:
         return (other.bufferM.size() == bufferM.size()) && (other.bufferM == bufferM);
     }
 
-protected:
-    template <typename T>
-    friend const uint8_t* getCPxxTime2aData(const T& cpxxtime2a);
+    template <typename inherit>
+    friend elink::details::OStream<inherit>& operator<<(elink::details::OStream<inherit>& stream, const CPxxTime2aImp& cpxxtime2a)
+    {
+        stream << cpxxtime2a.bufferM;
+        return stream;
+    }
 
-    template <typename T>
-    friend constexpr std::size_t getCPxxTime2aLength(const T& cpxxtime2a);
+    template <typename inherit>
+    friend elink::details::IStream<inherit>& operator>>(elink::details::IStream<inherit>& stream, CPxxTime2aImp& cpxxtime2a)
+    {
+        stream >> cpxxtime2a.bufferM;
+        return stream;
+    }
 
 private:
     static std::tm* gmtime(const time_t& in, std::tm& out)
