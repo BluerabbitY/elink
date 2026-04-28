@@ -45,7 +45,7 @@ protected:
     template <typename IStream>
     void deserialize(IStream& stream)
     {
-        stream >> nofM >> nameOfSectionM >> lsqM << chsM;
+        stream >> nofM >> nameOfSectionM >> lsqM >> chsM;
     }
 
     [[nodiscard]] constexpr std::size_t payloadLength() const
