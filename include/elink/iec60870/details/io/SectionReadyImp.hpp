@@ -16,6 +16,7 @@
 #pragma once
 
 #include "elink/iec60870/details/io/FileSectionImp.hpp"
+#include "elink/iec60870/details/io/util/LengthInt.hpp"
 
 namespace elink::iec60870
 {
@@ -90,12 +91,12 @@ public:
 
     [[nodiscard]] uint32_t getLengthOfSection() const
     {
-        return lengthOfSectionM;
+        return lengthOfSectionM.getValue();
     }
 
     void setLengthOfSection(const uint32_t lengthOfSection)
     {
-        lengthOfSectionM = lengthOfSection;
+        lengthOfSectionM.setValue(lengthOfSection);
     }
 
     [[nodiscard]] SectionReadyQualifier getSRQ() const
@@ -109,7 +110,7 @@ public:
     }
 
 protected:
-    uint32_t lengthOfSectionM;
+    LengthInt lengthOfSectionM;
     /* section ready qualifier */
     SectionReadyQualifier srqM;
 };

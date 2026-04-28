@@ -16,6 +16,7 @@
 #pragma once
 
 #include "elink/iec60870/details/io/FileImp.hpp"
+#include "elink/iec60870/details/io/util/LengthInt.hpp"
 
 namespace elink::iec60870
 {
@@ -85,12 +86,12 @@ public:
 
     [[nodiscard]] uint32_t getLengthOfFile() const
     {
-        return lengthOfFileM;
+        return lengthOfFileM.getValue();
     }
 
     void setLengthOfFile(const uint32_t lengthOfFile)
     {
-        lengthOfFileM = std::clamp<uint32_t>(lengthOfFile, 0, 16777215);
+        lengthOfFileM.setValue(std::clamp<uint32_t>(lengthOfFile, 0, 16777215));
     }
 
     [[nodiscard]] FileReadyQualifier getFRQ() const
@@ -104,7 +105,7 @@ public:
     }
 
 protected:
-    uint32_t lengthOfFileM;
+    LengthInt lengthOfFileM;
     /* file ready qualifier */
     FileReadyQualifier frqM;
 };
