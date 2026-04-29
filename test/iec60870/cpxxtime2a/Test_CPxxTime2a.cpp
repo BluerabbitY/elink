@@ -130,3 +130,92 @@ TEST_F(CPXXTime2aTest, CP56Time2a)
 
     EXPECT_EQ(cp56Time2a.toMsTimestamp(), 1766297874266);
 }
+
+TEST_F(CPXXTime2aTest, ReadCPxxtime2a)
+{
+    constexpr uint8_t buffer[] = {0x64, 0x00, 0xdc, 0xe6, 0xfb, 0x00, 0x00, 0x00, 0x96, 0x00, 0x00, 0x00, 0x00, 0x7b,
+                                  0x00, 0x19};
+    elink::details::IStream stream{buffer, sizeof(buffer)};
+
+    std::size_t length = 0;
+    elink::iec60870::CP16Time2a cp16Time2a{};
+    stream >> cp16Time2a;
+    EXPECT_FALSE(stream.hasError());
+    length += elink::iec60870::details::CP16Time2aTag;
+    EXPECT_EQ(stream.size(), length);
+    EXPECT_EQ(cp16Time2a.getEplapsedTimeInMs(), 100);
+
+    elink::iec60870::CP24Time2a cp24Time2a{};
+    stream >> cp24Time2a;
+    EXPECT_FALSE(stream.hasError());
+    length += elink::iec60870::details::CP24Time2aTag;
+    EXPECT_EQ(stream.size(), length);
+    EXPECT_EQ(cp24Time2a.getMillisecond(), 100);
+    EXPECT_EQ(cp24Time2a.getSecond(), 59);
+    EXPECT_EQ(cp24Time2a.getMinute(), 59);
+    EXPECT_TRUE(cp24Time2a.isInvalid());
+    EXPECT_TRUE(cp24Time2a.isSubstituted());
+
+    elink::iec60870::CP32Time2a cp32Time2a{};
+    stream >> cp32Time2a;
+    EXPECT_FALSE(stream.hasError());
+    length += elink::iec60870::details::CP32Time2aTag;
+    EXPECT_EQ(stream.size(), length);
+    EXPECT_EQ(cp32Time2a.getHour(), 22);
+    EXPECT_TRUE(cp32Time2a.isSummerTime());
+
+    elink::iec60870::CP56Time2a cp56Time2a{};
+    stream >> cp56Time2a;
+    EXPECT_FALSE(stream.hasError());
+    length += elink::iec60870::details::CP56Time2aTag;
+    EXPECT_EQ(stream.size(), length);
+    EXPECT_EQ(cp56Time2a.getDayOfWeek(), 3);
+    EXPECT_EQ(cp56Time2a.getDayOfMonth(), 27);
+    EXPECT_EQ(cp56Time2a.getYear(), 2025);
+}
+
+TEST_F(CPXXTime2aTest, WriteCPxxtime2a)
+{
+    uint8_t buffer[256]{};
+    elink::details::OStream stream{buffer, sizeof(buffer)};
+
+    std::size_t length = 0;
+    elink::iec60870::CP16Time2a cp16Time2a{};
+    cp16Time2a.setEplapsedTimeInMs(100);
+    stream << cp16Time2a;
+    EXPECT_FALSE(stream.hasError());
+    length += elink::iec60870::details::CP16Time2aTag;
+    EXPECT_EQ(stream.size(), length);
+
+    elink::iec60870::CP24Time2a cp24Time2a{};
+    cp24Time2a.setMillisecond(100);
+    cp24Time2a.setSecond(59);
+    cp24Time2a.setMinute(59);
+    cp24Time2a.setInvalid(true);
+    cp24Time2a.setSubstituted(true);
+    stream << cp24Time2a;
+    EXPECT_FALSE(stream.hasError());
+    length += elink::iec60870::details::CP24Time2aTag;
+    EXPECT_EQ(stream.size(), length);
+
+    elink::iec60870::CP32Time2a cp32Time2a{};
+    cp32Time2a.setHour(22);
+    cp32Time2a.setSummerTime(true);
+    stream << cp32Time2a;
+    EXPECT_FALSE(stream.hasError());
+    length += elink::iec60870::details::CP32Time2aTag;
+    EXPECT_EQ(stream.size(), length);
+
+    elink::iec60870::CP56Time2a cp56Time2a{};
+    cp56Time2a.setDayOfWeek(3);
+    cp56Time2a.setDayOfMonth(27);
+    cp56Time2a.setYear(2025);
+    stream << cp56Time2a;
+    EXPECT_FALSE(stream.hasError());
+    length += elink::iec60870::details::CP56Time2aTag;
+    EXPECT_EQ(stream.size(), length);
+
+    constexpr uint8_t dest[] = {0x64, 0x00, 0xdc, 0xe6, 0xfb, 0x00, 0x00, 0x00, 0x96, 0x00, 0x00, 0x00, 0x00, 0x7b,
+                                0x00, 0x19};
+    EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
+}

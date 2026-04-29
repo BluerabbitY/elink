@@ -297,7 +297,7 @@ TEST_F(ApplicationServiceDataUnitTest, AddInformationObjectSerialize_CS104)
 
     uint8_t buffer[256]{};
     const SinglePointInformation::SerializePtr ptr = std::make_shared<SinglePointInformation>(sio);
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     EXPECT_TRUE(ptr->serialize(os, false));
     EXPECT_FALSE(os.hasError());

@@ -28,7 +28,6 @@
  *
  ***********************************************************************************/
 #include "elink/iec60870/io/CounterInterrogationCommand.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -73,7 +72,7 @@ TEST_F(CounterInterrogationCommandTest, CommonImpValue)
 TEST_F(CounterInterrogationCommandTest, CounterInterrogationCommandSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const CounterInterrogationCommand::SerializePtr ios =
         std::make_shared<CounterInterrogationCommand>(QCC{QCCRequest::GROUP_3, QCCFreeze::FREEZE_WITHOUT_RESET});
@@ -88,7 +87,7 @@ TEST_F(CounterInterrogationCommandTest, CounterInterrogationCommandSerialize)
 TEST_F(CounterInterrogationCommandTest, CounterInterrogationCommandDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x00, 0x00, 0x43};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<CounterInterrogationCommand>();
     const CounterInterrogationCommand::SerializePtr ios = io;

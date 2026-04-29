@@ -30,7 +30,8 @@
 #include "elink/iec60870/io/SinglePointInformation.hpp"
 #include "elink/iec60870/io/SinglePointWithCP24Time2a.hpp"
 #include "elink/iec60870/io/SinglePointWithCP56Time2a.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
+#include "elink/common/details/codec/IStream.hpp"
+#include "elink/common/details/codec/OStream.hpp"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -100,7 +101,7 @@ TEST_F(SinglePointInformationSetTest, CommomImpQuality)
 TEST_F(SinglePointInformationSetTest, SinglePointInformationSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const SinglePointInformation::SerializePtr ios =
         std::make_shared<SinglePointInformation>(IOA{0x200}, true, Quality::BLOCKED);
@@ -116,7 +117,7 @@ TEST_F(SinglePointInformationSetTest, SinglePointInformationSerialize)
 TEST_F(SinglePointInformationSetTest, SinglePointInformationDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x10};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<SinglePointInformation>();
     const SinglePointInformation::SerializePtr ios = io;
@@ -135,7 +136,7 @@ TEST_F(SinglePointInformationSetTest, SinglePointInformationDeserialize)
 TEST_F(SinglePointInformationSetTest, SinglePointWithCP24Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const SinglePointWithCP24Time2a::SerializePtr ios =
         std::make_shared<SinglePointWithCP24Time2a>(IOA{0x200}, true, Quality::BLOCKED, CP24Time2a{});
@@ -150,7 +151,7 @@ TEST_F(SinglePointInformationSetTest, SinglePointWithCP24Time2aSerialize)
 TEST_F(SinglePointInformationSetTest, SinglePointWithCP24Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x10, 0xdc, 0xe6, 0xfb};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<SinglePointWithCP24Time2a>();
     const SinglePointWithCP24Time2a::SerializePtr ios = io;
@@ -176,7 +177,7 @@ TEST_F(SinglePointInformationSetTest, SinglePointWithCP24Time2aDeserialize)
 TEST_F(SinglePointInformationSetTest, SinglePointWithCP56Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const SinglePointWithCP56Time2a::SerializePtr ios =
         std::make_shared<SinglePointWithCP56Time2a>(IOA{0x200}, true, Quality::BLOCKED, CP56Time2a{});
@@ -191,7 +192,7 @@ TEST_F(SinglePointInformationSetTest, SinglePointWithCP56Time2aSerialize)
 TEST_F(SinglePointInformationSetTest, SinglePointWithCP56Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x10, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<SinglePointWithCP56Time2a>();
     const SinglePointWithCP56Time2a::SerializePtr ios = io;

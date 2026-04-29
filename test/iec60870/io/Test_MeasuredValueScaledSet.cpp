@@ -31,7 +31,6 @@
 #include "elink/iec60870/io/MeasuredValueScaledWithCP24Time2a.hpp"
 #include "elink/iec60870/io/MeasuredValueScaledWithCP56Time2a.hpp"
 #include "elink/iec60870/io/ParameterScaledValue.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -108,7 +107,7 @@ TEST_F(MeasuredValueScaledSetTest, CommonImpQuality)
 TEST_F(MeasuredValueScaledSetTest, MeasuredValueScaledSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const MeasuredValueScaled::SerializePtr ios =
         std::make_shared<MeasuredValueScaled>(IOA{0x200}, 16667, Quality::BLOCKED);
@@ -123,7 +122,7 @@ TEST_F(MeasuredValueScaledSetTest, MeasuredValueScaledSerialize)
 TEST_F(MeasuredValueScaledSetTest, MeasuredValueScaledDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x1b, 0x41, 0x10};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<MeasuredValueScaled>();
     const MeasuredValueScaled::SerializePtr ios = io;
@@ -142,7 +141,7 @@ TEST_F(MeasuredValueScaledSetTest, MeasuredValueScaledDeserialize)
 TEST_F(MeasuredValueScaledSetTest, MeasuredValueScaledWithCP24Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const MeasuredValueScaledWithCP24Time2a::SerializePtr ios =
         std::make_shared<MeasuredValueScaledWithCP24Time2a>(IOA{0x200}, 167, Quality::BLOCKED, CP24Time2a{});
@@ -157,7 +156,7 @@ TEST_F(MeasuredValueScaledSetTest, MeasuredValueScaledWithCP24Time2aSerialize)
 TEST_F(MeasuredValueScaledSetTest, MeasuredValueScaledWithCP24Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0xa7, 0x00, 0x10, 0xdc, 0xe6, 0xfb};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<MeasuredValueScaledWithCP24Time2a>();
     const MeasuredValueScaledWithCP24Time2a::SerializePtr ios = io;
@@ -183,7 +182,7 @@ TEST_F(MeasuredValueScaledSetTest, MeasuredValueScaledWithCP24Time2aDeserialize)
 TEST_F(MeasuredValueScaledSetTest, MeasuredValueScaledWithCP56Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const MeasuredValueScaledWithCP56Time2a::SerializePtr ios =
         std::make_shared<MeasuredValueScaledWithCP56Time2a>(IOA{0x200}, 167, Quality::BLOCKED, CP56Time2a{});
@@ -198,7 +197,7 @@ TEST_F(MeasuredValueScaledSetTest, MeasuredValueScaledWithCP56Time2aSerialize)
 TEST_F(MeasuredValueScaledSetTest, MeasuredValueScaledWithCP56Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0xa7, 0x00, 0x10, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<MeasuredValueScaledWithCP56Time2a>();
     const MeasuredValueScaledWithCP56Time2a::SerializePtr ios = io;
@@ -231,7 +230,7 @@ TEST_F(MeasuredValueScaledSetTest, MeasuredValueScaledWithCP56Time2aDeserialize)
 TEST_F(MeasuredValueScaledSetTest, ParameterScaledValueSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const ParameterScaledValue::SerializePtr ios =
         std::make_shared<ParameterScaledValue>(IOA{0x200}, 16667, QPM::HIGH_LIMIT_FOR_TRANSMISSION);
@@ -246,7 +245,7 @@ TEST_F(MeasuredValueScaledSetTest, ParameterScaledValueSerialize)
 TEST_F(MeasuredValueScaledSetTest, ParameterScaledValueDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x1b, 0x41, 0x02};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<ParameterScaledValue>();
     const ParameterScaledValue::SerializePtr ios = io;

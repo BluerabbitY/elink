@@ -28,7 +28,6 @@
  *
  ***********************************************************************************/
 #include "elink/iec60870/io/PackedSinglePointWithSCD.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -174,7 +173,7 @@ TEST_F(PackedSinglePointWithSCDSetTest, CommonImpQuality)
 TEST_F(PackedSinglePointWithSCDSetTest, PackedSinglePointWithSCDSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
     const StatusAndStatusChangeDetection scd{0x1234, 0x4321};
 
     const PackedSinglePointWithSCD::SerializePtr ios =
@@ -191,7 +190,7 @@ TEST_F(PackedSinglePointWithSCDSetTest, DoublePointInformationDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x34, 0x12, 0x21, 0x43, 0x10};
     const StatusAndStatusChangeDetection scd{0x1234, 0x4321};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<PackedSinglePointWithSCD>();
     const PackedSinglePointWithSCD::SerializePtr ios = io;

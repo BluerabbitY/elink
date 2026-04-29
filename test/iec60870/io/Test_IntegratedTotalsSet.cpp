@@ -30,7 +30,6 @@
 #include "elink/iec60870/io/IntegratedTotals.hpp"
 #include "elink/iec60870/io/IntegratedTotalsWithCP24Time2a.hpp"
 #include "elink/iec60870/io/IntegratedTotalsWithCP56Time2a.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -112,7 +111,7 @@ TEST_F(IntegratedTotalsSetTest, CommonImpValue)
 TEST_F(IntegratedTotalsSetTest, IntegratedTotalsSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
     const BinaryCounterReading bcr{32768, 1, true, false, true};
 
     const IntegratedTotals::SerializePtr ios = std::make_shared<IntegratedTotals>(IOA{0x200}, bcr);
@@ -127,7 +126,7 @@ TEST_F(IntegratedTotalsSetTest, IntegratedTotalsSerialize)
 TEST_F(IntegratedTotalsSetTest, IntegratedTotalsDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x00, 0x80, 0x00, 0x00, 0xa1};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
     const BinaryCounterReading bcr{32768, 1, true, false, true};
 
     const auto io = std::make_shared<IntegratedTotals>();
@@ -143,7 +142,7 @@ TEST_F(IntegratedTotalsSetTest, IntegratedTotalsDeserialize)
 TEST_F(IntegratedTotalsSetTest, IntegratedTotalsWithCP24Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
     const BinaryCounterReading bcr{32768, 1, true, false, true};
 
     const IntegratedTotalsWithCP24Time2a::SerializePtr ios =
@@ -159,7 +158,7 @@ TEST_F(IntegratedTotalsSetTest, IntegratedTotalsWithCP24Time2aSerialize)
 TEST_F(IntegratedTotalsSetTest, IntegratedTotalsWithCP24Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x00, 0x80, 0x00, 0x00, 0xa1, 0xdc, 0xe6, 0xfb};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
     const BinaryCounterReading bcr{32768, 1, true, false, true};
 
     const auto io = std::make_shared<IntegratedTotalsWithCP24Time2a>();
@@ -182,7 +181,7 @@ TEST_F(IntegratedTotalsSetTest, IntegratedTotalsWithCP24Time2aDeserialize)
 TEST_F(IntegratedTotalsSetTest, IntegratedTotalsWithCP56Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
     const BinaryCounterReading bcr{32768, 1, true, false, true};
 
     const IntegratedTotalsWithCP56Time2a::SerializePtr ios =
@@ -198,7 +197,7 @@ TEST_F(IntegratedTotalsSetTest, IntegratedTotalsWithCP56Time2aSerialize)
 TEST_F(IntegratedTotalsSetTest, IntegratedTotalsWithCP56Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x00, 0x80, 0x00, 0x00, 0xa1, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
     const BinaryCounterReading bcr{32768, 1, true, false, true};
 
     const auto io = std::make_shared<IntegratedTotalsWithCP56Time2a>();

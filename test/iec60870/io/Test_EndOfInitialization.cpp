@@ -28,7 +28,6 @@
  *
  ***********************************************************************************/
 #include "elink/iec60870/io/EndOfInitialization.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -71,7 +70,7 @@ TEST_F(EndOfInitializationTest, CommonImpValue)
 TEST_F(EndOfInitializationTest, EndOfInitializationSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const EndOfInitialization::SerializePtr ios =
         std::make_shared<EndOfInitialization>(COI::LOCAL_SWITCH_ON);
@@ -86,7 +85,7 @@ TEST_F(EndOfInitializationTest, EndOfInitializationSerialize)
 TEST_F(EndOfInitializationTest, EndOfInitializationDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x00, 0x00, 0x02};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<EndOfInitialization>();
     const EndOfInitialization::SerializePtr ios = io;

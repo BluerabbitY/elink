@@ -19,7 +19,8 @@
 #include "elink/iec60870/CauseOfTransmission.hpp"
 #include "elink/iec60870/io/InformationObjectTypeID.h"
 #include "elink/iec60870/AppLayerParameters.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
+#include "elink/common/details/codec/IStream.hpp"
+#include "elink/common/details/codec/OStream.hpp"
 
 namespace elink::iec60870::details
 {
@@ -310,7 +311,7 @@ public:
             if (startIndex + elementLength > payloadM.size() + parametersM.getHeaderLength())
                 return std::nullopt;
 
-            IStream istream{asduM.data() + startIndex, asduM.size_bytes()};
+            elink::details::IStream istream{asduM.data() + startIndex, asduM.size_bytes()};
 
             static_cast<IOType::SerializeType&>(*io).deserialize(istream, isSeq);
 
@@ -348,7 +349,7 @@ private:
     const AppLayerParameters& parametersM;
     Buffer<MaxLengthOfASDU> bufferM;
     LiteBuffer asduM;
-    OStream payloadM;
+    elink::details::OStream payloadM;
 };
 
 constexpr uint8_t CS101_MAXUMUM_LENGTH_OF_ASDU = 254;

@@ -28,7 +28,6 @@
  *
  ***********************************************************************************/
 #include "elink/iec60870/io/ResetProcessCommand.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -71,7 +70,7 @@ TEST_F(ResetProcessCommandTest, CommonImpValue)
 TEST_F(ResetProcessCommandTest, ResetProcessCommandSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const ResetProcessCommand::SerializePtr ios = std::make_shared<ResetProcessCommand>(QRP::GENERAL_RESET);
     EXPECT_TRUE(ios->serialize(os, false));
@@ -85,7 +84,7 @@ TEST_F(ResetProcessCommandTest, ResetProcessCommandSerialize)
 TEST_F(ResetProcessCommandTest, ResetProcessCommandDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x00, 0x00, 0x02};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<ResetProcessCommand>();
     const ResetProcessCommand::SerializePtr ios = io;

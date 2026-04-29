@@ -39,7 +39,6 @@
 #include "elink/iec60870/io/SetpointCommandNormalizedWithCP56Time2a.hpp"
 #include "elink/iec60870/io/SetpointCommandScaledWithCP56Time2a.hpp"
 #include "elink/iec60870/io/SetpointCommandShortWithCP56Time2a.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -212,7 +211,7 @@ TEST_F(CommandSetTest, CommonImpValue)
 TEST_F(CommandSetTest, SingleCommandSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const SingleCommand::SerializePtr ios =
         std::make_shared<SingleCommand>(IOA{0x200}, true, QUValue::NO_ADDITIONAL_DEFINITION, true);
@@ -227,7 +226,7 @@ TEST_F(CommandSetTest, SingleCommandSerialize)
 TEST_F(CommandSetTest, SingleCommandDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x81};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<SingleCommand>();
     const SingleCommand::SerializePtr ios = io;
@@ -244,7 +243,7 @@ TEST_F(CommandSetTest, SingleCommandDeserialize)
 TEST_F(CommandSetTest, DoubleCommandSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const DoubleCommand::SerializePtr ios =
         std::make_shared<DoubleCommand>(IOA{0x200}, true, QUValue::NO_ADDITIONAL_DEFINITION, DoubleCommandValue::OFF);
@@ -259,7 +258,7 @@ TEST_F(CommandSetTest, DoubleCommandSerialize)
 TEST_F(CommandSetTest, DoubleCommandDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x82};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<DoubleCommand>();
     const DoubleCommand::SerializePtr ios = io;
@@ -276,7 +275,7 @@ TEST_F(CommandSetTest, DoubleCommandDeserialize)
 TEST_F(CommandSetTest, StepCommandSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const StepCommand::SerializePtr ios =
         std::make_shared<StepCommand>(IOA{0x200}, true, QUValue::NO_ADDITIONAL_DEFINITION, StepCommandValue::HIGHER);
@@ -291,7 +290,7 @@ TEST_F(CommandSetTest, StepCommandSerialize)
 TEST_F(CommandSetTest, StepCommandDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x82};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<StepCommand>();
     const StepCommand::SerializePtr ios = io;
@@ -308,7 +307,7 @@ TEST_F(CommandSetTest, StepCommandDeserialize)
 TEST_F(CommandSetTest, SetpointCommandNormalizedSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const SetpointCommandNormalized::SerializePtr ios =
         std::make_shared<SetpointCommandNormalized>(IOA{0x200}, true, 0, 0.5);
@@ -323,7 +322,7 @@ TEST_F(CommandSetTest, SetpointCommandNormalizedSerialize)
 TEST_F(CommandSetTest, SetpointCommandNormalizedDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x00, 0x40, 0x80};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<SetpointCommandNormalized>();
     const SetpointCommandNormalized::SerializePtr ios = io;
@@ -340,7 +339,7 @@ TEST_F(CommandSetTest, SetpointCommandNormalizedDeserialize)
 TEST_F(CommandSetTest, SetpointCommandScaledSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const SetpointCommandScaled::SerializePtr ios =
         std::make_shared<SetpointCommandScaled>(IOA{0x200}, true, 0, 100);
@@ -355,7 +354,7 @@ TEST_F(CommandSetTest, SetpointCommandScaledSerialize)
 TEST_F(CommandSetTest, SetpointCommandScaledDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x64, 0x00, 0x80};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<SetpointCommandScaled>();
     const SetpointCommandScaled::SerializePtr ios = io;
@@ -372,7 +371,7 @@ TEST_F(CommandSetTest, SetpointCommandScaledDeserialize)
 TEST_F(CommandSetTest, SetpointCommandShortSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const SetpointCommandShort::SerializePtr ios =
         std::make_shared<SetpointCommandShort>(IOA{0x200}, true, 0, 50.1);
@@ -387,7 +386,7 @@ TEST_F(CommandSetTest, SetpointCommandShortSerialize)
 TEST_F(CommandSetTest, SetpointCommandShortDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x66, 0x66, 0x48, 0x42, 0x80};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<SetpointCommandShort>();
     const SetpointCommandShort::SerializePtr ios = io;
@@ -404,7 +403,7 @@ TEST_F(CommandSetTest, SetpointCommandShortDeserialize)
 TEST_F(CommandSetTest, SingleCommandWithCP56Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const SingleCommandWithCP56Time2a::SerializePtr ios =
         std::make_shared<SingleCommandWithCP56Time2a>(IOA{0x200}, true, QUValue::NO_ADDITIONAL_DEFINITION, true, CP56Time2a{});
@@ -419,7 +418,7 @@ TEST_F(CommandSetTest, SingleCommandWithCP56Time2aSerialize)
 TEST_F(CommandSetTest, SingleCommandWithCP56Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x81, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<SingleCommandWithCP56Time2a>();
     const SingleCommandWithCP56Time2a::SerializePtr ios = io;
@@ -450,7 +449,7 @@ TEST_F(CommandSetTest, SingleCommandWithCP56Time2aDeserialize)
 TEST_F(CommandSetTest, DoubleCommandWithCP56Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const DoubleCommandWithCP56Time2a::SerializePtr ios =
         std::make_shared<DoubleCommandWithCP56Time2a>(IOA{0x200}, true, QUValue::NO_ADDITIONAL_DEFINITION, DoubleCommandValue::OFF, CP56Time2a{});
@@ -465,7 +464,7 @@ TEST_F(CommandSetTest, DoubleCommandWithCP56Time2aSerialize)
 TEST_F(CommandSetTest, DoubleCommandWithCP56Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x82, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<DoubleCommandWithCP56Time2a>();
     const DoubleCommandWithCP56Time2a::SerializePtr ios = io;
@@ -496,7 +495,7 @@ TEST_F(CommandSetTest, DoubleCommandWithCP56Time2aDeserialize)
 TEST_F(CommandSetTest, StepCommandWithCP56Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const StepCommandWithCP56Time2a::SerializePtr ios =
         std::make_shared<StepCommandWithCP56Time2a>(IOA{0x200}, true, QUValue::NO_ADDITIONAL_DEFINITION, StepCommandValue::HIGHER, CP56Time2a{});
@@ -511,7 +510,7 @@ TEST_F(CommandSetTest, StepCommandWithCP56Time2aSerialize)
 TEST_F(CommandSetTest, StepCommandWithCP56Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x82, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<StepCommandWithCP56Time2a>();
     const StepCommandWithCP56Time2a::SerializePtr ios = io;
@@ -542,7 +541,7 @@ TEST_F(CommandSetTest, StepCommandWithCP56Time2aDeserialize)
 TEST_F(CommandSetTest, SetpointCommandNormalizedWithCP56Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const SetpointCommandNormalizedWithCP56Time2a::SerializePtr ios =
         std::make_shared<SetpointCommandNormalizedWithCP56Time2a>(IOA{0x200}, true, 0, 0.5, CP56Time2a{});
@@ -557,7 +556,7 @@ TEST_F(CommandSetTest, SetpointCommandNormalizedWithCP56Time2aSerialize)
 TEST_F(CommandSetTest, SetpointCommandNormalizedWithCP56Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x00, 0x40, 0x80, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<SetpointCommandNormalizedWithCP56Time2a>();
     const SetpointCommandNormalizedWithCP56Time2a::SerializePtr ios = io;
@@ -588,7 +587,7 @@ TEST_F(CommandSetTest, SetpointCommandNormalizedWithCP56Time2aDeserialize)
 TEST_F(CommandSetTest, SetpointCommandScaledWithCP56Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const SetpointCommandScaledWithCP56Time2a::SerializePtr ios =
         std::make_shared<SetpointCommandScaledWithCP56Time2a>(IOA{0x200}, true, 0, 100, CP56Time2a{});
@@ -603,7 +602,7 @@ TEST_F(CommandSetTest, SetpointCommandScaledWithCP56Time2aSerialize)
 TEST_F(CommandSetTest, SetpointCommandScaledWithCP56Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x64, 0x00, 0x80, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<SetpointCommandScaledWithCP56Time2a>();
     const SetpointCommandScaledWithCP56Time2a::SerializePtr ios = io;
@@ -634,7 +633,7 @@ TEST_F(CommandSetTest, SetpointCommandScaledWithCP56Time2aDeserialize)
 TEST_F(CommandSetTest, SetpointCommandShortWithCP56Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const SetpointCommandShortWithCP56Time2a::SerializePtr ios =
         std::make_shared<SetpointCommandShortWithCP56Time2a>(IOA{0x200}, true, 0, 50.1, CP56Time2a{});
@@ -649,7 +648,7 @@ TEST_F(CommandSetTest, SetpointCommandShortWithCP56Time2aSerialize)
 TEST_F(CommandSetTest, SetpointCommandShortWithCP56Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x66, 0x66, 0x48, 0x42, 0x80, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<SetpointCommandShortWithCP56Time2a>();
     const SetpointCommandShortWithCP56Time2a::SerializePtr ios = io;

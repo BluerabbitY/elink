@@ -30,7 +30,6 @@
 #include "elink/iec60870/io/DoublePointInformation.hpp"
 #include "elink/iec60870/io/DoublePointWithCP24Time2a.hpp"
 #include "elink/iec60870/io/DoublePointWithCP56Time2a.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -100,7 +99,7 @@ TEST_F(DoublePointInformationSetTest, CommonImpQuality)
 TEST_F(DoublePointInformationSetTest, DoublePointInformationSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const DoublePointInformation::SerializePtr ios =
         std::make_shared<DoublePointInformation>(IOA{0x200}, DValue::ON, Quality::BLOCKED);
@@ -115,7 +114,7 @@ TEST_F(DoublePointInformationSetTest, DoublePointInformationSerialize)
 TEST_F(DoublePointInformationSetTest, DoublePointInformationDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x13};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<DoublePointInformation>();
     const DoublePointInformation::SerializePtr ios = io;
@@ -134,7 +133,7 @@ TEST_F(DoublePointInformationSetTest, DoublePointInformationDeserialize)
 TEST_F(DoublePointInformationSetTest, DoublePointWithCP24Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const DoublePointWithCP24Time2a::SerializePtr ios =
         std::make_shared<DoublePointWithCP24Time2a>(IOA{0x200}, DValue::ON, Quality::BLOCKED, CP24Time2a{});
@@ -149,7 +148,7 @@ TEST_F(DoublePointInformationSetTest, DoublePointWithCP24Time2aSerialize)
 TEST_F(DoublePointInformationSetTest, DoublePointWithCP24Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x13, 0xdc, 0xe6, 0xfb};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<DoublePointWithCP24Time2a>();
     const DoublePointWithCP24Time2a::SerializePtr ios = io;
@@ -175,7 +174,7 @@ TEST_F(DoublePointInformationSetTest, DoublePointWithCP24Time2aDeserialize)
 TEST_F(DoublePointInformationSetTest, DoublePointWithCP56Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const DoublePointWithCP56Time2a::SerializePtr ios =
         std::make_shared<DoublePointWithCP56Time2a>(IOA{0x200}, DValue::ON, Quality::BLOCKED, CP56Time2a{});
@@ -190,7 +189,7 @@ TEST_F(DoublePointInformationSetTest, DoublePointWithCP56Time2aSerialize)
 TEST_F(DoublePointInformationSetTest, DoublePointWithCP56Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x13, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<DoublePointWithCP56Time2a>();
     const DoublePointWithCP56Time2a::SerializePtr ios = io;

@@ -28,7 +28,6 @@
  *
  ***********************************************************************************/
 #include "elink/iec60870/io/ReadCommand.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -62,7 +61,7 @@ TEST_F(ReadCommandTest, IOLength)
 TEST_F(ReadCommandTest, ReadCommandSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const ReadCommand::SerializePtr ios = std::make_shared<ReadCommand>();
     EXPECT_TRUE(ios->serialize(os, false));
@@ -76,7 +75,7 @@ TEST_F(ReadCommandTest, ReadCommandSerialize)
 TEST_F(ReadCommandTest, ReadCommandDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x00, 0x00};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<ReadCommand>();
     const ReadCommand::SerializePtr ios = io;

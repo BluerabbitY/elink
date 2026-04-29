@@ -32,7 +32,6 @@
 #include "elink/iec60870/io/BitString32WithCP56Time2a.hpp"
 #include "elink/iec60870/io/BitString32Command.hpp"
 #include "elink/iec60870/io/BitString32CommandWithCP56Time2a.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -129,7 +128,7 @@ TEST_F(BitString32SetTest, CommonImpQuality)
 TEST_F(BitString32SetTest, BitString32Serialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const BitString32::SerializePtr ios =
         std::make_shared<BitString32>(IOA{0x200}, 0x5d5c5b5a, Quality::BLOCKED);
@@ -144,7 +143,7 @@ TEST_F(BitString32SetTest, BitString32Serialize)
 TEST_F(BitString32SetTest, BitString32Deserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x5a, 0x5b, 0x5c, 0x5d, 0x10};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<BitString32>();
     const BitString32::SerializePtr ios = io;
@@ -164,7 +163,7 @@ TEST_F(BitString32SetTest, BitString32Deserialize)
 TEST_F(BitString32SetTest, BitString32WithCP24Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const BitString32WithCP24Time2a::SerializePtr ios =
         std::make_shared<BitString32WithCP24Time2a>(IOA{0x200}, 0x5d5c5b5a, Quality::BLOCKED, CP24Time2a{});
@@ -179,7 +178,7 @@ TEST_F(BitString32SetTest, BitString32WithCP24Time2aSerialize)
 TEST_F(BitString32SetTest, BitString32WithCP24Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x5a, 0x5b, 0x5c, 0x5d, 0x10, 0xdc, 0xe6, 0xfb};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<BitString32WithCP24Time2a>();
     const BitString32WithCP24Time2a::SerializePtr ios = io;
@@ -205,7 +204,7 @@ TEST_F(BitString32SetTest, BitString32WithCP24Time2aDeserialize)
 TEST_F(BitString32SetTest, BitString32WithCP56Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const BitString32WithCP56Time2a::SerializePtr ios =
         std::make_shared<BitString32WithCP56Time2a>(IOA{0x200}, 0x5d5c5b5a, Quality::BLOCKED, CP56Time2a{});
@@ -220,7 +219,7 @@ TEST_F(BitString32SetTest, BitString32WithCP56Time2aSerialize)
 TEST_F(BitString32SetTest, BitString32WithCP56Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x5a, 0x5b, 0x5c, 0x5d, 0x10, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<BitString32WithCP56Time2a>();
     const BitString32WithCP56Time2a::SerializePtr ios = io;
@@ -253,7 +252,7 @@ TEST_F(BitString32SetTest, BitString32WithCP56Time2aDeserialize)
 TEST_F(BitString32SetTest, BitString32CommandSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const BitString32Command::SerializePtr ios =
         std::make_shared<BitString32Command>(IOA{0x200}, 0x5d5c5b5a);
@@ -268,7 +267,7 @@ TEST_F(BitString32SetTest, BitString32CommandSerialize)
 TEST_F(BitString32SetTest, BitString32CommandDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x5a, 0x5b, 0x5c, 0x5d};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<BitString32Command>();
     const BitString32Command::SerializePtr ios = io;
@@ -283,7 +282,7 @@ TEST_F(BitString32SetTest, BitString32CommandDeserialize)
 TEST_F(BitString32SetTest, BitString32CommandWithCP56Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const BitString32CommandWithCP56Time2a::SerializePtr ios =
         std::make_shared<BitString32CommandWithCP56Time2a>(IOA{0x200}, 0x5d5c5b5a, CP56Time2a{});
@@ -298,7 +297,7 @@ TEST_F(BitString32SetTest, BitString32CommandWithCP56Time2aSerialize)
 TEST_F(BitString32SetTest, BitString32CommandWithCP56Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x5a, 0x5b, 0x5c, 0x5d, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<BitString32CommandWithCP56Time2a>();
     const BitString32CommandWithCP56Time2a::SerializePtr ios = io;
@@ -322,4 +321,42 @@ TEST_F(BitString32SetTest, BitString32CommandWithCP56Time2aDeserialize)
     EXPECT_EQ(cp56Time2a.getMonth(), 12);
     EXPECT_EQ(cp56Time2a.getYear(), 2025);
     EXPECT_EQ(cp56Time2a.toMsTimestamp(), 1766297874266);
+}
+
+TEST_F(BitString32SetTest, ReadBitString32Value)
+{
+    constexpr uint8_t buffer[] = {0x55, 0x55, 0x55, 0x55};
+
+    elink::details::IStream stream{buffer, sizeof(buffer)};
+    BitString32Value bs32Value;
+
+    stream >> bs32Value;
+
+    EXPECT_FALSE(stream.hasError());
+
+    for (int i = 0; i < 32; i++)
+    {
+        if (i % 2 == 0)
+        {
+            EXPECT_TRUE(bs32Value.test(i));
+        }
+        else
+        {
+            EXPECT_FALSE(bs32Value.test(i));
+        }
+    }
+}
+
+TEST_F(BitString32SetTest, WriteBitString32Value)
+{
+    constexpr uint8_t dest[] = {0x55, 0x55, 0x55, 0x55};
+    uint8_t buffer[sizeof(dest)] = {};
+
+    elink::details::OStream stream{buffer, sizeof(dest)};
+    const BitString32Value bs32Value{"01010101010101010101010101010101"};
+
+    stream << bs32Value;
+
+    EXPECT_FALSE(stream.hasError());
+    EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 }

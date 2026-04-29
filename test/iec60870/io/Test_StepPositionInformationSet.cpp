@@ -30,7 +30,8 @@
 #include "elink/iec60870/io/StepPositionInformation.hpp"
 #include "elink/iec60870/io/StepPositionWithCP24Time2a.hpp"
 #include "elink/iec60870/io/StepPositionWithCP56Time2a.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
+#include "elink/common/details/codec/IStream.hpp"
+#include "elink/common/details/codec/OStream.hpp"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -98,7 +99,7 @@ TEST_F(StepPositionInformationSetTest, CommonImpQuality)
 TEST_F(StepPositionInformationSetTest, StepPositionInformationSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const StepPositionInformation::SerializePtr ptr =
         std::make_shared<StepPositionInformation>(IOA{0x200}, 60, true, Quality::BLOCKED);
@@ -113,7 +114,7 @@ TEST_F(StepPositionInformationSetTest, StepPositionInformationSerialize)
 TEST_F(StepPositionInformationSetTest, StepPositionInformationDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x4c, 0x11};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<StepPositionInformation>();
     const StepPositionInformation::SerializePtr ios = io;
@@ -134,7 +135,7 @@ TEST_F(StepPositionInformationSetTest, StepPositionInformationDeserialize)
 TEST_F(StepPositionInformationSetTest, StepPositionWithCP24Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const StepPositionWithCP24Time2a::SerializePtr ios =
         std::make_shared<StepPositionWithCP24Time2a>(IOA{0x200}, 60, true, Quality::BLOCKED, CP24Time2a{});
@@ -149,7 +150,7 @@ TEST_F(StepPositionInformationSetTest, StepPositionWithCP24Time2aSerialize)
 TEST_F(StepPositionInformationSetTest, StepPositionWithCP24Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x4c, 0x11, 0xdc, 0xe6, 0xfb};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<StepPositionWithCP24Time2a>();
     const StepPositionWithCP24Time2a::SerializePtr ios = io;
@@ -177,7 +178,7 @@ TEST_F(StepPositionInformationSetTest, StepPositionWithCP24Time2aDeserialize)
 TEST_F(StepPositionInformationSetTest, StepPositionWithCP56Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const StepPositionWithCP56Time2a::SerializePtr ios =
         std::make_shared<StepPositionWithCP56Time2a>(IOA{0x200}, 60, true, Quality::BLOCKED, CP56Time2a{});
@@ -192,7 +193,7 @@ TEST_F(StepPositionInformationSetTest, StepPositionWithCP56Time2aSerialize)
 TEST_F(StepPositionInformationSetTest, StepPositionWithCP56Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x4c, 0x11,  0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<StepPositionWithCP56Time2a>();
     const StepPositionWithCP56Time2a::SerializePtr ios = io;

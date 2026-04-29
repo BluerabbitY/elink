@@ -29,7 +29,6 @@
  ***********************************************************************************/
 #include "elink/iec60870/io/TestCommand.hpp"
 #include "elink/iec60870/io/TestCommandWithCP56Time2a.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -84,7 +83,7 @@ TEST_F(TestCommandTest, CommonImpValue)
 TEST_F(TestCommandTest, TestCommandSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const TestCommand::SerializePtr ios = std::make_shared<TestCommand>();
     EXPECT_TRUE(ios->serialize(os, false));
@@ -98,7 +97,7 @@ TEST_F(TestCommandTest, TestCommandSerialize)
 TEST_F(TestCommandTest, TestCommandDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x00, 0x00, 0xaa, 0x55};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<TestCommand>(false);
     const TestCommand::SerializePtr ios = io;
@@ -113,7 +112,7 @@ TEST_F(TestCommandTest, TestCommandDeserialize)
 TEST_F(TestCommandTest, TestCommandWithCP56Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const TestCommandWithCP56Time2a::SerializePtr ios = std::make_shared<TestCommandWithCP56Time2a>(0x55aa, CP56Time2a{});
     EXPECT_TRUE(ios->serialize(os, false));
@@ -127,7 +126,7 @@ TEST_F(TestCommandTest, TestCommandWithCP56Time2aSerialize)
 TEST_F(TestCommandTest, TestCommandWithCP56Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x00, 0x00, 0xaa, 0x55, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<TestCommandWithCP56Time2a>(false);
     const TestCommandWithCP56Time2a::SerializePtr ios = io;

@@ -32,7 +32,6 @@
 #include "elink/iec60870/io/MeasuredValueNormalizedWithoutQuality.hpp"
 #include "elink/iec60870/io/MeasuredValueNormalizedWithCP56Time2a.hpp"
 #include "elink/iec60870/io/ParameterNormalizedValue.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -130,7 +129,7 @@ TEST_F(BMeasuredValueNormalizedSetTest, CommonImpQPM)
 TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const MeasuredValueNormalized::SerializePtr ios =
         std::make_shared<MeasuredValueNormalized>(IOA{0x200}, 0.5f, Quality::BLOCKED);
@@ -145,7 +144,7 @@ TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedSerialize)
 TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x00, 0x40, 0x10};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<MeasuredValueNormalized>();
     const MeasuredValueNormalized::SerializePtr ios = io;
@@ -165,7 +164,7 @@ TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedDeserialize)
 TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithCP24Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const MeasuredValueNormalizedWithCP24Time2a::SerializePtr ios =
         std::make_shared<MeasuredValueNormalizedWithCP24Time2a>(IOA{0x200}, 0.5f, Quality::BLOCKED, CP24Time2a{});
@@ -180,7 +179,7 @@ TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithCP24Time2aSer
 TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithCP24Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x00, 0x40, 0x10, 0xdc, 0xe6, 0xfb};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<MeasuredValueNormalizedWithCP24Time2a>();
     const MeasuredValueNormalizedWithCP24Time2a::SerializePtr ios = io;
@@ -206,7 +205,7 @@ TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithCP24Time2aDes
 TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithoutQualitySerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const MeasuredValueNormalizedWithoutQuality::SerializePtr ios =
         std::make_shared<MeasuredValueNormalizedWithoutQuality>(IOA{0x200}, 0.5f);
@@ -221,7 +220,7 @@ TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithoutQualitySer
 TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithoutQualityDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x00, 0x40};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<MeasuredValueNormalizedWithoutQuality>();
     const MeasuredValueNormalizedWithoutQuality::SerializePtr ios = io;
@@ -236,7 +235,7 @@ TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithoutQualityDes
 TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithCP56Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const MeasuredValueNormalizedWithCP56Time2a::SerializePtr ios =
         std::make_shared<MeasuredValueNormalizedWithCP56Time2a>(IOA{0x200}, 0.5f, Quality::BLOCKED, CP56Time2a{});
@@ -251,7 +250,7 @@ TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithCP56Time2aSer
 TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithCP56Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x00, 0x40, 0x10, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<MeasuredValueNormalizedWithCP56Time2a>();
     const MeasuredValueNormalizedWithCP56Time2a::SerializePtr ios = io;
@@ -284,7 +283,7 @@ TEST_F(BMeasuredValueNormalizedSetTest, MeasuredValueNormalizedWithCP56Time2aDes
 TEST_F(BMeasuredValueNormalizedSetTest, ParameterNormalizedValueSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const ParameterNormalizedValue::SerializePtr ios =
         std::make_shared<ParameterNormalizedValue>(IOA{0x200}, 0.5f, QPM::SMOOTHING_FACTOR);
@@ -299,7 +298,7 @@ TEST_F(BMeasuredValueNormalizedSetTest, ParameterNormalizedValueSerialize)
 TEST_F(BMeasuredValueNormalizedSetTest, ParameterNormalizedValueDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x00, 0x40, 0x03};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<ParameterNormalizedValue>();
     const ParameterNormalizedValue::SerializePtr ios = io;

@@ -35,7 +35,6 @@
 #include "elink/iec60870/io/FileSegment.hpp"
 #include "elink/iec60870/io/FileDirectory.hpp"
 #include "elink/iec60870/io/QueryLog.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -198,7 +197,7 @@ TEST_F(FileSetTest, CommonImpField)
 TEST_F(FileSetTest, FileReadySerializeDeserialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const FileReady::SerializePtr ios =
         std::make_shared<FileReady>(IOA{0x200}, 0x1234, 0x00010203, true, 0x12);
@@ -209,7 +208,7 @@ TEST_F(FileSetTest, FileReadySerializeDeserialize)
     EXPECT_EQ(os.size(), sizeof(dest));
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 
-    details::IStream is{dest, sizeof(dest)};
+    elink::details::IStream is{dest, sizeof(dest)};
     const auto io = std::make_shared<FileReady>();
     const FileReady::SerializePtr ides = io;
     EXPECT_TRUE(ides->deserialize(is, false));
@@ -226,7 +225,7 @@ TEST_F(FileSetTest, FileReadySerializeDeserialize)
 TEST_F(FileSetTest, LengthIntStreamRoundTrip)
 {
     uint8_t buffer[8]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const details::LengthInt source{0x00010203};
     os << source;
@@ -236,7 +235,7 @@ TEST_F(FileSetTest, LengthIntStreamRoundTrip)
     EXPECT_EQ(os.size(), sizeof(dest));
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 
-    details::IStream is{dest, sizeof(dest)};
+    elink::details::IStream is{dest, sizeof(dest)};
     details::LengthInt parsed{};
     is >> parsed;
     EXPECT_FALSE(is.hasError());
@@ -247,7 +246,7 @@ TEST_F(FileSetTest, LengthIntStreamRoundTrip)
 TEST_F(FileSetTest, SectionReadySerializeDeserialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const SectionReady::SerializePtr ios =
         std::make_shared<SectionReady>(IOA{0x200}, 0x1234, 0x56, 0x00010203, false, 0x22);
@@ -258,7 +257,7 @@ TEST_F(FileSetTest, SectionReadySerializeDeserialize)
     EXPECT_EQ(os.size(), sizeof(dest));
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 
-    details::IStream is{dest, sizeof(dest)};
+    elink::details::IStream is{dest, sizeof(dest)};
     const auto io = std::make_shared<SectionReady>();
     const SectionReady::SerializePtr ides = io;
     EXPECT_TRUE(ides->deserialize(is, false));
@@ -276,7 +275,7 @@ TEST_F(FileSetTest, SectionReadySerializeDeserialize)
 TEST_F(FileSetTest, FileCallOrSelectSerializeDeserialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const FileCallOrSelect::SerializePtr ios = std::make_shared<FileCallOrSelect>(IOA{0x200}, 0x1234, 0x56, 0x78);
     EXPECT_TRUE(ios->serialize(os, false));
@@ -286,7 +285,7 @@ TEST_F(FileSetTest, FileCallOrSelectSerializeDeserialize)
     EXPECT_EQ(os.size(), sizeof(dest));
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 
-    details::IStream is{dest, sizeof(dest)};
+    elink::details::IStream is{dest, sizeof(dest)};
     const auto io = std::make_shared<FileCallOrSelect>();
     const FileCallOrSelect::SerializePtr ides = io;
     EXPECT_TRUE(ides->deserialize(is, false));
@@ -302,7 +301,7 @@ TEST_F(FileSetTest, FileCallOrSelectSerializeDeserialize)
 TEST_F(FileSetTest, FileLastSegmentOrSectionSerializeDeserialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const FileLastSegmentOrSection::SerializePtr ios =
         std::make_shared<FileLastSegmentOrSection>(IOA{0x200}, 0x1234, 0x56, 0x78, 0x9a);
@@ -313,7 +312,7 @@ TEST_F(FileSetTest, FileLastSegmentOrSectionSerializeDeserialize)
     EXPECT_EQ(os.size(), sizeof(dest));
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 
-    details::IStream is{dest, sizeof(dest)};
+    elink::details::IStream is{dest, sizeof(dest)};
     const auto io = std::make_shared<FileLastSegmentOrSection>();
     const FileLastSegmentOrSection::SerializePtr ides = io;
     EXPECT_TRUE(ides->deserialize(is, false));
@@ -330,7 +329,7 @@ TEST_F(FileSetTest, FileLastSegmentOrSectionSerializeDeserialize)
 TEST_F(FileSetTest, FileACKSerializeDeserialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<FileACK>();
     io->setAddress(IOA{0x200});
@@ -345,7 +344,7 @@ TEST_F(FileSetTest, FileACKSerializeDeserialize)
     EXPECT_EQ(os.size(), sizeof(dest));
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 
-    details::IStream is{dest, sizeof(dest)};
+    elink::details::IStream is{dest, sizeof(dest)};
     const auto ioDes = std::make_shared<FileACK>();
     const FileACK::SerializePtr ides = ioDes;
     EXPECT_TRUE(ides->deserialize(is, false));
@@ -361,7 +360,7 @@ TEST_F(FileSetTest, FileACKSerializeDeserialize)
 TEST_F(FileSetTest, FileSegmentSerializeDeserialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     constexpr uint8_t payload[] = {0x11, 0x22, 0x33};
     const FileSegment::SerializePtr ios =
@@ -373,7 +372,7 @@ TEST_F(FileSetTest, FileSegmentSerializeDeserialize)
     EXPECT_EQ(os.size(), sizeof(dest));
     EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
 
-    details::IStream is{dest, sizeof(dest)};
+    elink::details::IStream is{dest, sizeof(dest)};
     const auto io = std::make_shared<FileSegment>();
     const FileSegment::SerializePtr ides = io;
     EXPECT_TRUE(ides->deserialize(is, false));
@@ -390,7 +389,7 @@ TEST_F(FileSetTest, FileSegmentSerializeDeserialize)
 TEST_F(FileSetTest, FileDirectorySerializeDeserialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const FileDirectory::SerializePtr ios =
         std::make_shared<FileDirectory>(IOA{0x200}, 0x1234, 0x00010203, 0xe5, CP56Time2a{});
@@ -404,7 +403,7 @@ TEST_F(FileSetTest, FileDirectorySerializeDeserialize)
 
     constexpr uint8_t source[] = {
         0x00, 0x03, 0x00, 0x34, 0x12, 0x03, 0x02, 0x01, 0x00, 0xe5, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
-    details::IStream is{source, sizeof(source)};
+    elink::details::IStream is{source, sizeof(source)};
 
     const auto io = std::make_shared<FileDirectory>();
     const FileDirectory::SerializePtr ides = io;
@@ -439,7 +438,7 @@ TEST_F(FileSetTest, FileDirectorySerializeDeserialize)
 TEST_F(FileSetTest, QueryLogSerializeDeserialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<QueryLog>();
     io->setAddress(IOA{0x200});
@@ -459,7 +458,7 @@ TEST_F(FileSetTest, QueryLogSerializeDeserialize)
     constexpr uint8_t source[] = {
         0x00, 0x03, 0x00, 0x34, 0x12, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-    details::IStream is{source, sizeof(source)};
+    elink::details::IStream is{source, sizeof(source)};
 
     const auto ioDes = std::make_shared<QueryLog>();
     const QueryLog::SerializePtr ides = ioDes;

@@ -29,7 +29,6 @@
  ***********************************************************************************/
 #include "elink/iec60870/io/PackedOutputCircuitInfo.hpp"
 #include "elink/iec60870/io/PackedOutputCircuitInfoWithCP56Time2a.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -102,7 +101,7 @@ TEST_F(PackedOutputCircuitInfoSetTest, CommonImpQuality)
 TEST_F(PackedOutputCircuitInfoSetTest, PackedOutputCircuitInfoSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const PackedOutputCircuitInfo::SerializePtr ios =
         std::make_shared<PackedOutputCircuitInfo>(IOA{0x200}, OutputCircuitInfo::OUTPUT_CI_CL3, QualityP::BLOCKED, CP16Time2a{123}, CP24Time2a{});
@@ -117,7 +116,7 @@ TEST_F(PackedOutputCircuitInfoSetTest, PackedOutputCircuitInfoSerialize)
 TEST_F(PackedOutputCircuitInfoSetTest, PackedOutputCircuitInfoDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x08, 0x10, 0xfe, 0x04, 0xdc, 0xe6, 0xfb};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<PackedOutputCircuitInfo>();
     const PackedOutputCircuitInfo::SerializePtr ios = io;
@@ -145,7 +144,7 @@ TEST_F(PackedOutputCircuitInfoSetTest, PackedOutputCircuitInfoDeserialize)
 TEST_F(PackedOutputCircuitInfoSetTest, PackedOutputCircuitInfoWithCP56Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const PackedOutputCircuitInfoWithCP56Time2a::SerializePtr ios =
         std::make_shared<PackedOutputCircuitInfoWithCP56Time2a>(IOA{0x200}, OutputCircuitInfo::OUTPUT_CI_CL3, QualityP::BLOCKED, CP16Time2a{123}, CP56Time2a{});
@@ -160,7 +159,7 @@ TEST_F(PackedOutputCircuitInfoSetTest, PackedOutputCircuitInfoWithCP56Time2aSeri
 TEST_F(PackedOutputCircuitInfoSetTest, PackedOutputCircuitInfoWithCP56Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x08, 0x10, 0xfe, 0x04, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<PackedOutputCircuitInfoWithCP56Time2a>();
     const PackedOutputCircuitInfoWithCP56Time2a::SerializePtr ios = io;

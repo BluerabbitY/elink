@@ -16,7 +16,7 @@
 #pragma once
 
 #include "elink/iec60870/details/io/InformationObjectSerializable.hpp"
-#include "elink/iec60870/details/codec/OStream.hpp"
+#include "elink/common/details/codec/OStream.hpp"
 #include "elink/util/TypeName.hpp"
 
 namespace std
@@ -79,7 +79,7 @@ struct formatter<elink::iec60870::details::InformationObjectSerializable<inherit
 
         auto maxOutputElement = std::min(io.size(), maxLen);
         const std::unique_ptr<uint8_t[]> buffer{new uint8_t[io.size()]};
-        elink::iec60870::details::OStream ostream{buffer.get(), io.size()};
+        elink::details::OStream ostream{buffer.get(), io.size()};
         io.serialize(ostream, false);
 
         std::format_to(out, "{}", elink::util::type_name<inherit>());

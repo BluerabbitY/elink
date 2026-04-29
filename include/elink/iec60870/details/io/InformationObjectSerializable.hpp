@@ -17,8 +17,9 @@
 
 #include "elink/iec60870/io/InformationObject.hpp"
 #include "elink/iec60870/io/InformationObjectTypeID.h"
-#include "elink/iec60870/AppLayerParameters.hpp"
 #include "elink/util/Utils.hpp"
+#include "elink/common/details/codec/IStream.hpp"
+#include "elink/common/details/codec/OStream.hpp"
 
 #include <memory>
 
@@ -37,8 +38,7 @@ protected:
     }
 
 public:
-    template <typename OStream>
-    bool serialize(OStream& stream, const bool isSequence) const
+    bool serialize(elink::details::OStream& stream, const bool isSequence) const
     {
         if (!isSequence)
         {
@@ -56,8 +56,7 @@ public:
         return true;
     }
 
-    template <typename IStream>
-    bool deserialize(IStream& stream, const bool isSequence)
+    bool deserialize(elink::details::IStream& stream, const bool isSequence)
     {
         if (!isSequence)
         {

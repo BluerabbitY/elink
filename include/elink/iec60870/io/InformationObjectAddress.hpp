@@ -144,8 +144,7 @@ public:
         setAddress(address());
     }
 
-    template <typename inherit>
-    friend details::OStream<inherit>& operator<<(details::OStream<inherit>& stream, const InformationObjectAddress& ioa)
+    friend details::OStream& operator<<(details::OStream& stream, const InformationObjectAddress& ioa)
     {
         const std::size_t size = ioa.length();
         auto value = ioa.address();
@@ -153,8 +152,7 @@ public:
         return stream;
     }
 
-    template <typename inherit>
-    friend details::IStream<inherit>& operator>>(details::IStream<inherit>& stream, InformationObjectAddress& ioa)
+    friend details::IStream& operator>>(details::IStream& stream, InformationObjectAddress& ioa)
     {
         int value = 0;
         stream >> LiteBuffer{reinterpret_cast<uint8_t*>(&value), static_cast<std::size_t>(ioa.length())};

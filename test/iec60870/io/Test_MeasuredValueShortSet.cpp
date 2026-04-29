@@ -31,7 +31,6 @@
 #include "elink/iec60870/io/MeasuredValueShortWithCP24Time2a.hpp"
 #include "elink/iec60870/io/MeasuredValueShortWithCP56Time2a.hpp"
 #include "elink/iec60870/io/ParameterFloatValue.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -108,7 +107,7 @@ TEST_F(MeasuredValueShortSetTest, CommonImpQuality)
 TEST_F(MeasuredValueShortSetTest, MeasuredValueShortSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const MeasuredValueShort::SerializePtr ios =
         std::make_shared<MeasuredValueShort>(IOA{0x200}, 9.27, Quality::BLOCKED);
@@ -123,7 +122,7 @@ TEST_F(MeasuredValueShortSetTest, MeasuredValueShortSerialize)
 TEST_F(MeasuredValueShortSetTest, MeasuredValueShortDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0xec, 0x51, 0x14, 0x41, 0x10};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<MeasuredValueShort>();
     const MeasuredValueShort::SerializePtr ios = io;
@@ -142,7 +141,7 @@ TEST_F(MeasuredValueShortSetTest, MeasuredValueShortDeserialize)
 TEST_F(MeasuredValueShortSetTest, MeasuredValueShortWithCP24Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const MeasuredValueShortWithCP24Time2a::SerializePtr ios =
         std::make_shared<MeasuredValueShortWithCP24Time2a>(IOA{0x200}, 9.27, Quality::BLOCKED, CP24Time2a{});
@@ -157,7 +156,7 @@ TEST_F(MeasuredValueShortSetTest, MeasuredValueShortWithCP24Time2aSerialize)
 TEST_F(MeasuredValueShortSetTest, MeasuredValueShortWithCP24Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0xec, 0x51, 0x14, 0x41, 0x10, 0xdc, 0xe6, 0xfb};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<MeasuredValueShortWithCP24Time2a>();
     const MeasuredValueShortWithCP24Time2a::SerializePtr ios = io;
@@ -183,7 +182,7 @@ TEST_F(MeasuredValueShortSetTest, MeasuredValueShortWithCP24Time2aDeserialize)
 TEST_F(MeasuredValueShortSetTest, MeasuredValueShortWithCP56Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const MeasuredValueShortWithCP56Time2a::SerializePtr ios =
         std::make_shared<MeasuredValueShortWithCP56Time2a>(IOA{0x200}, 9.27, Quality::BLOCKED, CP56Time2a{});
@@ -198,7 +197,7 @@ TEST_F(MeasuredValueShortSetTest, MeasuredValueShortWithCP56Time2aSerialize)
 TEST_F(MeasuredValueShortSetTest, MeasuredValueShortWithCP56Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0xec, 0x51, 0x14, 0x41, 0x10, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<MeasuredValueShortWithCP56Time2a>();
     const MeasuredValueShortWithCP56Time2a::SerializePtr ios = io;
@@ -231,7 +230,7 @@ TEST_F(MeasuredValueShortSetTest, MeasuredValueShortWithCP56Time2aDeserialize)
 TEST_F(MeasuredValueShortSetTest, ParameterFloatValueSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const ParameterFloatValue::SerializePtr ios =
         std::make_shared<ParameterFloatValue>(IOA{0x200}, 9.27, QPM::SMOOTHING_FACTOR);
@@ -246,7 +245,7 @@ TEST_F(MeasuredValueShortSetTest, ParameterFloatValueSerialize)
 TEST_F(MeasuredValueShortSetTest, ParameterFloatValueDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0xec, 0x51, 0x14, 0x41, 0x03};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<ParameterFloatValue>();
     const ParameterFloatValue::SerializePtr ios = io;

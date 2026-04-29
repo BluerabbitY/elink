@@ -173,3 +173,45 @@ TEST_F(InformationObjectAddressTest, ResetLength)
     ioaDefault.resize(elink::iec60870::IOAByteLength::One);
     EXPECT_EQ(ioaDefault.address(), MaxLengthOfIOAInBytes(elink::iec60870::IOAByteLength::One));
 }
+
+TEST_F(InformationObjectAddressTest, ReadIOA)
+{
+    constexpr uint8_t buffer[] = {0x34, 0x12, 0x56, 0x34, 0x12};
+    elink::details::IStream stream{buffer, sizeof(buffer)};
+
+    std::size_t length = 0;
+    elink::iec60870::IOA ioa(0, elink::iec60870::IOAByteLength::Two);
+    stream >> ioa;
+    EXPECT_FALSE(stream.hasError());
+    EXPECT_EQ(stream.size(), static_cast<int>(elink::iec60870::IOAByteLength::Two));
+    EXPECT_EQ(ioa.address(), 0x1234);
+
+    length = stream.size();
+    ioa.resize(elink::iec60870::IOAByteLength::Three);
+    stream >> ioa;
+    EXPECT_FALSE(stream.hasError());
+    EXPECT_EQ(stream.size(), length + static_cast<int>(elink::iec60870::IOAByteLength::Three));
+    EXPECT_EQ(ioa.address(), 0x123456);
+}
+
+TEST_F(InformationObjectAddressTest, WriteIOA)
+{
+    uint8_t buffer[256]{};
+    elink::details::OStream stream{buffer, sizeof(buffer)};
+
+    std::size_t length = 0;
+    const elink::iec60870::IOA ioa1(0x1234, elink::iec60870::IOAByteLength::Two);
+    stream << ioa1;
+    EXPECT_FALSE(stream.hasError());
+    EXPECT_EQ(stream.size(), static_cast<int>(elink::iec60870::IOAByteLength::Two));
+
+    length = stream.size();
+    const elink::iec60870::IOA ioa2(0x123456);
+    stream << ioa2;
+    EXPECT_FALSE(stream.hasError());
+    EXPECT_EQ(stream.size(), length + static_cast<int>(elink::iec60870::IOAByteLength::Three));
+
+    constexpr uint8_t dest[] = {0x34, 0x12, 0x56, 0x34, 0x12};
+    EXPECT_EQ(stream.size(), sizeof(dest));
+    EXPECT_EQ(std::memcmp(buffer, dest, sizeof(dest)), 0);
+}

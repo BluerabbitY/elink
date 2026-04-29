@@ -28,7 +28,6 @@
  *
  ***********************************************************************************/
 #include "elink/iec60870/io/ParameterActivation.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -62,7 +61,7 @@ TEST_F(ParameterActivationTest, IOLength)
 TEST_F(ParameterActivationTest, ParameterActivationSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const ParameterActivation::SerializePtr ios = std::make_shared<ParameterActivation>(IOA{0x200}, QPA::DE_ACT_OBJECT_TRANSMISSION);
     EXPECT_TRUE(ios->serialize(os, false));
@@ -76,7 +75,7 @@ TEST_F(ParameterActivationTest, ParameterActivationSerialize)
 TEST_F(ParameterActivationTest, ParameterActivationDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x02};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<ParameterActivation>();
     const ParameterActivation::SerializePtr ios = io;

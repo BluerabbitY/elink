@@ -267,15 +267,13 @@ public:
         return (other.bufferM.size() == bufferM.size()) && (other.bufferM == bufferM);
     }
 
-    template <typename inherit>
-    friend elink::details::OStream<inherit>& operator<<(elink::details::OStream<inherit>& stream, const CPxxTime2aImp& cpxxtime2a)
+    friend elink::details::OStream& operator<<(elink::details::OStream& stream, const CPxxTime2aImp& cpxxtime2a)
     {
         stream << cpxxtime2a.bufferM;
         return stream;
     }
 
-    template <typename inherit>
-    friend elink::details::IStream<inherit>& operator>>(elink::details::IStream<inherit>& stream, CPxxTime2aImp& cpxxtime2a)
+    friend elink::details::IStream& operator>>(elink::details::IStream& stream, CPxxTime2aImp& cpxxtime2a)
     {
         stream >> cpxxtime2a.bufferM;
         return stream;

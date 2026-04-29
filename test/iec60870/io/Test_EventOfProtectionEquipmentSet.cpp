@@ -29,7 +29,6 @@
  ***********************************************************************************/
 #include "elink/iec60870/io/EventOfProtectionEquipment.hpp"
 #include "elink/iec60870/io/EventOfProtectionEquipmentWithCP56Time2a.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -135,7 +134,7 @@ TEST_F(EventOfProtectionEquipmentSetTest, CommonImpEvent)
 TEST_F(EventOfProtectionEquipmentSetTest, EventOfProtectionEquipmentSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const SingleEvent event{EventState::ON, QualityP::BLOCKED | QualityP::ELAPSED_TIME_INVALID};
     const EventOfProtectionEquipment::SerializePtr ios =
@@ -151,7 +150,7 @@ TEST_F(EventOfProtectionEquipmentSetTest, EventOfProtectionEquipmentSerialize)
 TEST_F(EventOfProtectionEquipmentSetTest, EventOfProtectionEquipmentDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x1a, 0x3d, 0x30, 0xdc, 0xe6, 0xfb};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<EventOfProtectionEquipment>();
     const EventOfProtectionEquipment::SerializePtr ios = io;
@@ -180,7 +179,7 @@ TEST_F(EventOfProtectionEquipmentSetTest, EventOfProtectionEquipmentDeserialize)
 TEST_F(EventOfProtectionEquipmentSetTest, EventOfProtectionEquipmentWithCP56Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const SingleEvent event{EventState::ON, QualityP::BLOCKED | QualityP::ELAPSED_TIME_INVALID};
     const EventOfProtectionEquipmentWithCP56Time2a::SerializePtr ios =
@@ -196,7 +195,7 @@ TEST_F(EventOfProtectionEquipmentSetTest, EventOfProtectionEquipmentWithCP56Time
 TEST_F(EventOfProtectionEquipmentSetTest, EventOfProtectionEquipmentWithCP56Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x1a, 0x3d, 0x30, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<EventOfProtectionEquipmentWithCP56Time2a>();
     const EventOfProtectionEquipmentWithCP56Time2a::SerializePtr ios = io;

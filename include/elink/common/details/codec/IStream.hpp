@@ -22,10 +22,10 @@
 #include <cassert>
 #include <type_traits>
 #include <cstddef>
+#include <bitset>
 
 namespace elink::details {
 
-template <typename inherit>
 class IStream {
 public:
     IStream(const uint8_t* buffer, const std::size_t size) : bufferM{buffer}, sizeM{size}, readPosM{0}, hasErrorM{false}
@@ -36,10 +36,10 @@ public:
     ~IStream() = default;
 
     template <typename T>
-    std::enable_if_t<std::is_arithmetic_v<T>, inherit&> operator>>(T& value)
+    std::enable_if_t<std::is_arithmetic_v<T>, IStream&> operator>>(T& value)
     {
         if (hasErrorM)
-            return static_cast<inherit&>(*this);
+            return *this;
 
         if (readPosM + sizeof(T) <= sizeM)
         {
@@ -59,14 +59,14 @@ public:
             hasErrorM = true;
         }
 
-        return static_cast<inherit&>(*this);
+        return *this;
     }
 
     template <typename T, typename OriginT = std::underlying_type_t<T> >
-    std::enable_if_t<std::is_enum_v<T>, inherit&> operator>>(T& value)
+    std::enable_if_t<std::is_enum_v<T>, IStream&> operator>>(T& value)
     {
         if (hasErrorM)
-            return static_cast<inherit&>(*this);
+            return *this;
 
         if (readPosM + sizeof(OriginT) <= sizeM)
         {
@@ -86,13 +86,13 @@ public:
             hasErrorM = true;
         }
 
-        return static_cast<inherit&>(*this);
+        return *this;
     }
 
-    inherit& operator>>(LiteBuffer data)
+    IStream& operator>>(LiteBuffer data)
     {
         if (hasErrorM && data.empty() && data.data() == nullptr)
-            return static_cast<inherit&>(*this);
+            return *this;
 
         if (readPosM + data.size() <= sizeM)
         {
@@ -104,7 +104,33 @@ public:
             hasErrorM = true;
         }
 
-        return static_cast<inherit&>(*this);
+        return *this;
+    }
+
+    IStream& operator>>(std::bitset<32>& value)
+    {
+        uint32_t bs32Value = 0;
+        *this >> bs32Value;
+
+        if (!hasError())
+        {
+            value = bs32Value;
+        }
+
+        return *this;
+    }
+
+    IStream& operator>>(std::bitset<16>& value)
+    {
+        uint16_t bs16Value = 0;
+        *this >> bs16Value;
+
+        if (!hasError())
+        {
+            value = bs16Value;
+        }
+
+        return *this;
     }
 
     [[nodiscard]] const uint8_t* data() const

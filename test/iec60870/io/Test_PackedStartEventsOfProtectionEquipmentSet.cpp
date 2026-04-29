@@ -29,7 +29,6 @@
  ***********************************************************************************/
 #include "elink/iec60870/io/PackedStartEventsOfProtectionEquipment.hpp"
 #include "elink/iec60870/io/PackedStartEventsOfProtectionEquipmentWithCP56Time2a.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -103,7 +102,7 @@ TEST_F(PackedStartEventsOfProtectionEquipmentSetTest, CommonImpQuality)
 TEST_F(PackedStartEventsOfProtectionEquipmentSetTest, PackedStartEventsOfProtectionEquipmentSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const PackedStartEventsOfProtectionEquipment::SerializePtr ios =
         std::make_shared<PackedStartEventsOfProtectionEquipment>(IOA{0x200}, StartEvent::SRD, QualityP::BLOCKED, CP16Time2a{1278}, CP24Time2a{});
@@ -118,7 +117,7 @@ TEST_F(PackedStartEventsOfProtectionEquipmentSetTest, PackedStartEventsOfProtect
 TEST_F(PackedStartEventsOfProtectionEquipmentSetTest, PackedStartEventsOfProtectionEquipmentDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x20, 0x10, 0xfe, 0x04, 0xdc, 0xe6, 0xfb};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<PackedStartEventsOfProtectionEquipment>();
     const PackedStartEventsOfProtectionEquipment::SerializePtr ios = io;
@@ -146,7 +145,7 @@ TEST_F(PackedStartEventsOfProtectionEquipmentSetTest, PackedStartEventsOfProtect
 TEST_F(PackedStartEventsOfProtectionEquipmentSetTest, PackedStartEventsOfProtectionEquipmentWithCP56Time2aSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const PackedStartEventsOfProtectionEquipmentWithCP56Time2a::SerializePtr ios =
         std::make_shared<PackedStartEventsOfProtectionEquipmentWithCP56Time2a>(IOA{0x200}, StartEvent::SRD, QualityP::BLOCKED, CP16Time2a{1278}, CP56Time2a{});
@@ -161,7 +160,7 @@ TEST_F(PackedStartEventsOfProtectionEquipmentSetTest, PackedStartEventsOfProtect
 TEST_F(PackedStartEventsOfProtectionEquipmentSetTest, PackedStartEventsOfProtectionEquipmentWithCP56Time2aDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x03, 0x00, 0x20, 0x10, 0xfe, 0x04, 0xfa, 0xd3, 0xd1, 0x8e, 0xf5, 0x0c, 0x19};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<PackedStartEventsOfProtectionEquipmentWithCP56Time2a>();
     const PackedStartEventsOfProtectionEquipmentWithCP56Time2a::SerializePtr ios = io;

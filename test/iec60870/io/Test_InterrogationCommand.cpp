@@ -28,7 +28,6 @@
  *
  ***********************************************************************************/
 #include "elink/iec60870/io/InterrogationCommand.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -71,7 +70,7 @@ TEST_F(InterrogationCommandTest, CommonImpValue)
 TEST_F(InterrogationCommandTest, InterrogationCommandSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const InterrogationCommand::SerializePtr ios =
         std::make_shared<InterrogationCommand>(QOI::STATION);
@@ -86,7 +85,7 @@ TEST_F(InterrogationCommandTest, InterrogationCommandSerialize)
 TEST_F(InterrogationCommandTest, InterrogationCommandDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x00, 0x00, 0x1d};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<InterrogationCommand>();
     const InterrogationCommand::SerializePtr ios = io;

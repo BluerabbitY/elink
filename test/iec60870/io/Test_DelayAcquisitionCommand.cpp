@@ -28,7 +28,6 @@
  *
  ***********************************************************************************/
 #include "elink/iec60870/io/DelayAcquisitionCommand.hpp"
-#include "elink/iec60870/details/codec/IOStream.h"
 
 #include <gtest/gtest.h>
 #include <cstring>
@@ -62,7 +61,7 @@ TEST_F(DelayAcquisitionCommandTest, IOLength)
 TEST_F(DelayAcquisitionCommandTest, DelayAcquisitionCommandSerialize)
 {
     uint8_t buffer[256]{};
-    details::OStream os{buffer, sizeof(buffer)};
+    elink::details::OStream os{buffer, sizeof(buffer)};
 
     const DelayAcquisitionCommand::SerializePtr ios = std::make_shared<DelayAcquisitionCommand>(CP16Time2a{12345});
     EXPECT_TRUE(ios->serialize(os, false));
@@ -76,7 +75,7 @@ TEST_F(DelayAcquisitionCommandTest, DelayAcquisitionCommandSerialize)
 TEST_F(DelayAcquisitionCommandTest, DelayAcquisitionCommandDeserialize)
 {
     constexpr uint8_t buffer[] = {0x00, 0x00, 0x00, 0x39, 0x30};
-    details::IStream is{buffer, sizeof(buffer)};
+    elink::details::IStream is{buffer, sizeof(buffer)};
 
     const auto io = std::make_shared<DelayAcquisitionCommand>();
     const DelayAcquisitionCommand::SerializePtr ios = io;
