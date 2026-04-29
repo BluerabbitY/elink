@@ -35,16 +35,14 @@ public:
 protected:
     ELINK_IO_OBJECT;
 
-    template <typename OStream>
-    void serialize(OStream& stream) const
+    friend elink::details::OStream& operator<<(elink::details::OStream& stream, const FileSegment& io)
     {
-        stream << nofM << nameOfSectionM << losM << LiteBufferView{dataM.data(), losM};
+        return stream << io.nofM << io.nameOfSectionM << io.losM << LiteBufferView{io.dataM.data(), io.losM};
     }
 
-    template <typename IStream>
-    void deserialize(IStream& stream)
+    friend elink::details::IStream& operator>>(elink::details::IStream& stream, FileSegment& io)
     {
-        stream >> nofM >> nameOfSectionM >> losM >> LiteBuffer{dataM.data(), losM};
+        return stream >> io.nofM >> io.nameOfSectionM >> io.losM >> LiteBuffer{io.dataM.data(), io.losM};
     }
 
     [[nodiscard]] std::size_t payloadLength() const

@@ -30,16 +30,14 @@ public:
 protected:
     ELINK_IO_OBJECT;
 
-    template <typename OStream>
-    void serialize(OStream& stream) const
+    friend elink::details::OStream& operator<<(elink::details::OStream& stream, const QueryLog& io)
     {
-        stream << nofM << rangeStartTimeM << rangeStopTimeM;
+        return stream << io.nofM << io.rangeStartTimeM << io.rangeStopTimeM;
     }
 
-    template <typename IStream>
-    void deserialize(IStream& stream)
+    friend elink::details::IStream& operator>>(elink::details::IStream& stream, QueryLog& io)
     {
-        stream >> nofM >> rangeStartTimeM >> rangeStopTimeM;
+        return stream >> io.nofM >> io.rangeStartTimeM >> io.rangeStopTimeM;
     }
 
     [[nodiscard]] constexpr std::size_t payloadLength() const

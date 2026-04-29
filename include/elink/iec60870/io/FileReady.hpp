@@ -35,16 +35,14 @@ public:
 protected:
     ELINK_IO_OBJECT;
 
-    template <typename OStream>
-    void serialize(OStream& stream) const
+    friend elink::details::OStream& operator<<(elink::details::OStream& stream, const FileReady& io)
     {
-        stream << nofM << lengthOfFileM << frqM.valueM;
+        return stream << io.nofM << io.lengthOfFileM << io.frqM.valueM;
     }
 
-    template <typename IStream>
-    void deserialize(IStream& stream)
+    friend elink::details::IStream& operator>>(elink::details::IStream& stream, FileReady& io)
     {
-        stream >> nofM >> lengthOfFileM >> frqM.valueM;
+        return stream >> io.nofM >> io.lengthOfFileM >> io.frqM.valueM;
     }
 
     [[nodiscard]] constexpr std::size_t payloadLength() const

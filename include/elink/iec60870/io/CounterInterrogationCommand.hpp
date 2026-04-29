@@ -38,16 +38,14 @@ public:
 protected:
     ELINK_IO_OBJECT;
 
-    template <typename OStream>
-    void serialize(OStream& stream) const
+    friend elink::details::OStream& operator<<(elink::details::OStream& stream, const CounterInterrogationCommand& io)
     {
-        stream << qccM.valueM;
+        return stream << io.qccM.valueM;
     }
 
-    template <typename IStream>
-    void deserialize(IStream& stream)
+    friend elink::details::IStream& operator>>(elink::details::IStream& stream, CounterInterrogationCommand& io)
     {
-        stream >> qccM.valueM;
+        return stream >> io.qccM.valueM;
     }
 
     [[nodiscard]] constexpr std::size_t payloadLength() const

@@ -35,16 +35,14 @@ public:
 protected:
     ELINK_IO_OBJECT;
 
-    template <typename OStream>
-    void serialize(OStream& stream) const
+    friend elink::details::OStream& operator<<(elink::details::OStream& stream, const ResetProcessCommand& io)
     {
-        stream << qrpM;
+        return stream << io.qrpM;
     }
 
-    template <typename IStream>
-    void deserialize(IStream& stream)
+    friend elink::details::IStream& operator>>(elink::details::IStream& stream, ResetProcessCommand& io)
     {
-        stream >> qrpM;
+        return stream >> io.qrpM;
     }
 
     [[nodiscard]] constexpr std::size_t payloadLength() const

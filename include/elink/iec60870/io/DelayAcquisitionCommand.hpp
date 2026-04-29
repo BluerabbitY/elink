@@ -40,16 +40,14 @@ public:
 protected:
     ELINK_IO_OBJECT;
 
-    template <typename OStream>
-    void serialize(OStream& stream) const
+    friend elink::details::OStream& operator<<(elink::details::OStream& stream, const DelayAcquisitionCommand& io)
     {
-        stream << cpxxtime2aM;
+        return stream << io.cpxxtime2aM;
     }
 
-    template <typename IStream>
-    void deserialize(IStream& stream)
+    friend elink::details::IStream& operator>>(elink::details::IStream& stream, DelayAcquisitionCommand& io)
     {
-        stream >> cpxxtime2aM;
+        return stream >> io.cpxxtime2aM;
     }
 
     [[nodiscard]] constexpr std::size_t payloadLength() const

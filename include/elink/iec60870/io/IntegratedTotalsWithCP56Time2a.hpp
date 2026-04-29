@@ -40,16 +40,14 @@ public:
 protected:
     ELINK_IO_OBJECT;
 
-    template <typename OStream>
-    void serialize(OStream& stream) const
+    friend elink::details::OStream& operator<<(elink::details::OStream& stream, const IntegratedTotalsWithCP56Time2a& io)
     {
-        stream << bcrM.valueM << bcrM.seqM << cpxxtime2aM;
+        return stream << io.bcrM.valueM << io.bcrM.seqM << io.cpxxtime2aM;
     }
 
-    template <typename IStream>
-    void deserialize(IStream& stream)
+    friend elink::details::IStream& operator>>(elink::details::IStream& stream, IntegratedTotalsWithCP56Time2a& io)
     {
-        stream >> bcrM.valueM >> bcrM.seqM >> cpxxtime2aM;
+        return stream >> io.bcrM.valueM >> io.bcrM.seqM >> io.cpxxtime2aM;
     }
 
     [[nodiscard]] constexpr std::size_t payloadLength() const

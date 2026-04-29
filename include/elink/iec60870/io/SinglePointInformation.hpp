@@ -34,16 +34,14 @@ public:
 protected:
     ELINK_IO_OBJECT;
 
-    template <typename OStream>
-    void serialize(OStream& stream) const
+    friend elink::details::OStream& operator<<(elink::details::OStream& stream, const SinglePointInformation& io)
     {
-        stream << siqM;
+        return stream << io.siqM;
     }
 
-    template <typename IStream>
-    void deserialize(IStream& stream)
+    friend elink::details::IStream& operator>>(elink::details::IStream& stream, SinglePointInformation& io)
     {
-        stream >> siqM;
+        return stream >> io.siqM;
     }
 
     [[nodiscard]] constexpr std::size_t payloadLength() const

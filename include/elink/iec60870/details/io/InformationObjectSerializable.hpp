@@ -45,7 +45,7 @@ public:
             stream << ioaM;
         }
 
-        static_cast<inherit const*>(this)->serialize(stream);
+        stream << static_cast<const inherit&>(*this);
 
         if (stream.hasError())
         {
@@ -63,7 +63,7 @@ public:
             stream >> ioaM;
         }
 
-        static_cast<inherit*>(this)->deserialize(stream);
+        stream >> static_cast<inherit&>(*this);
 
         if (stream.hasError())
         {
