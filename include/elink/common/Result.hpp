@@ -25,10 +25,10 @@ namespace elink
 template <typename T>
 struct Result
 {
-    ErrorCode code;                ///< The error code
-    T value;                       ///< The value of the result if code == Success
-    std::string message;           ///< Human-readable error message
-    int32_t systemErrorCode = 0;   ///< System native error code (e.g., errno, GetLastError())
+    ErrorCode code = ErrorCode::Success;    ///< The error code
+    T value{};                              ///< The value of the result if code == Success
+    std::string message = "";               ///< Human-readable error message
+    int32_t systemErrorCode = 0;            ///< System native error code (e.g., errno, GetLastError())
 
     bool isOk() const { return code == ErrorCode::Success; }
     bool isErr() const { return code != ErrorCode::Success; }
@@ -37,9 +37,9 @@ struct Result
 template <>
 struct Result<void>
 {
-    ErrorCode code;                ///< The error code
-    std::string message;           ///< Human-readable error message
-    int32_t systemErrorCode = 0;   ///< System native error code (e.g., errno, GetLastError())
+    ErrorCode code = ErrorCode::Success;    ///< The error code
+    std::string message = "";               ///< Human-readable error message
+    int32_t systemErrorCode = 0;            ///< System native error code (e.g., errno, GetLastError())
 
     bool isOk() const { return code == ErrorCode::Success; }
     bool isErr() const { return code != ErrorCode::Success; }

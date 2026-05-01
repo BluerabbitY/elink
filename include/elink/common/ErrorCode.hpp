@@ -29,6 +29,7 @@ namespace elink
 enum class ErrorCode : uint32_t {
     // Success
     Success = 0,
+    Failed,
     // Common
     Timeout,
     PollFailed,
