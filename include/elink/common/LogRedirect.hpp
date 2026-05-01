@@ -30,6 +30,7 @@ namespace elink
 {
 
 enum class LogLevel : uint8_t {
+    TRA,
     DBG,
     INF,
     WRN,
@@ -83,6 +84,7 @@ private:
 
 #if (ELINK_COMPILE_TIME_LOG_ENABLE == 1)
 #define LOG(level, fmt, ...)  do{ elink::LogRedirect::print(level, __FILE__, __LINE__, fmt __VA_OPT__(,) __VA_ARGS__); } while(false)
+#define TLOG(fmt, ...) LOG(elink::LogLevel::TRA, fmt __VA_OPT__(,) __VA_ARGS__)
 #define DLOG(fmt, ...) LOG(elink::LogLevel::DBG, fmt __VA_OPT__(,) __VA_ARGS__)
 #define ILOG(fmt, ...) LOG(elink::LogLevel::INF, fmt __VA_OPT__(,) __VA_ARGS__)
 #define WLOG(fmt, ...) LOG(elink::LogLevel::WRN, fmt __VA_OPT__(,) __VA_ARGS__)
@@ -92,6 +94,7 @@ private:
 #define MSG(level, msg)  do{ elink::Log::print(level, __FILE__, __LINE__, msg); } while(false)
 #else
 #define LOG(...) do{ } while (false)
+#define TLOG(...) do { } while(false)
 #define DLOG(...) do { } while(false)
 #define ILOG(...) do { } while(false)
 #define WLOG(...) do { } while(false)

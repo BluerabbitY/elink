@@ -122,6 +122,13 @@ TEST_F(LogTest, Print)
     EXPECT_EQ(buffer.line, 119);
     EXPECT_EQ(buffer.threadName, "LogTest");
     EXPECT_EQ(buffer.content, "This is a fatal test log: 6");
+
+    TLOG("This is a trace test log: {}", ++count);
+    EXPECT_EQ(buffer.level, elink::LogLevel::TRA);
+    EXPECT_EQ(buffer.file, "Test_RelocatedLog.cpp");
+    EXPECT_EQ(buffer.line, 126);
+    EXPECT_EQ(buffer.threadName, "LogTest");
+    EXPECT_EQ(buffer.content, "This is a trace test log: 7");
 }
 
 TEST_F(LogTest, Enabled)
@@ -129,7 +136,7 @@ TEST_F(LogTest, Enabled)
     elink::LogRedirect::enableLogOutput(false);
 
     DLOG("This log should not be captured");
-    EXPECT_EQ(buffer.level, elink::LogLevel::DBG);
+    EXPECT_EQ(buffer.level, elink::LogLevel::TRA);
     EXPECT_EQ(buffer.file, "");
     EXPECT_EQ(buffer.line, 0);
     EXPECT_EQ(buffer.threadName, "");
