@@ -31,6 +31,7 @@ add_executable(${TEST_PROJECT_NAME}
         ${CMAKE_CURRENT_LIST_DIR}/common/Test_IStreamCommon.cpp
         ${CMAKE_CURRENT_LIST_DIR}/common/Test_RelocatedLog.cpp
         ${CMAKE_CURRENT_LIST_DIR}/common/Test_FiniteStateMachine.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/common/Test_RingBuffer.cpp
         # iec60870 tests
         ${CMAKE_CURRENT_LIST_DIR}/iec60870/Test_ApplicationServiceDataUnit.cpp
         ## communication
