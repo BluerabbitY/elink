@@ -25,7 +25,9 @@
 ###################################################################################
 cmake_minimum_required(VERSION 4.0)
 
-project(Elink VERSION "0.0.1.0" LANGUAGES CXX)
+project(Elink VERSION "0.0.1.0" LANGUAGES CXX
+        DESCRIPTION "Cross-platform electricity protocol library"
+        HOMEPAGE_URL "https://github.com/BluerabbitY/elink.git")
 
 set(CMAKE_CXX_STANDARD 20)
 
