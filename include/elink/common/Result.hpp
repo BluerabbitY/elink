@@ -27,22 +27,22 @@ struct Result
 {
     ErrorCode code = ErrorCode::Success;    ///< The error code
     T value{};                              ///< The value of the result if code == Success
-    std::string message = "";               ///< Human-readable error message
+    std::string message;                    ///< Human-readable error message
     int32_t systemErrorCode = 0;            ///< System native error code (e.g., errno, GetLastError())
 
-    bool isOk() const { return code == ErrorCode::Success; }
-    bool isErr() const { return code != ErrorCode::Success; }
+    [[nodiscard]] bool isOk() const { return code == ErrorCode::Success; }
+    [[nodiscard]] bool isErr() const { return code != ErrorCode::Success; }
 };
 
 template <>
 struct Result<void>
 {
     ErrorCode code = ErrorCode::Success;    ///< The error code
-    std::string message = "";               ///< Human-readable error message
+    std::string message;                    ///< Human-readable error message
     int32_t systemErrorCode = 0;            ///< System native error code (e.g., errno, GetLastError())
 
-    bool isOk() const { return code == ErrorCode::Success; }
-    bool isErr() const { return code != ErrorCode::Success; }
+    [[nodiscard]] bool isOk() const { return code == ErrorCode::Success; }
+    [[nodiscard]] bool isErr() const { return code != ErrorCode::Success; }
 };
 
 }
