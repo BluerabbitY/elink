@@ -31,6 +31,8 @@
 
 #include <gtest/gtest.h>
 
+#include <cstring>
+
 using namespace elink::iec60870;
 
 class FormatterTest : public ::testing::Test {

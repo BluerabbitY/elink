@@ -31,6 +31,8 @@
 
 #include <gtest/gtest.h>
 
+#include <cstring>
+
 class CPXXTime2aTest : public ::testing::Test {
 protected:
     void SetUp() override
