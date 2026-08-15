@@ -16,6 +16,7 @@
 #pragma once
 
 #include <cassert>
+#include <type_traits>
 
 #ifndef ELINK_ASSERT
 #define ELINK_ASSERT(x) assert(x)
@@ -27,5 +28,15 @@
 
 namespace elink::util
 {
+
+template<typename T>
+concept IsEnumClass = std::is_enum_v<T> && !std::is_convertible_v<T, int>;
+
+template<typename T>
+constexpr bool is_single_bit(T value) noexcept
+{
+    auto u = static_cast<std::underlying_type_t<T>>(value);
+    return u != 0 && (u & (u - 1)) == 0;
+}
 
 }
