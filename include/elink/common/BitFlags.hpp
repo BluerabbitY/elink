@@ -264,7 +264,7 @@ constexpr BitFlags<T> operator^(BitFlags<T> lhs, BitFlags<T> rhs) noexcept
 }
 
 #define ELINK_FLAGS_OPERATORS(EnumType)                                                                 \
-    constexpr auto operator|(EnumType lhs, EnumType rhs) noexcept                                       \
+    (constexpr auto operator|(EnumType lhs, EnumType rhs) noexcept                                      \
     {                                                                                                   \
         return elink::BitFlags<EnumType>{lhs} | rhs;                                                    \
     }                                                                                                   \
@@ -299,5 +299,4 @@ constexpr BitFlags<T> operator^(BitFlags<T> lhs, BitFlags<T> rhs) noexcept
     constexpr auto operator|(elink::BitFlags<EnumType> lhs, elink::BitFlags<EnumType> rhs) noexcept     \
     {                                                                                                   \
         return lhs | rhs;                                                                               \
-    }
-
+    })
