@@ -17,6 +17,7 @@
 
 #include "elink/common/details/thread/ThreadConcept.hpp"
 #include "elink/common/details/thread/ThreadName.hpp"
+#include "elink/util/Utils.hpp"
 
 #include <thread>
 #include <stop_token>
@@ -34,7 +35,7 @@ public:
     explicit Thread(const std::string_view threadName, const StartMode startMode = DEFERRED)
         : startModeM{startMode}, threadNameM{threadName}
     {
-        static_assert(details::ThreadConcept<T>, "Derived class must satisfy ThreadConcept (implement entry)");
+        ELINK_STATIC_ASSERT(details::ThreadConcept<T>, "Derived class must satisfy ThreadConcept (implement entry)");
 
         if (startModeM == IMMEDIATE)
         {
@@ -46,7 +47,7 @@ public:
 
     void start()
     {
-        if (startModeM == DEFERRED && threadM != nullptr)
+        if (threadM == nullptr)
         {
             threadM = std::make_unique<std::jthread>([this](const std::stop_token &st) { this->entry(st); });
         }
